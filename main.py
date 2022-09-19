@@ -2,23 +2,37 @@
 import os
 import cv2
 import argparse
+import replicate
+import webbrowser
+import argparse
 
 from face_detection import select_face, select_all_faces
 from face_swap import face_swap
+from PIL import Image
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='FaceSwapApp')
-    parser.add_argument('--src', required=True, help='Path for source image')
+    parser.add_argument('--src', required=False, help='Path for source image')
     parser.add_argument('--dst', required=True, help='Path for target image')
     parser.add_argument('--out', required=True, help='Path for storing output images')
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
     parser.add_argument('--no_debug_window', default=False, action='store_true', help='Don\'t show debug window')
+    parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
     args = parser.parse_args()
 
+
+    #StableDiffusion 
+    model = replicate.models.get("stability-ai/stable-diffusion")
+
+    output_url = model.predict(prompt=(args.prompt))[0]
+    print(output_url)
+    #webbrowser.open(output_url)
+
     # Read images
-    src_img = cv2.imread(args.src)
+    src_img = cv2.imread(output_url)
     dst_img = cv2.imread(args.dst)
 
     # Select src face
@@ -36,9 +50,9 @@ if __name__ == '__main__':
                            dst_face["points"], dst_face["shape"],
                            output, args)
 
-#    dir_path = os.path.dirname(args.out)
-#    if not os.path.isdir(dir_path):
-#        os.makedirs(dir_path)
+    # dir_path = os.path.dirname(args.out)
+    #     if not os.path.isdir(dir_path):
+    #     os.makedirs(dir_path)
 
     cv2.imwrite(args.out, output)
 
