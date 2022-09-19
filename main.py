@@ -36,9 +36,9 @@ if __name__ == '__main__':
                            dst_face["points"], dst_face["shape"],
                            output, args)
 
-    dir_path = os.path.dirname(args.out)
-    if not os.path.isdir(dir_path):
-        os.makedirs(dir_path)
+#    dir_path = os.path.dirname(args.out)
+#    if not os.path.isdir(dir_path):
+#        os.makedirs(dir_path)
 
     cv2.imwrite(args.out, output)
 
