@@ -5,10 +5,11 @@ import argparse
 import replicate
 import webbrowser
 import argparse
+from urllib.request import Request, urlopen
+import urllib.request
 
 from face_detection import select_face, select_all_faces
 from face_swap import face_swap
-from PIL import Image
 
 
 
@@ -26,9 +27,15 @@ if __name__ == '__main__':
 
     #StableDiffusion 
     model = replicate.models.get("stability-ai/stable-diffusion")
-
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
+
+    # #load the image from replicate and save locally
+    # with urllib.request.urlopen(output_url) as img:
+    #     s = img.read()
+
+    # print(s)
+
     #webbrowser.open(output_url)
 
     # Read images
