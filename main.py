@@ -5,8 +5,8 @@ import argparse
 import replicate
 import webbrowser
 import argparse
-from urllib.request import Request, urlopen
-import urllib.request
+import skimage
+from skimage import io
 
 from face_detection import select_face, select_all_faces
 from face_swap import face_swap
@@ -30,16 +30,12 @@ if __name__ == '__main__':
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
 
-    # #load the image from replicate and save locally
-    # with urllib.request.urlopen(output_url) as img:
-    #     s = img.read()
-
-    # print(s)
-
-    #webbrowser.open(output_url)
+    #load the image from replicate and save locally
+    image = io.imread(output_url)
+    # webbrowser.open(output_url)
 
     # Read images
-    src_img = cv2.imread(output_url)
+    src_img = cv2.imread(image)
     dst_img = cv2.imread(args.dst)
 
     # Select src face
