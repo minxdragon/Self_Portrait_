@@ -1,13 +1,15 @@
 #! /usr/bin/env python
+from email.mime import image
 import os
 import cv2
 import argparse
 import replicate
 import webbrowser
 import argparse
-import skimage
-from skimage import io
+import urllib
+import numpy as np
 
+from urllib.request import urlopen
 from face_detection import select_face, select_all_faces
 from face_swap import face_swap
 
@@ -25,17 +27,27 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
+    #load the image from replicate and save locally
+    
+
     #StableDiffusion 
     model = replicate.models.get("stability-ai/stable-diffusion")
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
+        # download the image, convert it to a NumPy array, and then read
+        # it into OpenCV format
 
-    #load the image from replicate and save locally
-    image = io.imread(output_url)
+
+    req = urlopen(output_url)
+    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+    img = cv2.imdecode(arr, -1) # 'Load it as it is'
+
+    cv2.imshow('lalala', img)
+    if cv2.waitKey() & 0xff == 27: quit()
     # webbrowser.open(output_url)
 
     # Read images
-    src_img = cv2.imread(image)
+    src_img = cv2.imread(img)
     dst_img = cv2.imread(args.dst)
 
     # Select src face
