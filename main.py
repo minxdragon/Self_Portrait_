@@ -9,7 +9,7 @@ import argparse
 import urllib
 import numpy as np
 
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 from face_detection import select_face, select_all_faces
 from face_swap import face_swap
 
@@ -37,13 +37,17 @@ if __name__ == '__main__':
         # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
 
-
-    req = urlopen(output_url)
+    request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+    req = urlopen(request_site)
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     img = cv2.imdecode(arr, -1) # 'Load it as it is'
+    dream = cv2.imdecode(str(img))
+    
+    webpage = urlopen(request_site).read()
+    print(webpage[:500])
 
-    cv2.imshow('lalala', img)
-    if cv2.waitKey() & 0xff == 27: quit()
+    #cv2.imshow('lalala', img)
+    #if cv2.waitKey() & 0xff == 27: quit()
     # webbrowser.open(output_url)
 
     # Read images
