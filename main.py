@@ -26,16 +26,29 @@ if __name__ == '__main__':
     parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
     args = parser.parse_args()
 
-
-    #load the image from replicate and save locally
-    
-
     #StableDiffusion 
+    def SD(prompt):
+        model = replicate.models.get("stability-ai/stable-diffusion")
+        output_url = model.predict(prompt=(prompt))[0]
+        print(output_url)
+            # download the image, convert it to a NumPy array, and then read
+            # it into OpenCV format
+
+        request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+        req = urlopen(request_site)
+        arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+        img = cv2.imdecode(arr, -1)
+        img = np.array(img)
+        dream = cv2.imwrite('dream.jpg', img)
+
     model = replicate.models.get("stability-ai/stable-diffusion")
+    init_image = args.dst
+    print (init_image)
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
-        # download the image, convert it to a NumPy array, and then read
-        # it into OpenCV format
+
+    # download the image, convert it to a NumPy array, and then read
+    # it into OpenCV format
 
     request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
     req = urlopen(request_site)
@@ -45,11 +58,7 @@ if __name__ == '__main__':
     dream = cv2.imwrite('dream.jpg', img)
     
     webpage = urlopen(request_site).read()
-    print(webpage[:500])
-
-    #cv2.imshow('lalala', img)
-    #if cv2.waitKey() & 0xff == 27: quit()
-    # webbrowser.open(output_url)
+    #print(webpage[:500])
 
     # Read images
     src_img = cv2.imread('dream.jpg')
@@ -60,6 +69,11 @@ if __name__ == '__main__':
     # Select dst face
     dst_faceBoxes = select_all_faces(dst_img)
 
+    if src_face is None:
+        SD(args.prompt)
+        dream = cv2.imread('dream.jpg', img)
+
+
     if dst_faceBoxes is None:
         print('Detect 0 Face !!!')
         exit(-1)
@@ -69,7 +83,8 @@ if __name__ == '__main__':
         output = face_swap(src_face, dst_face["face"], src_points,
                            dst_face["points"], dst_face["shape"],
                            output, args)
-
+    # put in error checking for face out of bounds
+    
     # dir_path = os.path.dirname(args.out)
     #     if not os.path.isdir(dir_path):
     #     os.makedirs(dir_path)
