@@ -41,7 +41,8 @@ if __name__ == '__main__':
     req = urlopen(request_site)
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     img = cv2.imdecode(arr, -1) # 'Load it as it is'
-    dream = cv2.imdecode(str(img))
+    img = np.array(img)
+    dream = cv2.imwrite('dream.jpg', img)
     
     webpage = urlopen(request_site).read()
     print(webpage[:500])
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     # webbrowser.open(output_url)
 
     # Read images
-    src_img = cv2.imread(img)
+    src_img = cv2.imread('dream.jpg')
     dst_img = cv2.imread(args.dst)
 
     # Select src face
