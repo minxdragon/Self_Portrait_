@@ -1,3 +1,8 @@
-dlib >= 19.9.0
-numpy >= 1.13.1
-scipy >= 0.18.0
+scipy
+numpy
+Pillow
+opencv-python-headless
+cmake
+dlib-bin
+replicate
+streamlit
