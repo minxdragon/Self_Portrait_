@@ -45,7 +45,7 @@ if __name__ == '__main__':
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(np.array(source_image), cv2.IMREAD_COLOR)
-        dst_img = cv2.cvtColor(np.array(dream), cv2.IMREAD_COLOR)
+        dst_img = dream
 
        # Select src face
         src_points, src_shape, src_face = select_face(src_img)
