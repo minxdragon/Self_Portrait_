@@ -62,8 +62,10 @@ if __name__ == '__main__':
 
     #StableDiffusion 
     model = replicate.models.get("stability-ai/stable-diffusion")
+    init_image = ("dream.jpg")
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
+
         # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
     request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
