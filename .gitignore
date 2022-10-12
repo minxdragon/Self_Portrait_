@@ -42,6 +42,10 @@ nosetests.xml
 *.png
 *.jpg
 *.jpeg
-.DS_Store
+*.gif
+*.bmp
+
+#misc
+*.DS_Store
 *.code-workspace
 .DS_Store
