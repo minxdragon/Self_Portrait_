@@ -18,6 +18,8 @@ if __name__ == '__main__':
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     parser.add_argument('--prompt', default=True, action='store_true', help='prompt for generation')
     args = parser.parse_args()
+
+    replicate.Client(api_token="798257c4fb85e3ea496075c8904fcd44d56012f7")
     
     uploaded_source_file = st.file_uploader("Source File", type=['jpg','png','jpeg'])
     # uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
