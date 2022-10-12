@@ -9,7 +9,7 @@ import replicate
 from  PIL import Image, ImageEnhance
 
 from urllib.request import urlopen, Request
-from face_detection import select_face
+from face_detection import select_all_faces, select_face
 from face_swap import face_swap
 
 if __name__ == '__main__':
@@ -45,11 +45,11 @@ if __name__ == '__main__':
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(np.array(source_image), cv2.IMREAD_COLOR)
-        dst_img = dream
+        dst_img = cv2.cvtColor(np.array(dream), cv2.IMREAD_COLOR)
 
-       # Select src face
+         # Select src face
         src_points, src_shape, src_face = select_face(src_img)
-       # Select dst face
+        # Select dst face
         dst_faceBoxes = select_all_faces(dst_img)
 
         if dst_faceBoxes is None:
