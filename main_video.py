@@ -2,13 +2,17 @@ import os
 import cv2
 import logging
 import argparse
+import replicate
+import urllib
+import numpy as np
 
+from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
 
 
 class VideoHandler(object):
-    def __init__(self, video_path=0, img_path=None, args=None):
+    def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
         if self.src_points is None:
             print('No face detected in the source image !!!')
@@ -49,10 +53,24 @@ if __name__ == '__main__':
     parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
     parser.add_argument('--show', default=False, action='store_true', help='Show')
     parser.add_argument('--save_path', required=True, help='Path for storing output video')
+    parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
     args = parser.parse_args()
 
     dir_path = os.path.dirname(args.save_path)
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    VideoHandler(args.video_path, args.src_img, args).start()
+    #StableDiffusion 
+    model = replicate.models.get("stability-ai/stable-diffusion")
+    output_url = model.predict(prompt=(args.prompt))[0]
+    print(output_url)
+        # download the image, convert it to a NumPy array, and then read
+        # it into OpenCV format
+    request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+    req = urlopen(request_site)
+    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+    img = cv2.imdecode(arr, -1) # 'Load it as it is'
+    img = np.array(img)
+    dream = cv2.imwrite('dream.jpg', img)
+
+    VideoHandler(args.video_path, args.src_img, args.prompt, args).start()

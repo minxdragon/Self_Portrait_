@@ -49,3 +49,4 @@ nosetests.xml
 *.DS_Store
 *.code-workspace
 .DS_Store
+*.avi
