@@ -2,7 +2,7 @@
 #! /usr/bin/env python
 import os
 import cv2
-import numpy
+import numpy as np
 import argparse
 import streamlit as st
 import replicate
@@ -19,13 +19,13 @@ if __name__ == '__main__':
     parser.add_argument('--prompt', default=True, action='store_true', help='prompt for generation')
     args = parser.parse_args()
     
-    # uploaded_source_file = st.file_uploader("Source File", type=['jpg','png','jpeg'])
+    uploaded_source_file = st.file_uploader("Source File", type=['jpg','png','jpeg'])
     # uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
 
     entered_prompt = st.text_input("Your name", key="name")
     
     if entered_prompt is not None:
-       # source_image = Image.open(uploaded_source_file)
+        source_image = Image.open(uploaded_source_file)
        # target_image = Image.open(uploaded_target_file)
         model = replicate.models.get("stability-ai/stable-diffusion")
         init_image = ("dream.jpg")
@@ -42,8 +42,8 @@ if __name__ == '__main__':
         dream = cv2.imwrite('dream.jpg', img)
     
        # Convert images from PIL to CV2
-        src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
-        dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
+        src_img = cv2.cvtColor(np.array(source_image), cv2.IMREAD_COLOR)
+        dst_img = cv2.cvtColor(np.array(dream), cv2.IMREAD_COLOR)
 
        # Select src face
         src_points, src_shape, src_face = select_face(src_img)
