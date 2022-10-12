@@ -42,7 +42,7 @@ if __name__ == '__main__':
         dream = cv2.imwrite('dream.jpg', img)
 
     model = replicate.models.get("stability-ai/stable-diffusion")
-    init_image = args.dst
+    init_image = args.dst #not currently working
     print (init_image)
     output_url = model.predict(prompt=(args.prompt))[0]
     print(output_url)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     if src_face is None:
         SD(args.prompt)
-        dream = cv2.imread('dream.jpg', img)
+        #dream = cv2.imread('dream.jpg')
 
 
     if dst_faceBoxes is None:
