@@ -18,17 +18,13 @@ if __name__ == '__main__':
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     parser.add_argument('--prompt', default=True, action='store_true', help='prompt for generation')
     args = parser.parse_args()
-
-    replicate.Client(api_token="798257c4fb85e3ea496075c8904fcd44d56012f7")
     
     uploaded_source_file = st.file_uploader("Source File", type=['jpg','png','jpeg'])
-    # uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
+    #uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
 
-    entered_prompt = st.text_input("Your name", key="name")
+    entered_prompt = st.text_input("Prompt", key="prompt")
     
     if entered_prompt is not None:
-        source_image = Image.open(uploaded_source_file)
-       # target_image = Image.open(uploaded_target_file)
         model = replicate.models.get("stability-ai/stable-diffusion")
         init_image = ("dream.jpg")
         output_url = model.predict(prompt=(args.prompt))[0]
@@ -42,7 +38,10 @@ if __name__ == '__main__':
         img = cv2.imdecode(arr, -1) # 'Load it as it is'
         img = np.array(img)
         dream = cv2.imwrite('dream.jpg', img)
-        source = cv2.imwrite(source_image, img)
+        #source = cv2.imwrite(source_image, img)
+
+        source_image = Image.open(uploaded_source_file)
+        target_image = Image.open(dream)
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(np.array(source_image), cv2.IMREAD_COLOR)
