@@ -42,6 +42,7 @@ if __name__ == '__main__':
         img = cv2.imdecode(arr, -1) # 'Load it as it is'
         img = np.array(img)
         dream = cv2.imwrite('dream.jpg', img)
+        source = cv2.imwrite(source_image, img)
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(np.array(source_image), cv2.IMREAD_COLOR)
