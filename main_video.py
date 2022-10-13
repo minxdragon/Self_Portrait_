@@ -16,7 +16,7 @@ class VideoHandler(object):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
         if self.src_points is None:
             print('No face detected in the source image !!!')
-            exit(-1)
+            stable_diffusion(prompt, init_image='dream.jpg', output_url,)
         self.args = args
         self.video = cv2.VideoCapture(video_path)
         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
@@ -61,18 +61,20 @@ if __name__ == '__main__':
         os.makedirs(dir_path)
 
     #StableDiffusion 
-    model = replicate.models.get("stability-ai/stable-diffusion")
-    init_image = ("dream.jpg")
-    output_url = model.predict(prompt=(args.prompt))[0]
-    print(output_url)
-
-        # download the image, convert it to a NumPy array, and then read
+    def stable_diffusion(prompt, init_image, output_url):
+        model = replicate.models.get("stability-ai/stable-diffusion")
+        init_image = ("dream.jpg")
+        output_url = model.predict(prompt=(args.prompt))[0]
+        print(output_url)
+                # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
-    request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
-    req = urlopen(request_site)
-    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-    img = cv2.imdecode(arr, -1) # 'Load it as it is'
-    img = np.array(img)
-    dream = cv2.imwrite('dream.jpg', img)
+        request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+        req = urlopen(request_site)
+        arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+        img = cv2.imdecode(arr, -1) # 'Load it as it is'
+        img = np.array(img)
+        dream = cv2.imwrite('dream.jpg', img)
+    
+    stable_diffusion(args.prompt, init_image='dream.jpg', output_url='output_url')
 
     VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
