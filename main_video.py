@@ -54,6 +54,8 @@ if __name__ == '__main__':
     parser.add_argument('--show', default=False, action='store_true', help='Show')
     parser.add_argument('--save_path', required=True, help='Path for storing output video')
     parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
+    parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
+    parser.add_argument('--init', type=str, required=False, help='Prompt for generation')
     args = parser.parse_args()
 
     dir_path = os.path.dirname(args.save_path)
@@ -64,9 +66,9 @@ if __name__ == '__main__':
     def stable_diffusion(prompt, init_image, src_img, prompt_strength):
         prompt = args.prompt
         model = replicate.models.get("stability-ai/stable-diffusion")
-        init_image = ("dream.jpg")
-        prompt_strength = 0.5
-        output_url = model.predict(prompt=(args.prompt))[0]
+        init_image = args.init
+        prompt_strength = args.strength
+        output_url = model.predict(prompt=(args.prompt), init_image=(args.init))[0]
         print(output_url)
                 # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
