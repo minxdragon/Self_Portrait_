@@ -16,7 +16,7 @@ class VideoHandler(object):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
         if self.src_points is None:
             print('No face detected in the source image !!!')
-            stable_diffusion(prompt, init_image='dream.jpg', output_url,)
+            stable_diffusion(args.prompt, init_image='dream.jpg', dream='dream.jpg', prompt_strength=0.8)
         self.args = args
         self.video = cv2.VideoCapture(video_path)
         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
@@ -61,10 +61,11 @@ if __name__ == '__main__':
         os.makedirs(dir_path)
 
     #StableDiffusion 
-    def stable_diffusion(prompt, init_image, output_url):
+    def stable_diffusion(prompt, init_image, dream, prompt_strength):
         model = replicate.models.get("stability-ai/stable-diffusion")
         init_image = ("dream.jpg")
-        output_url = model.predict(prompt=(args.prompt))[0]
+        prompt_strength = 0.8
+        output_url = model.predict(prompt=(args.prompt, init_image))[0]
         print(output_url)
                 # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
@@ -75,6 +76,6 @@ if __name__ == '__main__':
         img = np.array(img)
         dream = cv2.imwrite('dream.jpg', img)
     
-    stable_diffusion(args.prompt, init_image='dream.jpg', output_url='output_url')
+    stable_diffusion(args.prompt, init_image='dream.jpg', dream='dream.jpg', prompt_strength=0.8)
 
     VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
