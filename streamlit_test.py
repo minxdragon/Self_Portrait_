@@ -20,8 +20,8 @@ if __name__ == '__main__':
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     args = parser.parse_args()
     
-    uploaded_source_file = st.file_uploader("Choose a source file", type=["jpg", "png","jpeg"])
     uploaded_target_file = st.camera_input("Take a picture")
+    uploaded_source_file = uploaded_target_file
     prompt = st.text_input('Prompt ')
 
     if uploaded_source_file is not None and uploaded_target_file is not None:
