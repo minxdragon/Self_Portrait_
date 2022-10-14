@@ -7,6 +7,8 @@ import streamlit as st
 import replicate
 import numpy as np
 from  PIL import Image, ImageEnhance
+import requests
+from io import BytesIO
 
 from urllib.request import urlopen, Request
 from face_detection import select_face, select_all_faces
@@ -27,13 +29,15 @@ if __name__ == '__main__':
     print (init_image)
     output_url = model.predict(prompt=(prompt))[0]
     print(output_url)
+    response = requests.get(output_url)
+    img = Image.open(BytesIO(response.content))
     
     if uploaded_source_file is not None and uploaded_target_file is not None:
-       source_image = Image.open(output_url)
+       source_image = Image.open(img)
        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
-       src_img = output_url
+       src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
        dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
 
        # Select src face
