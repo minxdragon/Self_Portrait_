@@ -24,33 +24,34 @@ if __name__ == '__main__':
     uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
     prompt = st.text_input('Prompt ')
 
-    model = replicate.models.get("stability-ai/stable-diffusion")
-    init_image = uploaded_target_file #not currently working
-    print (init_image)
-    output_url = model.predict(prompt=(prompt))[0]
-    print(output_url)
-    response = requests.get(output_url)
-    img = Image.open(BytesIO(response.content))
-    
     if uploaded_source_file is not None and uploaded_target_file is not None:
-       source_image = img
-       target_image = Image.open(uploaded_target_file)
+        source_image = img
+        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
-       src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
-       dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
+        src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
+        dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
+
+        model = replicate.models.get("stability-ai/stable-diffusion")
+        init_image = uploaded_target_file #not currently working
+        print (init_image)
+        output_url = model.predict(prompt=(prompt), init_image=(src_img))[0]
+        print(output_url)
+        response = requests.get(output_url)
+        img = Image.open(BytesIO(response.content))
+    
 
        # Select src face
-       src_points, src_shape, src_face = select_face(src_img)
+        src_points, src_shape, src_face = select_face(src_img)
        # Select dst face
-       dst_faceBoxes = select_all_faces(dst_img)
+        dst_faceBoxes = select_all_faces(dst_img)
 
-       if dst_faceBoxes is None:
+        if dst_faceBoxes is None:
           print('Detect 0 Face !!!')
           exit(-1)
 
-       output = dst_img
-       for k, dst_face in dst_faceBoxes.items():
+        output = dst_img
+        for k, dst_face in dst_faceBoxes.items():
            output = face_swap(src_face, dst_face["face"], src_points,
                            dst_face["points"], dst_face["shape"],
                            output, args)
