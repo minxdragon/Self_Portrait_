@@ -33,14 +33,13 @@ if __name__ == '__main__':
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     img = cv2.imdecode(arr, -1) # 'Load it as it is'
     img = np.array(img)
-    dream = cv2.imwrite('dream.jpg', img)
     
     if uploaded_source_file is not None and uploaded_target_file is not None:
-       source_image = Image.open(dream)
+       source_image = Image.open(img)
        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
-       src_img = dream
+       src_img = img
        dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
 
        # Select src face
