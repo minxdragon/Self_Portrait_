@@ -27,19 +27,13 @@ if __name__ == '__main__':
     print (init_image)
     output_url = model.predict(prompt=(prompt))[0]
     print(output_url)
-
-    request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
-    req = urlopen(request_site)
-    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-    img = cv2.imdecode(arr, -1) # 'Load it as it is'
-    img = np.array(img)
     
     if uploaded_source_file is not None and uploaded_target_file is not None:
-       source_image = Image.open(img)
+       source_image = Image.open(output_url)
        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
-       src_img = img
+       src_img = output_url
        dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
 
        # Select src face
