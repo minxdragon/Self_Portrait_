@@ -33,7 +33,7 @@ if __name__ == '__main__':
     img = Image.open(BytesIO(response.content))
     
     if uploaded_source_file is not None and uploaded_target_file is not None:
-       source_image = Image.open(img)
+       source_image = img
        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
