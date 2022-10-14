@@ -25,20 +25,23 @@ if __name__ == '__main__':
     prompt = st.text_input('Prompt ')
 
     if uploaded_source_file is not None and uploaded_target_file is not None:
+
+        # stable diffusion script
+        model = replicate.models.get("stability-ai/stable-diffusion")
+        init_image = uploaded_target_file #not currently working
+        print (init_image)
+        output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
+        print(output_url)
+        # download the image, convert it to a NumPy array, and then read
+        response = requests.get(output_url)
+        img = Image.open(BytesIO(response.content))
+
         source_image = img
         target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
         dst_img = cv2.cvtColor(numpy.array(target_image), cv2.IMREAD_COLOR)
-
-        model = replicate.models.get("stability-ai/stable-diffusion")
-        init_image = uploaded_target_file #not currently working
-        print (init_image)
-        output_url = model.predict(prompt=(prompt), init_image=(src_img))[0]
-        print(output_url)
-        response = requests.get(output_url)
-        img = Image.open(BytesIO(response.content))
     
 
        # Select src face
