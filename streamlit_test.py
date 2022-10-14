@@ -25,7 +25,7 @@ if __name__ == '__main__':
     model = replicate.models.get("stability-ai/stable-diffusion")
     init_image = uploaded_target_file #not currently working
     print (init_image)
-    output_url = model.predict(prompt)[0]
+    output_url = model.predict(prompt=(prompt))[0]
     print(output_url)
 
     request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
