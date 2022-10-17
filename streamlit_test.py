@@ -18,13 +18,24 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='FaceSwapApp')
     parser.add_argument('--correct_color', default=True, action='store_true', help='Correct color')
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
+    parser.add_argument('--prompt', default=False, action='store_true', help='prompt')
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
-    #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
-    prompt = st.text_input('Prompt ')
+    prompt = st.text_input("Enter a prompt")
 
-    if uploaded_target_file is not None and uploaded_target_file is not None:
+    model = replicate.models.get("stability-ai/stable-diffusion")
+    init_image = uploaded_target_file
+    print (init_image)
+    
+    output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
+    print(output_url)
+        # download the image, convert it to a NumPy array, and then read
+    response = requests.get(output_url)
+    img = Image.open(BytesIO(response.content))
+    #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
+
+    if uploaded_target_file is not None and img is not None:
 
         # stable diffusion script
         model = replicate.models.get("stability-ai/stable-diffusion")
