@@ -18,11 +18,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='FaceSwapApp')
     parser.add_argument('--correct_color', default=True, action='store_true', help='Correct color')
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
-    #parser.add_argument('--prompt', default=False, action='store_true', help='prompt')
     args = parser.parse_args()
     
-    uploaded_source_file = st.camera_input("Take a picture")
-    uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
+    uploaded_target_file = st.camera_input("Take a picture")
     prompt = st.text_input('Prompt ')
 
     if uploaded_target_file is not None:
@@ -39,7 +37,6 @@ if __name__ == '__main__':
         # Check the shape of img_array:
         # Should output shape: (height, width, channels)
         st.write(img_array.shape)
-    prompt = st.text_input("Enter a prompt")
 
     model = replicate.models.get("stability-ai/stable-diffusion")
     init_image = uploaded_target_file
