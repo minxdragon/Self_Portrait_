@@ -27,8 +27,7 @@ if __name__ == '__main__':
     meduimoptions = st.multiselect('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
     styleoptions = st.multiselect('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
 
-    prompt = print(genderoptions + meduimoptions + styleoptions)
-    st.write(prompt)
+    prompt = st.write(genderoptions + meduimoptions + styleoptions)
 
     # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
