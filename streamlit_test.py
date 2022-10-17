@@ -21,10 +21,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
-    uploaded_source_file = uploaded_target_file
+    #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
     prompt = st.text_input('Prompt ')
 
-    if uploaded_source_file is not None and uploaded_target_file is not None:
+    if uploaded_target_file is not None and uploaded_target_file is not None:
 
         # stable diffusion script
         model = replicate.models.get("stability-ai/stable-diffusion")
