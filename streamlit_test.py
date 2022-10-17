@@ -21,7 +21,21 @@ if __name__ == '__main__':
     #parser.add_argument('--prompt', default=False, action='store_true', help='prompt')
     args = parser.parse_args()
     
-    uploaded_target_file = st.camera_input("Take a picture")
+    img_file_buffer = st.camera_input("Take a picture")
+
+    if img_file_buffer is not None:
+        # To read image file buffer with OpenCV:
+        bytes_data = img_file_buffer.getvalue()
+        uploaded_target_file = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+
+        # Check the type of cv2_img:
+        # Should output: <class 'numpy.ndarray'>
+        st.write(type(uploaded_target_file))
+
+        # Check the shape of cv2_img:
+        # Should output shape: (height, width, channels)
+        st.write(uploaded_target_file.shape) 
+        
     genderoptions = st.selectbox(
     'a portrait of a', ['person', 'man', 'woman']) 
     meduimoptions = st.selectbox('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
