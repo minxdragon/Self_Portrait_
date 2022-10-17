@@ -27,9 +27,8 @@ if __name__ == '__main__':
     meduimoptions = st.multiselect('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
     styleoptions = st.multiselect('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
 
-    prompt = print('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
-    st.write('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
-    
+    prompt = print(genderoptions + meduimoptions + styleoptions)
+    st.write(prompt)
 
     # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
@@ -44,6 +43,12 @@ if __name__ == '__main__':
 
     target_image = Image.open(uploaded_target_file)
     
+    output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
+    print(output_url)
+        # download the image, convert it to a NumPy array, and then read
+    response = requests.get(output_url)
+    img = Image.open(BytesIO(response.content))
+    source_image = img
     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
     if uploaded_target_file is not None and img is not None and prompt is not None:
