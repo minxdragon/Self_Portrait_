@@ -22,10 +22,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
-    genderoptions = st.selectbox(
+    genderoptions = st.multiselect(
     'a portrait of a', ['person', 'man', 'woman']) 
-    meduimoptions = st.selectbox('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
-    styleoptions = st.selectbox('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
+    meduimoptions = st.multiselect('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
+    styleoptions = st.multiselect('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
 
     prompt = print('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
     st.write('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
