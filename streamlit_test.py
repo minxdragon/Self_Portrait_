@@ -24,31 +24,28 @@ if __name__ == '__main__':
     uploaded_target_file = st.camera_input("Take a picture")
     prompt = st.text_input("Enter a prompt")
 
+    # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
     init_image = uploaded_target_file
     print (init_image)
+    output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
+    print(output_url)
+    # download the image, convert it to a NumPy array, and then read
+    response = requests.get(output_url)
+    img = Image.open(BytesIO(response.content))
+    st.image(img, caption='Stable Diffusion Image')
+    
+    target_image = Image.open(uploaded_target_file)
     
     output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
     print(output_url)
         # download the image, convert it to a NumPy array, and then read
     response = requests.get(output_url)
     img = Image.open(BytesIO(response.content))
+    source_image = img
     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
     if uploaded_target_file is not None and img is not None:
-
-        # stable diffusion script
-        model = replicate.models.get("stability-ai/stable-diffusion")
-        init_image = uploaded_target_file
-        print (init_image)
-        output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
-        print(output_url)
-        # download the image, convert it to a NumPy array, and then read
-        response = requests.get(output_url)
-        img = Image.open(BytesIO(response.content))
-
-        source_image = img
-        target_image = Image.open(uploaded_target_file)
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
