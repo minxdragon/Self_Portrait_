@@ -22,6 +22,22 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
+    img_file_buffer = st.camera_input("Take a picture")
+
+    if img_file_buffer is not None:
+        # To read image file buffer as a PIL Image:
+        img = Image.open(img_file_buffer)
+
+        # To convert PIL Image to numpy array:
+        img_array = np.array(img)
+
+        # Check the type of img_array:
+        # Should output: <class 'numpy.ndarray'>
+        st.write(type(img_array))
+
+        # Check the shape of img_array:
+        # Should output shape: (height, width, channels)
+        st.write(img_array.shape)
     prompt = st.text_input("Enter a prompt")
 
     model = replicate.models.get("stability-ai/stable-diffusion")
@@ -35,7 +51,7 @@ if __name__ == '__main__':
     img = Image.open(BytesIO(response.content))
     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
-    if uploaded_target_file is not None and img is not None:
+    if uploaded_target_file is not None and img is not None and prompt is not None:
 
         # stable diffusion script
         model = replicate.models.get("stability-ai/stable-diffusion")
