@@ -21,6 +21,7 @@ if __name__ == '__main__':
     #parser.add_argument('--prompt', default=False, action='store_true', help='prompt')
     args = parser.parse_args()
     
+<<<<<<< HEAD
     img_file_buffer = st.camera_input("Take a picture")
 
     if img_file_buffer is not None:
@@ -44,6 +45,10 @@ if __name__ == '__main__':
     prompt = str('a portrait of a' + genderoptions + 'in' + meduimoptions + 'in the style of' + styleoptions)
     st.write('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
     
+=======
+    uploaded_target_file = st.camera_input("Take a picture")
+    prompt = st.text_input("Enter a prompt")
+>>>>>>> parent of 0cfe144 (added dropdown menu)
 
     # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
@@ -55,7 +60,7 @@ if __name__ == '__main__':
     response = requests.get(output_url)
     img = Image.open(BytesIO(response.content))
     st.image(img, caption='Stable Diffusion Image')
-
+    
     target_image = Image.open(uploaded_target_file)
     source_image = Image.open(img)
     
