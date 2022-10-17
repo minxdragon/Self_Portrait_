@@ -27,8 +27,8 @@ if __name__ == '__main__':
     meduimoptions = st.selectbox('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
     styleoptions = st.selectbox('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
 
-    prompt = str('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
-    st.write('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
+    #prompt = print('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
+    prompt = st.write('a portrait of a', genderoptions, 'in', meduimoptions, 'in the style of', styleoptions)
     
 
     # stable diffusion script
