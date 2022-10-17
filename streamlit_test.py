@@ -22,12 +22,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
-    genderoptions = st.multiselect(
-    'a portrait of a', ['person', 'man', 'woman']) 
-    meduimoptions = st.multiselect('in', ['oils', 'watercolor', 'acrylic', 'pastel', 'charcoal', 'pencil', 'ink', 'marker', 'digital', 'mixed media'])
-    styleoptions = st.multiselect('in the style of', ['realism', 'impressionism', 'abstract', 'expressionism', 'pop art', 'surrealism',])
-
-    prompt = st.write(genderoptions + meduimoptions + styleoptions)
+    prompt = st.text_input("Enter a prompt")
 
     # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
@@ -39,7 +34,7 @@ if __name__ == '__main__':
     response = requests.get(output_url)
     img = Image.open(BytesIO(response.content))
     st.image(img, caption='Stable Diffusion Image')
-
+    
     target_image = Image.open(uploaded_target_file)
     
     output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
