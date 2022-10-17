@@ -21,7 +21,9 @@ if __name__ == '__main__':
     #parser.add_argument('--prompt', default=False, action='store_true', help='prompt')
     args = parser.parse_args()
     
-    uploaded_target_file = st.camera_input("Take a picture")
+    uploaded_source_file = st.camera_input("Take a picture")
+    uploaded_target_file = st.file_uploader("Target File", type=['jpg','png','jpeg'])
+    prompt = st.text_input('Prompt ')
 
     if uploaded_target_file is not None:
         # To read image file buffer as a PIL Image:
@@ -54,7 +56,7 @@ if __name__ == '__main__':
 
         # stable diffusion script
         model = replicate.models.get("stability-ai/stable-diffusion")
-        init_image = uploaded_target_file
+        init_image = uploaded_target_file #not currently working
         print (init_image)
         output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
         print(output_url)
