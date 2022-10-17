@@ -43,6 +43,7 @@ if __name__ == '__main__':
     st.image(img, caption='Stable Diffusion Image')
 
     target_image = Image.open(uploaded_target_file)
+    source_image = Image.open(img)
     
     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
