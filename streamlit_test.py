@@ -21,33 +21,28 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     uploaded_target_file = st.camera_input("Take a picture")
-    prompt = st.text_input('Prompt ')
+    prompt = st.text_input("Enter a prompt")
 
-    if uploaded_target_file is not None:
-        # To read image file buffer as a PIL Image:
-        img = Image.open(uploaded_target_file)
-
-        # To convert PIL Image to numpy array:
-        img_array = np.array(img)
-
-        # Check the type of img_array:
-        # Should output: <class 'numpy.ndarray'>
-        st.write(type(img_array))
-
-        # Check the shape of img_array:
-        # Should output shape: (height, width, channels)
-        st.write(img_array.shape)
-
+    # stable diffusion script
     model = replicate.models.get("stability-ai/stable-diffusion")
     init_image = uploaded_target_file
     print (init_image)
-    
     output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
     print(output_url)
-        # download the image, convert it to a NumPy array, and then read
+     # download the image, convert it to a NumPy array, and then read
     response = requests.get(output_url)
     img = Image.open(BytesIO(response.content))
-    #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
+    st.image(img, caption='Stable Diffusion Image')
+
+    target_image = Image.open(uploaded_target_file)
+
+    output_url = model.predict(prompt=(prompt), init_image=(init_image))[0]
+    print(output_url)
+         # download the image, convert it to a NumPy array, and then read
+    response = requests.get(output_url)
+    img = Image.open(BytesIO(response.content))
+    source_image = img
+     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
     if uploaded_target_file is not None and img is not None and prompt is not None:
 
