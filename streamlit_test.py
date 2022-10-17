@@ -45,7 +45,7 @@ if __name__ == '__main__':
     source_image = img
     #uploaded_source_file = st.file_uploader("Upload a source image", type=["png", "jpg", "jpeg"])
 
-    if uploaded_target_file is not None and img is not None:
+    if uploaded_target_file is not None and img is not None and prompt is not None:
     
        # Convert images from PIL to CV2
         src_img = cv2.cvtColor(numpy.array(source_image), cv2.IMREAD_COLOR)
