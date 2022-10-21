@@ -26,7 +26,7 @@ def plot_images(images):
         ax = plt.subplot(1, len(images), i + 1)
         plt.imshow(images[i])
         plt.axis("off")
-        plt.savefig('foo.png', bbox_inches='tight')
+        plt.savefig('foo.png', bbox_inches='tight') #saves all images in batch as one, need to change the path too
 
 plot_images(images)
 
