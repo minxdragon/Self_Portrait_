@@ -20,7 +20,7 @@ class VideoHandler(object):
         self.args = args
         self.video = cv2.VideoCapture(video_path)
         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
-                                      (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH,780)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT,420))))
+                                      (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
     def start(self):
         while self.video.isOpened():
