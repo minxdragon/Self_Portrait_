@@ -41,3 +41,7 @@ python main_video.py --src_img imgs/test7.jpg --show --correct_color --save_path
 ```sh
 python main_video.py --src_img imgs/test7.jpg --video_path {video_path} --show --correct_color --save_path {*.avi}
 ```
+### To Do
+- Update code to work in the same environment (rather than the two I have going on)
+- wrapper the code in a flask
+- tidy up!
