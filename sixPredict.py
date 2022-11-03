@@ -78,7 +78,7 @@ for imagefile in filelist:
 # save the image file to dataset
     img_save = image.img_to_array(img)
     unique_filename = str(uuid.uuid4())
-    Saved_img = image.save_img('/Users/j.rosenbaum/Development/DCGAN-tensorflow/data/gender-tapestry/' + unique_filename + '.jpg', img_save, file_format='jpeg', target_size=(400,400,3))
+    Saved_img = image.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
     # get the model
     train = pd.read_csv('SP_Dataset/train.csv') # don't forget to update this to the dataset
@@ -86,10 +86,6 @@ for imagefile in filelist:
     classes = np.array(train.columns[2:])
     proba = model.predict(img.reshape(1,400,400,3))
     top_6 = np.argsort(proba[0])[:-9:-1]
-
-    # print (proba)
-    print (top_6)
-    # print ('classes ' + classes)
 
     #define list here
     var_holder = {}
