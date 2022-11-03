@@ -44,4 +44,5 @@ python main_video.py --src_img imgs/test7.jpg --video_path {video_path} --show -
 ### To Do
 - Update code to work in the same environment (rather than the two I have going on)
 - wrapper the code in a flask
+- make the local file save readable as an init or upload the file save
 - tidy up!
