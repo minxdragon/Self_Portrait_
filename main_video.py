@@ -38,7 +38,7 @@ class VideoHandler(object):
 
 filename = 'opencv0.jpg'
 with open(filename, "rb") as f:
-     data = f.read()
+    data = f.read()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
