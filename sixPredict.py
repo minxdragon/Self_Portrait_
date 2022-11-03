@@ -44,16 +44,28 @@ def TakeSnapshotAndSave():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-        for (x,y,w,h) in faces:
-            cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-            roi_gray = gray[y:y+h, x:x+w]
-            roi_color = frame[y:y+h, x:x+w]
+        # for (x,y,w,h) in faces:
+        #     cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+        #     roi_gray = gray[y:y+h, x:x+w]
+        #     roi_color = frame[y:y+h, x:x+w]
+
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            faces = img[y:y + h, x:x + w]
+            cv2.imshow("face",faces)
+            cv2.imwrite('face.jpg', faces)
 
         x = 0
         y = 20
         text_color = (0,255,0)
 
         cv2.imwrite('opencv'+str(num)+'.jpg',frame)
+        cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)    # Create window with freedom of dimensions
+        im = cv2.imread('face.jpg')                    # Read image
+        # Cropping an image
+        #cropped_image = im[80:280, 150:330]
+        cv2.imshow("output", im)                       # Show image
+        cv2.waitKey(0)                                  # Display the image infinitely until any keypress
         num = num+1
         
     # When everything done, release the capture
