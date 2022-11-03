@@ -5,18 +5,15 @@ import argparse
 import replicate
 import urllib
 import numpy as np
+import base64
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
 
-
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-        if self.src_points is None:
-            print('No face detected in the source image !!!')
-            stable_diffusion(prompt = args.prompt, init_image='dream.jpg', src_img='dream.jpg', prompt_strength=0.5)
         self.args = args
         self.video = cv2.VideoCapture(video_path)
         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
@@ -39,6 +36,9 @@ class VideoHandler(object):
         self.writer.release()
         cv2.destroyAllWindows()
 
+filename = 'opencv0.jpg'
+with open(filename, "rb") as f:
+     data = f.read()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_path', required=True, help='Path for storing output video')
     parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
     parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
-    parser.add_argument('--init', type=str, required=False, help='Prompt for generation')
+    parser.add_argument('--init', type=str, default=data, required=False, help='Prompt for generation')
     args = parser.parse_args()
 
     dir_path = os.path.dirname(args.save_path)
@@ -80,6 +80,6 @@ if __name__ == '__main__':
         dream = cv2.imwrite('dream.jpg', img)
         return dream
     
-    stable_diffusion(prompt = args.prompt, init_image='dream.jpg', src_img='dream.jpg', prompt_strength=0.5)
+    stable_diffusion(prompt = args.prompt, init_image=data, src_img='dream.jpg', prompt_strength=0.5)
 
     VideoHandler(args.video_path, args.src_img, args.prompt, args).start()

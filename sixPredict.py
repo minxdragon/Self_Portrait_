@@ -52,19 +52,20 @@ def TakeSnapshotAndSave():
         
         # Draw rectangle around the faces and crop the faces
         for (x, y, w, h) in faces:
-            cv2.rectangle(img, (x, y), (x + 50 + w + 50, y + 50 + h + 50), (0, 0, 255), 2)
-            faces = img[y:y + 50 + h, x:x + 50 + w]
-            cv2.imshow("face",faces)
+            cv2.rectangle(img, (x, y), (x + 100 + w + 100, y + 100 + h + 100), (0, 0, 255), 2)
+            faces = img[y:y + 100 + h, x:x + 100 + w]
+
+            #cv2.imshow("face",faces)
             cv2.imwrite('opencv'+str(num)+'.jpg',faces)
             
         # Display the output
-        cv2.imwrite('face.jpg', faces)
-        cv2.imshow('img', img)
-        cv2.waitKey()
+        #cv2.imwrite('face.jpg', faces)
+        #cv2.imshow('img', img)
+        #cv2.waitKey()
 
         #older code after
-        x = 0
-        y = 20
+        x = 100
+        y = 100
         text_color = (0,255,0)
 
         cv2.imwrite('opencv'+str(num)+'.jpg',faces)
