@@ -1,3 +1,10 @@
+# Modified code based on Faceswap and integrated Stable Diffusion.
+The face swap code has stable diffusion worked into it, to allow generation of new faces on the fly. additionally a classifier has been added with personality traits to be classified and returned as a part of a process to generate the stablediffusion mask for the development of a new interactive artwork.
+
+### Stable Diffusion using Replicate
+### Face Swap using forked code below
+### Multi Label Classifier
+
 # FaceSwap
 Swap face between two photos for Python 3 with OpenCV and dlib.
 

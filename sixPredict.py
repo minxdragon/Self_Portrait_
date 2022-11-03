@@ -78,7 +78,7 @@ for imagefile in filelist:
 # save the image file to dataset
     img_save = image.img_to_array(img)
     unique_filename = str(uuid.uuid4())
-    #Saved_img = image.save_img('/Users/j.rosenbaum/Development/DCGAN-tensorflow/data/gender-tapestry/' + unique_filename + '.jpg', img_save, file_format='jpeg', target_size=(400,400,3))
+    Saved_img = image.save_img('/Users/j.rosenbaum/Development/DCGAN-tensorflow/data/gender-tapestry/' + unique_filename + '.jpg', img_save, file_format='jpeg', target_size=(400,400,3))
 
     # get the model
     train = pd.read_csv('SP_Dataset/train.csv') # don't forget to update this to the dataset
