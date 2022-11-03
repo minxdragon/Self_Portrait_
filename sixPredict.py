@@ -37,33 +37,40 @@ def TakeSnapshotAndSave():
     num = 0 
     while num<1:
         # Capture frame-by-frame
-        ret, frame = cap.read()
+        ret, img = cap.read()
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         # to detect faces in video
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-
-        # for (x,y,w,h) in faces:
-        #     cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-        #     roi_gray = gray[y:y+h, x:x+w]
-        #     roi_color = frame[y:y+h, x:x+w]
-
+        # Convert into grayscale
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # Load the cascade
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        
+        # Detect faces
+        faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+        
+        # Draw rectangle around the faces and crop the faces
         for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
-            faces = img[y:y + h, x:x + w]
+            cv2.rectangle(img, (x, y), (x + 50 + w + 50, y + 50 + h + 50), (0, 0, 255), 2)
+            faces = img[y:y + 50 + h, x:x + 50 + w]
             cv2.imshow("face",faces)
-            cv2.imwrite('face.jpg', faces)
+            cv2.imwrite('opencv'+str(num)+'.jpg',faces)
+            
+        # Display the output
+        cv2.imwrite('face.jpg', faces)
+        cv2.imshow('img', img)
+        cv2.waitKey()
 
+        #older code after
         x = 0
         y = 20
         text_color = (0,255,0)
 
-        cv2.imwrite('opencv'+str(num)+'.jpg',frame)
+        cv2.imwrite('opencv'+str(num)+'.jpg',faces)
         cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)    # Create window with freedom of dimensions
-        im = cv2.imread('face.jpg')                    # Read image
-        # Cropping an image
-        #cropped_image = im[80:280, 150:330]
+        im = cv2.imread('opencv0.jpg')                    # Read image
+        #imS = cv2.resize(im, (940, 540))                # Resize image
         cv2.imshow("output", im)                       # Show image
         cv2.waitKey(0)                                  # Display the image infinitely until any keypress
         num = num+1
