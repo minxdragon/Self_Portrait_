@@ -55,7 +55,7 @@ def TakeSnapshotAndSave():
             cv2.rectangle(img, (x, y), (x + 100 + w + 100, y + 100 + h + 100), (0, 0, 255), 2)
             faces = img[y:y + 100 + h, x:x + 100 + w]
 
-            #cv2.imshow("face",faces)
+            cv2.imshow("face",faces)
             cv2.imwrite('opencv'+str(num)+'.jpg',faces)
             
         # Display the output
