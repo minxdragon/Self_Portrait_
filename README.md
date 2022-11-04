@@ -42,7 +42,8 @@ python main_video.py --src_img imgs/test7.jpg --show --correct_color --save_path
 python main_video.py --src_img imgs/test7.jpg --video_path {video_path} --show --correct_color --save_path {*.avi}
 ```
 ### To Do
-- Update code to work in the same environment (rather than the two I have going on)
+- Update code to work in the same environment (rather than the two I have going on) 
+-- currently the environemnt is for intel macs, I am working on the silicone friendly one now
 - wrapper the code in a flask
 - make the local file save readable as an init or upload the file save
 - tidy up!
