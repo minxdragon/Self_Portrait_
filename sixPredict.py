@@ -1,4 +1,5 @@
 import keras
+import tensorflow as tf
 import os
 import cv2
 from keras.models import Sequential
@@ -37,9 +38,20 @@ def TakeSnapshotAndSave():
     num = 0 
     while num<1:
         # Capture frame-by-frame
-        ret, img = cap.read()
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+
+        frameWidth = 640
+        frameHeight = 480
+        cap = cv2.VideoCapture(0)
+        cap.set(3, frameWidth)
+        cap.set(4, frameHeight)
+        cap.set(10,150)
+
+        while cap.isOpened():
+            success, img = cap.read()
+            if success:
+                cv2.imshow("Result", img)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
         # to detect faces in video
         # Convert into grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -92,13 +104,13 @@ if __name__ == "__main__":
 #filelist = ['test1.jpg','test2.jpg','test3.jpg','test4.jpg','test5.jpg','test6.jpg','test7.jpg','test8.jpg','test9.jpg','test10.jpg','test11.jpg','test12.jpg',]
 filelist = ['opencv0.jpg']
 for imagefile in filelist:
-    img = image.load_img(imagefile,target_size=(400,400,3))
+    img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
     img = image.img_to_array(img)
     img = img/255
 # save the image file to dataset
-    img_save = image.img_to_array(img)
+    img_save = tf.keras.utils.img_to_array(img)
     unique_filename = str(uuid.uuid4())
-    Saved_img = image.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
+    Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
     # get the model
     train = pd.read_csv('SP_Dataset/train.csv') # don't forget to update this to the dataset
