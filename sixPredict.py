@@ -105,7 +105,7 @@ if __name__ == "__main__":
 filelist = ['opencv0.jpg']
 for imagefile in filelist:
     img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
-    img = image.img_to_array(img)
+    img = tf.keras.utils.img_to_array(img)
     img = img/255
 # save the image file to dataset
     img_save = tf.keras.utils.img_to_array(img)
