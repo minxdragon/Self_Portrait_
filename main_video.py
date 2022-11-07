@@ -6,6 +6,7 @@ import replicate
 import urllib
 import numpy as np
 import base64
+import json
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -36,9 +37,8 @@ class VideoHandler(object):
         self.writer.release()
         cv2.destroyAllWindows()
 
-filename = 'opencv0.jpg'
-with open(filename, "rb") as f:
-    data = f.read()
+filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL make dynamic
+#data = json.dumps({'message': filename.decode('utf-8')})
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_path', required=True, help='Path for storing output video')
     parser.add_argument('--prompt', type=str, required=True, help='Prompt for generation')
     parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
-    parser.add_argument('--init', type=str, default=data, required=False, help='Prompt for generation')
+    parser.add_argument('--init', type=str, default=filename, required=False, help='Prompt for generation')
     args = parser.parse_args()
 
     dir_path = os.path.dirname(args.save_path)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         model = replicate.models.get("stability-ai/stable-diffusion")
         init_image = args.init
         prompt_strength = args.strength
-        output_url = model.predict(prompt=(args.prompt), init_image=(args.init))[0]
+        output_url = model.predict(prompt=(args.prompt), init_image=filename)[0]
         print(output_url)
                 # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
@@ -80,6 +80,6 @@ if __name__ == '__main__':
         dream = cv2.imwrite('dream.jpg', img)
         return dream
     
-    stable_diffusion(prompt = args.prompt, init_image=data, src_img='dream.jpg', prompt_strength=0.5)
+    stable_diffusion(prompt = args.prompt, init_image=filename, src_img='dream.jpg', prompt_strength=0.3)
 
     VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
