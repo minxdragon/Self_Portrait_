@@ -7,19 +7,12 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.utils import to_categorical
 from keras.preprocessing import image
-
-#os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
-
 import numpy as np
-import pandas as pd
-
-#matplotlib.use('Qt5Agg')    
+import pandas as pd  
 from matplotlib import pyplot as plt
 import matplotlib as mpl
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
-#imports
-
 from csv import writer
 from PIL import Image
 from skimage import data
@@ -100,9 +93,7 @@ if __name__ == "__main__":
     # prediction metrics
     # Load the image
 
-#filelist = ['static/thumbnails/752a9c4dbc0d4e0aa30c183035da7b26.jpg']
-#filelist = ['test1.jpg','test2.jpg','test3.jpg','test4.jpg','test5.jpg','test6.jpg','test7.jpg','test8.jpg','test9.jpg','test10.jpg','test11.jpg','test12.jpg',]
-filelist = ['opencv0.jpg']
+filelist = ['opencv0.jpg'] #currently static, will be dynamic later
 for imagefile in filelist:
     img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
     img = tf.keras.utils.img_to_array(img)
