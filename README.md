@@ -16,13 +16,13 @@ Swap face between two photos for Python 3 with OpenCV and dlib.
 
 ## Get Started
 ```sh
-python main.py --src imgs/test6.jpg --dst imgs/test7.jpg --out results/output6_7.jpg --correct_color --prompt 'image promt here'
+python main.py --src imgs/test6.jpg --dst dream.jpg --out test.jpg --correct_color --prompt 'image promt here'
 ```
 
 ## Install
 ### Requirements
 * `pip install -r requirements.txt`
-* OpenCV 3: `conda install opencv` (If you have conda/anaconda)
+* '''conda create --name selfportrait --file requirements.txt'''
 
 Note: See [requirements.txt](requirements.txt) for more details.
 
@@ -35,15 +35,12 @@ Note: Run **python main.py -h** for more details.
 
 ### Real-time camera
 ```sh
-python main_video.py --src_img imgs/test7.jpg --show --correct_color --save_path {*.avi} --prompt 'image promt here'
+python main_video.py --src_img dream.jpg --show --correct_color --save_path {*.avi} --prompt 'image promt here'
 ```
 ### Video
 ```sh
-python main_video.py --src_img imgs/test7.jpg --video_path {video_path} --show --correct_color --save_path {*.avi}
+python main_video.py --src_img dream.jpg --video_path {video_path} --show --correct_color --save_path {*.avi}
 ```
 ### To Do
-- Update code to work in the same environment (rather than the two I have going on) 
--- currently the environemnt is for intel macs, I am working on the silicone friendly one now
-- wrapper the code in a flask
 - make the local file save readable as an init or upload the file save
-- tidy up!
+- train a proper classifier!
