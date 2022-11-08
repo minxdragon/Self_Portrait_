@@ -12,6 +12,7 @@ from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
 
+# face swap video from webcam class
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
@@ -37,18 +38,17 @@ class VideoHandler(object):
         self.writer.release()
         cv2.destroyAllWindows()
 
-filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL make dynamic
-#data = json.dumps({'message': filename.decode('utf-8')})
+#load the initial image. currently static, will make dynamic later
+filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format="%(levelname)s:%(lineno)d:%(message)s")
 
+# argument parser for terminal input
     parser = argparse.ArgumentParser(description='FaceSwap Video')
-    parser.add_argument('--src_img', required=True,
-                        help='Path for source image')
-    parser.add_argument('--video_path', default=0,
-                        help='Path for video')
+    parser.add_argument('--src_img', required=False, default='dream.jpg', help='Path for source image')
+    parser.add_argument('--video_path', default=0,help='Path for video')
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
     parser.add_argument('--show', default=False, action='store_true', help='Show')
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    #StableDiffusion 
+    #StableDiffusion code for replicate. requires a replicate account and a export code
     def stable_diffusion(prompt, init_image, src_img, prompt_strength):
         prompt = args.prompt
         model = replicate.models.get("stability-ai/stable-diffusion")
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         prompt_strength = args.strength
         output_url = model.predict(prompt=(args.prompt), init_image=filename)[0]
         print(output_url)
-                # download the image, convert it to a NumPy array, and then read
+        # download the image, convert it to a NumPy array, and then read
         # it into OpenCV format
         request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
         req = urlopen(request_site)
