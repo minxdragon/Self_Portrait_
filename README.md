@@ -21,8 +21,11 @@ python main.py --src imgs/test6.jpg --dst dream.jpg --out test.jpg --correct_col
 
 ## Install
 ### Requirements
-* `pip install -r requirements.txt`
-* '''conda create --name selfportrait --file requirements.txt'''
+
+Create a virtual environment using conda and install requirements
+```
+conda create --name selfportrait --file requirements.txt
+```
 
 Note: See [requirements.txt](requirements.txt) for more details.
 
