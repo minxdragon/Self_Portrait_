@@ -14,10 +14,7 @@ python sixpredict.py
 # FaceSwap
 Swap face between two photos for Python 3 with OpenCV and dlib.
 
-## Get Started
-```sh
-python main.py --src imgs/test6.jpg --dst dream.jpg --out test.jpg --correct_color --prompt 'image promt here'
-```
+# Get Started
 
 ## Install
 ### Requirements
@@ -31,7 +28,7 @@ Note: See [requirements.txt](requirements.txt) for more details.
 
 ### Swap Your Face
 ```sh
-python main.py ...
+python main.py --src imgs/test6.jpg --dst dream.jpg --out test.jpg --correct_color --prompt 'image promt here'
 ```
 Note: Run **python main.py -h** for more details.
 
