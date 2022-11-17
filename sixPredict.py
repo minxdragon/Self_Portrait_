@@ -93,7 +93,7 @@ if __name__ == "__main__":
     # prediction metrics
     # Load the image
 
-filelist = ['opencv0.jpg'] #currently static, will be dynamic later
+filelist = ['opencv0.jpg'] #currently local, will be dynamic online later
 for imagefile in filelist:
     img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
     img = tf.keras.utils.img_to_array(img)
@@ -120,9 +120,11 @@ for imagefile in filelist:
     prediction_5 = None
     for i in range(6):
         var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
+        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][idx[i]]*100) #bottom 6 order
         #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
         map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
         print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
+        print("{}".format(classes[bottom_6[i]])+" ({:.3})".format(proba[0][bottom_6[i]]*100))
 
         # for key in var_holder.keys():
         #     holder_clean = proba.replace('.', var_holder['+'])
