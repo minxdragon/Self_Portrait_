@@ -181,6 +181,7 @@ class VideoHandler(object):
 #load the initial image. currently static, will make dynamic later
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
+#generate a string for the prompt using the prediction results
 promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms
 print (promptString)
 
