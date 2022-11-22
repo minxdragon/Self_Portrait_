@@ -182,7 +182,7 @@ class VideoHandler(object):
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
 #generate a string for the prompt using the prediction results
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms
+promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + "painted in the style of rembrandt, synthwave"
 print (promptString)
 
 if __name__ == '__main__':
