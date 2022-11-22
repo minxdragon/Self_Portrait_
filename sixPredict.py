@@ -120,11 +120,9 @@ for imagefile in filelist:
     prediction_5 = None
     for i in range(6):
         var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
-        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][idx[i]]*100) #bottom 6 order
         #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
         map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
         print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
-        print("{}".format(classes[bottom_6[i]])+" ({:.3})".format(proba[0][bottom_6[i]]*100))
 
         # for key in var_holder.keys():
         #     holder_clean = proba.replace('.', var_holder['+'])

@@ -1,5 +1,6 @@
 import keras
 import os
+import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -30,8 +31,8 @@ print (train.columns) # display the data array
 #loading images and preprocessing into an array
 train_image = []
 for i in tqdm(range(train.shape[0])):
-    img = image.load_img('SP_Dataset/Images/'+train['Id'][i]+'.png',target_size=(400,400,3)) #change this for my dataset
-    img = image.img_to_array(img)
+    img = tf.keras.utils.load_img('SP_Dataset/Images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
+    img = tf.keras.utils.img_to_array(img)
     img = img/255
     train_image.append(img)
 X = np.array(train_image)
