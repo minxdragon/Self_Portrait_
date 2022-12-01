@@ -72,7 +72,7 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(52, activation='sigmoid')) #change for the amount of labels
+model.add(Dense(21, activation='sigmoid')) #change for the amount of labels
 
 model.summary()
 
