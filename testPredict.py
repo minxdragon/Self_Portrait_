@@ -111,6 +111,7 @@ for imagefile in filelist:
 
     #print(var_holder)
     #break the results into separate variables for formatting
+
     locals().update(var_holder)
     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
     print(var_holder)

@@ -1,6 +1,7 @@
 import keras
 import os
 import tensorflow as tf
+from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -31,7 +32,7 @@ print (train.columns) # display the data array
 #loading images and preprocessing into an array
 train_image = []
 for i in tqdm(range(train.shape[0])):
-    img = tf.keras.utils.load_img('SP_Dataset/Images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
+    img = keras.preprocessing.image_dataset.image_dataset_from_directory('SP_Dataset/Images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
     img = tf.keras.utils.img_to_array(img)
     img = img/255
     train_image.append(img)
@@ -63,7 +64,7 @@ model.add(Dropout(0.25))
 model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
-model.add(Conv2D(filters=64, kernel_size=(5, 5), activation='relu'))
+model.add(Conv2D(filters=128, kernel_size=(5, 5), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
@@ -71,7 +72,7 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(52, activation='sigmoid')) #change for the amount of labels
+model.add(Dense(21, activation='sigmoid')) #change for the amount of labels
 
 model.summary()
 
@@ -80,6 +81,11 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 
 #training
 model.fit(X_train, y_train, epochs=20, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
+
+#confusion matrix
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_test,X_test)
+print(cm)
 
 #save the model
 model.save('SPDataset')
