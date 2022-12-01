@@ -82,6 +82,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #training
 model.fit(X_train, y_train, epochs=20, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
 
+#confusion matrix
 from sklearn.metrics import confusion_matrix
 cm=confusion_matrix(y_test,X_test)
 print(cm)
