@@ -19,7 +19,7 @@ from tqdm import tqdm
 from keras.models import Sequential
 from sklearn.model_selection import KFold
 from keras import regularizers
-from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization, Activation
 from keras.utils import to_categorical
 from keras.preprocessing import image
                                
@@ -85,7 +85,7 @@ model.add(Dense(64, input_dim=64, kernel_regularizer=regularizers.l1(0.01)))
 model.add(Activation('relu'))
 model.add(Dense(64, kernel_regularizer=regularizers.l1(0.01)))
 model.add(Activation('relu'))
-model.add(Dense(10, kernel_regularizer=regularizers.l1(0.01)))
+model.add(Dense(75, kernel_regularizer=regularizers.l1(0.01)))
 model.add(Activation('softmax'))
 model.summary()
 
