@@ -82,8 +82,8 @@ for imagefile in filelist:
     #Saved_img = image.save_img('/Users/j.rosenbaum/Development/DCGAN-tensorflow/data/gender-tapestry/' + unique_filename + '.jpg', img_save, file_format='jpeg', target_size=(400,400,3))
 
     # get the model
-    train = pd.read_csv('SP_Dataset/train.csv') # don't forget to update this to the dataset
-    model = keras.models.load_model('SPDataset') # don't forget to update this to the dataset
+    train = pd.read_csv('SP_Dataset_original/train.csv') # don't forget to update this to the dataset
+    model = keras.models.load_model('SPDataset_original') # don't forget to update this to the dataset
     classes = np.array(train.columns[2:])
     proba = model.predict(img.reshape(1,400,400,3))
     top_6 = np.argsort(proba[0])[:-9:-1]
