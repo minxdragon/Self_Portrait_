@@ -16,11 +16,12 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 #imports
-import sys
-from PySide6.QtGui import QColor
-from PySide6.QtWidgets import (QApplication, QTableWidget,
-                               QTableWidgetItem)
+from keras.models import Sequential
 from sklearn.model_selection import KFold
+from keras import regularizers
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization
+from keras.utils import to_categorical
+from keras.preprocessing import image
                                
 # %matplotlib inline
 
@@ -80,12 +81,12 @@ model.add(Conv2D(filters=64, kernel_size=(5, 5), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(75, activation='sigmoid')) #change for the amount of labels
-
+model.add(Dense(64, input_dim=64, kernel_regularizer=regularizers.l1(0.01)))
+model.add(Activation('relu'))
+model.add(Dense(64, kernel_regularizer=regularizers.l1(0.01)))
+model.add(Activation('relu'))
+model.add(Dense(10, kernel_regularizer=regularizers.l1(0.01)))
+model.add(Activation('softmax'))
 model.summary()
 
 # compile with ADAM
