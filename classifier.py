@@ -67,6 +67,7 @@ for train_index, test_index in kf.split(X):
 #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.1)
 
 # architecture - this can be modified by changing the number of hidden layers, activation functions and other hyperparameters
+# architecture - this can be modified by changing the number of hidden layers, activation functions and other hyperparameters
 model = Sequential()
 model.add(Conv2D(filters=16, kernel_size=(5, 5), activation="relu", input_shape=(400,400,3)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -77,17 +78,16 @@ model.add(Dropout(0.25))
 model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
-model.add(Conv2D(filters=64, kernel_size=(5, 5), activation='relu'))
+model.add(Conv2D(filters=128, kernel_size=(5, 5), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(64, input_dim=64, kernel_regularizer=regularizers.l1_l2(l1=0.01, l2=0.01)))
-model.add(Activation('relu'))
-model.add(Dense(64, kernel_regularizer=regularizers.l1_l2(l1=0.01, l2=0.01)))
-model.add(Activation('relu'))
-model.add(Dense(75, kernel_regularizer=regularizers.l1_l2(l1=0.01, l2=0.01)))
-model.add(Activation('softmax'))
-model.summary()
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(75, activation='sigmoid')) #change for the amount of labels
+
 
 # compile with ADAM
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
