@@ -26,14 +26,14 @@ from keras.preprocessing import image
 # %matplotlib inline
 
 #reading labels and dataset
-train = pd.read_csv('SP_Dataset/train.csv')    # reading the csv file - Change for my new CSV
+train = pd.read_csv('facedataset/train.csv')    # reading the csv file - Change for my new CSV
 print (train.head)      # printing first five rows of the file
 print (train.columns) # display the data array
 
 #loading images and preprocessing into an array
 train_image = []
 for i in tqdm(range(train.shape[0])):
-    img = image.load_img('SP_Dataset/Images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
+    img = image.load_img('facedataset/images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
     img = image.img_to_array(img)
     img = img/255
     train_image.append(img)
@@ -96,4 +96,4 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 model.fit(X_train, y_train, epochs=5, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
 
 #save the model
-model.save('SPDataset')
+model.save('facedataset')
