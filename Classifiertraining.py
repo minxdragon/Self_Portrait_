@@ -8,8 +8,6 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.utils import to_categorical
 from keras.preprocessing import image
 
-#os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
-
 import numpy as np
 import pandas as pd
 import matplotlib  
@@ -18,11 +16,9 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 #imports
-import sys
-from PySide6.QtGui import QColor
-from PySide6.QtWidgets import (QApplication, QTableWidget,
-                               QTableWidgetItem)
-# %matplotlib inline
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_curve
+import matplotlib.pyplot as plt
 
 #reading labels and dataset
 train = pd.read_csv('SP_Dataset/train.csv')    # reading the csv file - Change for my new CSV
@@ -76,11 +72,30 @@ model.add(Dense(21, activation='sigmoid')) #change for the amount of labels
 
 model.summary()
 
-# compile with ADAM
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+# First, we'll need to compile the model with the `AUC` metric
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['AUC'])
 
-#training
-model.fit(X_train, y_train, epochs=20, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
+# Next, we'll need to train the model and save the training history
+history = model.fit(X_train, y_train, validation_data=(X_val, y_val))
+
+# After training, we can use the `predict` method to generate
+# predictions for the validation data
+predictions = model.predict(X_val)
+
+# We can then use the `roc_auc_score` function to compute the AUC
+# for each class in the predictions
+auc = roc_auc_score(y_val, predictions, average='macro')
+
+# To plot the ROC curve, we can use the `roc_curve` function to
+# compute the false positive rate and true positive rate for
+# different threshold values
+fpr, tpr, thresholds = roc_curve(y_val, predictions)
+
+# Finally, we can plot the ROC curve using matplotlib
+plt.plot(fpr, tpr)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve (AUC = %0.3f)' % auc)
 
 #confusion matrix
 from sklearn.metrics import confusion_matrix
