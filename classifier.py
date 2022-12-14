@@ -86,14 +86,14 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(75, activation='sigmoid')) #change for the amount of labels
+model.add(Dense(21, activation='sigmoid')) #change for the amount of labels
 
 
 # compile with ADAM
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 #training
-model.fit(X_train, y_train, epochs=5, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
+model.fit(X_train, y_train, epochs=20, validation_data=(X_test, y_test), batch_size=64) #change the epochs here, no need to update the architecture.
 
 #save the model
 model.save('facedataset.h5')
