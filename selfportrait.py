@@ -114,11 +114,11 @@ for imagefile in filelist:
 # save the image file to dataset
     img_save = tf.keras.utils.img_to_array(img)
     unique_filename = str(uuid.uuid4())
-    Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
+    Saved_img = tf.keras.utils.save_img(unique_filename + '.png', img_save, file_format='png',)
 
     # get the model
-    train = pd.read_csv('facedataset/train.csv') # don't forget to update this to the dataset
-    model = keras.models.load_model('facedataset.h5') # don't forget to update this to the dataset
+    train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
+    model = keras.models.load_model('traitsdataset.h5') # don't forget to update this to the dataset
     classes = np.array(train.columns[2:])
     proba = model.predict(img.reshape(1,400,400,3))
     top_6 = np.argsort(proba[0])[:-9:-1]
