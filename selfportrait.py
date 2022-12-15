@@ -114,7 +114,7 @@ for imagefile in filelist:
 # save the image file to dataset
     img_save = tf.keras.utils.img_to_array(img)
     unique_filename = str(uuid.uuid4())
-    Saved_img = tf.keras.utils.save_img(unique_filename + '.png', img_save, file_format='png',)
+    Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
     # get the model
     train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset

@@ -33,7 +33,7 @@ print (train.columns) # display the data array
 #loading images and preprocessing into an array
 train_image = []
 for i in tqdm(range(train.shape[0])):
-    img = image.load_img('traitsdataset/images/'+train['Id'][i]+'.jpg',target_size=(400,400,3)) #change this for my dataset
+    img = image.load_img('traitsdataset/images/'+train['Id'][i]+'.png',target_size=(400,400,3)) #change this for my dataset
     img = image.img_to_array(img)
     img = img/255
     train_image.append(img)
@@ -86,7 +86,7 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(21, activation='sigmoid')) #change for the amount of labels
+model.add(Dense(6, activation='sigmoid')) #change for the amount of labels
 
 
 # compile with ADAM
