@@ -113,8 +113,8 @@ for imagefile in filelist:
     img = img/255
 # save the image file to dataset
     img_save = tf.keras.utils.img_to_array(img)
-    unique_filename = str(uuid.uuid4())
-    Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
+    # unique_filename = str(uuid.uuid4())
+    # Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
     # get the model
     train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
@@ -190,7 +190,7 @@ class VideoHandler(object):
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
 #generate a string for the prompt using the prediction results
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style"
+promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
 print (promptString)
 
 if __name__ == '__main__':
