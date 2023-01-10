@@ -158,6 +158,13 @@ for imagefile in filelist:
     print ("bottom three " + bottom_three)
 
 ### Face swap
+#load the initial image. currently static, will make dynamic later
+filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
+
+#generate a string for the prompt using the prediction results
+promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
+print (promptString)
+
 # face swap video from webcam class
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
@@ -177,10 +184,8 @@ class VideoHandler(object):
             if dst_points is not None:
                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
             self.writer.write(dst_img)
-            if self.args.show:
-                cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
-                cv2.imshow("Video", dst_img)
-                cv2.waitKey(0)   
+            #if self.args.show:
+            cv2.imshow("Video", dst_img)
 
         self.video.release()
         self.writer.release()
@@ -188,10 +193,6 @@ class VideoHandler(object):
 
 #load the initial image. currently static, will make dynamic later
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
-
-#generate a string for the prompt using the prediction results
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
-print (promptString)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
@@ -204,8 +205,8 @@ if __name__ == '__main__':
     parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
     parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
     parser.add_argument('--show', default=False, action='store_true', help='Show')
-    parser.add_argument('--save_path', required=False, default='test/test.avi', help='Path for storing output video')
-    parser.add_argument('--prompt', type=str, required=False, default=promptString, help='Prompt for generation')
+    parser.add_argument('--save_path', required=False, default= "test/test.avi", help='Path for storing output video')
+    parser.add_argument('--prompt', type=str, required=False, default = promptString, help='Prompt for generation')
     parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
     parser.add_argument('--init', type=str, default=filename, required=False, help='Prompt for generation')
     args = parser.parse_args()
@@ -229,7 +230,6 @@ if __name__ == '__main__':
         arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
         img = cv2.imdecode(arr, -1) # 'Load it as it is'
         img = np.array(img)
-        # save the image to the local directory as dream.jpg
         dream = cv2.imwrite('dream.jpg', img)
         return dream
     
