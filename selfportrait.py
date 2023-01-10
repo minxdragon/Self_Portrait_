@@ -129,18 +129,17 @@ for imagefile in filelist:
     terms = terms.replace("' '", ", ")
     print (terms)
 
-    #define list here
-    var_holder = {}
-    prediction_0 = None
-    prediction_1 = None
-    prediction_2 = None
-    prediction_3 = None
-    prediction_4 = None
-    prediction_5 = None
+    # #define list here
+    # var_holder = {}
+    # prediction_0 = None
+    # prediction_1 = None
+    # prediction_2 = None
+    # prediction_3 = None
+    # prediction_4 = None
+    # prediction_5 = None
     for i in range(6):
-        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
-        #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
-        map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+    #     var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
+    #     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
         print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
 
         # for key in var_holder.keys():
@@ -148,8 +147,8 @@ for imagefile in filelist:
 
     #print(var_holder)
     #break the results into separate variables for formatting
-    locals().update(var_holder)
-    map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+    # locals().update(var_holder)
+    # map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
 
 ### Face swap
 # face swap video from webcam class
