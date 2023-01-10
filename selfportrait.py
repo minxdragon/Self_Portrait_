@@ -151,9 +151,9 @@ for imagefile in filelist:
     locals().update(var_holder)
     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
     #create a variable with terms separated into the top three results
-    top_three = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]])
+    top_three = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]])
     # create a variable with terms separated into the bottom three results
-    bottom_three = str(classes[top_6[3]]) + " " + str(classes[top_6[4]]) + " " + str(classes[top_6[5]])
+    bottom_three = str(classes[top_6[5]])
     print ("top three " + top_three)
     print ("bottom three " + bottom_three)
 
