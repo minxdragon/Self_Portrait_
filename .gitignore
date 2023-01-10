@@ -46,11 +46,6 @@ nosetests.xml
 *.bmp
 
 #misc
-*.DS_Store
 *.code-workspace
 .DS_Store
 *.avi
-.DS_Store
-.DS_Store
-.DS_Store
-.DS_Store
