@@ -26,6 +26,7 @@ import urllib
 import numpy as np
 import base64
 import json
+import imagebb
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -84,7 +85,7 @@ def TakeSnapshotAndSave():
         y = 100
         text_color = (0,255,0)
 
-        cv2.imwrite('opencv'+str(num)+'.jpg',faces)
+        cv2.imwrite('face.jpg',faces)
         cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)    # Create window with freedom of dimensions
         im = cv2.imread('opencv0.jpg')                    # Read image
         #imS = cv2.resize(im, (940, 540))                # Resize image
@@ -106,7 +107,7 @@ if __name__ == "__main__":
 
 ## Classification
 
-filelist = ['opencv0.jpg'] #currently local, will be dynamic online later
+filelist = ['face.jpg'] #currently local, will be dynamic online later
 for imagefile in filelist:
     img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
     img = tf.keras.utils.img_to_array(img)
@@ -158,11 +159,13 @@ for imagefile in filelist:
     print ("bottom three " + bottom_three)
 
 ### Face swap
-#load the initial image. currently static, will make dynamic later
+#will come from imagebb
+facefile = (face.url)
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
 #generate a string for the prompt using the prediction results
 promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
+analysisComplete = promptString
 print (promptString)
 
 # face swap video from webcam class
