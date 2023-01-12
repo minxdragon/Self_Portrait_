@@ -105,96 +105,98 @@ if __name__ == "__main__":
     # Load the image
 
 ## Classification
+def classification():
+    filelist = ['face.jpg'] #local, 
+    for imagefile in filelist:
+        img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
+        img = tf.keras.utils.img_to_array(img)
+        img = img/255
+    # save the image file to dataset
+        img_save = tf.keras.utils.img_to_array(img)
+        # unique_filename = str(uuid.uuid4())
+        # Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
-filelist = ['face.jpg'] #local, 
-for imagefile in filelist:
-    img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
-    img = tf.keras.utils.img_to_array(img)
-    img = img/255
-# save the image file to dataset
-    img_save = tf.keras.utils.img_to_array(img)
-    # unique_filename = str(uuid.uuid4())
-    # Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
+        # get the model
+        train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
+        model = keras.models.load_model('traitsdataset.h5') # don't forget to update this to the dataset
+        classes = np.array(train.columns[2:])
+        proba = model.predict(img.reshape(1,400,400,3))
+        top_6 = np.argsort(proba[0])[:-9:-1]
 
-    # get the model
-    train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
-    model = keras.models.load_model('traitsdataset.h5') # don't forget to update this to the dataset
-    classes = np.array(train.columns[2:])
-    proba = model.predict(img.reshape(1,400,400,3))
-    top_6 = np.argsort(proba[0])[:-9:-1]
+        terms = str(classes[top_6])
+        terms = terms.replace("['", "")
+        terms = terms.replace("']", "")
+        terms = terms.replace("' '", ", ")
+        print (terms)
 
-    terms = str(classes[top_6])
-    terms = terms.replace("['", "")
-    terms = terms.replace("']", "")
-    terms = terms.replace("' '", ", ")
-    print (terms)
+        #define list here
+        var_holder = {}
+        prediction_0 = None
+        prediction_1 = None
+        prediction_2 = None
+        prediction_3 = None
+        prediction_4 = None
+        prediction_5 = None
+        for i in range(6):
+            var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
+            #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
+            map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+            print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
 
-    #define list here
-    var_holder = {}
-    prediction_0 = None
-    prediction_1 = None
-    prediction_2 = None
-    prediction_3 = None
-    prediction_4 = None
-    prediction_5 = None
-    for i in range(6):
-        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
-        #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
+            # for key in var_holder.keys():
+            #     holder_clean = proba.replace('.', var_holder['+'])
+
+        #print(var_holder)
+        #break the results into separate variables for formatting
+        locals().update(var_holder)
         map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
-        print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
+        #create a variable with terms separated into the top three results
+        analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
+        # create a variable with terms separated into the bottom three results
 
-        # for key in var_holder.keys():
-        #     holder_clean = proba.replace('.', var_holder['+'])
+        #generate a string for the prompt using the prediction results
+        promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_6 + " painted by a portrait artist"
 
-    #print(var_holder)
-    #break the results into separate variables for formatting
-    locals().update(var_holder)
-    map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
-    #create a variable with terms separated into the top three results
-    analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
-    # create a variable with terms separated into the bottom three results
+        print (promptString)
 
-    print ("analysis complete," + analysisComplete) #send as server command
+        print ("analysis complete," + analysisComplete) #send as server command
+        return analysisComplete, top_6, promptString
 
-### Face swap
-#will come from imagebb
-facefile = ()
-filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
+def faceswap():
+    ### Face swap
+    #will come from imagebb
+    facefile = ()
+    filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
-#generate a string for the prompt using the prediction results
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_6 + " painted by a portrait artist"
+    userSelected = None #convert array to string
 
-print (promptString)
+    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
 
-userSelected = None #convert array to string
+    # face swap video from webcam class
+    class VideoHandler(object):
+        def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
+            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+            self.args = args
+            self.video = cv2.VideoCapture(video_path)
+            self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
+                                        (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+        def start(self):
+            while self.video.isOpened():
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
 
-# face swap video from webcam class
-class VideoHandler(object):
-    def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
-        self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-        self.args = args
-        self.video = cv2.VideoCapture(video_path)
-        self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
-                                      (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+                _, dst_img = self.video.read()
+                dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
+                if dst_points is not None:
+                    dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
+                self.writer.write(dst_img)
+                #if self.args.show:
+                cv2.imshow("Video", dst_img)
 
-    def start(self):
-        while self.video.isOpened():
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-            _, dst_img = self.video.read()
-            dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
-            if dst_points is not None:
-                dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-            self.writer.write(dst_img)
-            #if self.args.show:
-            cv2.imshow("Video", dst_img)
-
-        self.video.release()
-        self.writer.release()
-        cv2.destroyAllWindows()
+            self.video.release()
+            self.writer.release()
+            cv2.destroyAllWindows()
 
 #load the initial image. currently static, will make dynamic later
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later

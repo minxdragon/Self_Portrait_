@@ -3,7 +3,7 @@
 import socket
 import imgbbpy
 import time
-import selfportrait 
+from selfportrait import 
 testMode = True
 
 HOST = ''              
