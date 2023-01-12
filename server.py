@@ -97,30 +97,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     terms = terms.replace("']", "")
                     terms = terms.replace("' '", ", ")
                     print (terms)
-
-                    # #define list here
-                    # var_holder = {}
-                    # prediction_0 = None
-                    # prediction_1 = None
-                    # prediction_2 = None
-                    # prediction_3 = None
-                    # prediction_4 = None
-                    # prediction_5 = None
-                    # for i in range(6):
-                    #     var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
-                    #     #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
-                    #     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
-                    #     print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
-
-                        # for key in var_holder.keys():
-                        #     holder_clean = proba.replace('.', var_holder['+'])
-
-                    #print(var_holder)
-                    #break the results into separate variables for formatting
-                    # locals().update(var_holder)
-                    # map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
-                    # create a variable with terms
-                    #terms = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]]) + " " + str(classes[top_6[5]])
                     
                     #create a variable with terms separated into bytes
                     analysis = (classes[top_6[0]]).encode() + b"&" + (classes[top_6[1]]).encode() + b"&" + (classes[top_6[2]]).encode() + b"&" + (classes[top_6[3]]).encode() + b"&" + (classes[top_6[4]]).encode() + b"&" + (classes[top_6[5]]).encode()
@@ -151,7 +127,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         dream = cv2.imwrite('dream.jpg', img)
                         return dream
         
-                    stable_diffusion(prompt = promptString, init_image=init, src_img='dream.jpg', prompt_strength=0.3)
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='dream.jpg', prompt_strength=0.5)
 
                     #print ("analysis complete," + analysisComplete) #send as server command
 
