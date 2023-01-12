@@ -26,6 +26,8 @@ import urllib
 import numpy as np
 import base64
 import json
+import socket
+import time
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -97,15 +99,8 @@ def TakeSnapshotAndSave():
     cap.release()
     cv2.destroyAllWindows()
 
-
-if __name__ == "__main__":
-    TakeSnapshotAndSave()
-    
-    # prediction metrics
-    # Load the image
-
 ## Classification
-def classification():
+def selfPortrait():
     filelist = ['face.jpg'] #local, 
     for imagefile in filelist:
         img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
@@ -155,14 +150,13 @@ def classification():
         # create a variable with terms separated into the bottom three results
 
         #generate a string for the prompt using the prediction results
-        promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_6 + " painted by a portrait artist"
+        promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 
         print (promptString)
 
         print ("analysis complete," + analysisComplete) #send as server command
-        return analysisComplete, top_6, promptString
+        conn.sendall(b"analysis complete," + analysisComplete)
 
-def faceswap():
     ### Face swap
     #will come from imagebb
     facefile = ()
@@ -170,7 +164,7 @@ def faceswap():
 
     userSelected = None #convert array to string
 
-    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 
     # face swap video from webcam class
     class VideoHandler(object):
@@ -243,3 +237,10 @@ def faceswap():
         stable_diffusion(prompt = args.prompt, init_image=filename, src_img='dream.jpg', prompt_strength=0.3)
 
         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+
+if __name__ == "__main__":
+    TakeSnapshotAndSave()
+    selfPortrait()
+    
+    # prediction metrics
+    # Load the image

@@ -3,7 +3,41 @@
 import socket
 import imgbbpy
 import time
-from selfportrait import 
+import keras
+import tensorflow as tf
+import os
+import cv2
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+from keras.utils import to_categorical
+from keras.preprocessing import image
+import numpy as np
+import pandas as pd  
+from matplotlib import pyplot as plt
+import matplotlib as mpl
+from sklearn.model_selection import train_test_split
+from tqdm import tqdm
+from csv import writer
+from PIL import Image
+from skimage import data
+from skimage.filters import threshold_otsu
+from skimage.color import rgb2gray
+import uuid
+import logging
+import argparse
+import replicate
+import urllib
+import numpy as np
+import base64
+import json
+import socket
+import time
+
+from urllib.request import urlopen, Request
+from face_detection import select_face
+from face_swap import face_swap
+
 testMode = True
 
 HOST = ''              
@@ -39,7 +73,64 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(face.url)
                 # When prompt is ready, send back to Processing
                 print(f'Sending...')
-                conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
+                filelist = ['face.jpg'] #local, 
+                for imagefile in filelist:
+                    img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
+                    img = tf.keras.utils.img_to_array(img)
+                    img = img/255
+                # save the image file to dataset
+                    img_save = tf.keras.utils.img_to_array(img)
+                    # unique_filename = str(uuid.uuid4())
+                    # Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
+
+                    # get the model
+                    train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
+                    model = keras.models.load_model('traitsdataset.h5') # don't forget to update this to the dataset
+                    classes = np.array(train.columns[2:])
+                    proba = model.predict(img.reshape(1,400,400,3))
+                    top_6 = np.argsort(proba[0])[:-9:-1]
+
+                    terms = str(classes[top_6])
+                    terms = terms.replace("['", "")
+                    terms = terms.replace("']", "")
+                    terms = terms.replace("' '", ", ")
+                    print (terms)
+
+                    #define list here
+                    var_holder = {}
+                    prediction_0 = None
+                    prediction_1 = None
+                    prediction_2 = None
+                    prediction_3 = None
+                    prediction_4 = None
+                    prediction_5 = None
+                    for i in range(6):
+                        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
+                        #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
+                        map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+                        print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
+
+                        # for key in var_holder.keys():
+                        #     holder_clean = proba.replace('.', var_holder['+'])
+
+                    #print(var_holder)
+                    #break the results into separate variables for formatting
+                    locals().update(var_holder)
+                    map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+                    # create a variable with terms
+                    
+                    #create a variable with terms separated into the top three results
+                    analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
+                    # create a variable with terms separated into the bottom three results
+
+                    #generate a string for the prompt using the prediction results
+                    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+
+                    print (promptString)
+
+                    print ("analysis complete," + analysisComplete) #send as server command
+                    conn.sendall(b"analysis complete," + analysisComplete)
+                #conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
                 print(f'Analysis complete. Mask and Keywords sent.')
             elif splitMessage[0] == 'userSelected':
                 print(f'Fetching mask...')  
