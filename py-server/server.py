@@ -3,7 +3,6 @@
 import socket
 import imgbbpy
 import time
-import selfportrait 
 testMode = True
 
 HOST = ''              
@@ -35,7 +34,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if testMode == False:
                     face = client.upload(file='/Users/sgm_tech/Documents/sp-interactive/interactive/data/face.jpg', expiration=600)
                 else: 
-                    face = client.upload(file='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/opencv0.jpg', expiration=600)
+                    face = client.upload(file='/Users/melhuang/Documents/Clients/Science Gallery/Self Portrait/sp-interactive/interactive/data/face.jpg', expiration=600)
                 print(face.url)
                 # When prompt is ready, send back to Processing
                 print(f'Sending...')

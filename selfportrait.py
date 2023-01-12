@@ -154,7 +154,7 @@ for imagefile in filelist:
     analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
     # create a variable with terms separated into the bottom three results
 
-    print ("analysis complete," + analysisComplete)
+    print ("analysis complete," + analysisComplete) #send as server command
 
 ### Face swap
 #will come from imagebb
@@ -165,6 +165,10 @@ filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv
 promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_6 + " painted by a portrait artist"
 
 print (promptString)
+
+userSelected = None #convert array to string
+
+promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
 
 # face swap video from webcam class
 class VideoHandler(object):
