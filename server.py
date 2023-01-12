@@ -118,17 +118,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     locals().update(var_holder)
                     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
                     # create a variable with terms
+                    terms = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]]) + " " + str(classes[top_6[5]])
                     
-                    #create a variable with terms separated into the top three results
-                    analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
-                    # create a variable with terms separated into the bottom three results
-
+                    #create a variable with terms separated into bytes
+                    analysis = (classes[top_6[0]]).encode() + b"&" + (classes[top_6[1]]).encode() + b"&" + (classes[top_6[2]]).encode() + b"&" + (classes[top_6[3]]).encode() + b"&" + (classes[top_6[4]]).encode() + b"&" + (classes[top_6[5]]).encode()
+                    response = b"analysisComplete,"
+                    analysisComplete = response + analysis.decode('utf-8')
                     #generate a string for the prompt using the prediction results
-                    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+                    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist"
 
                     print (promptString)
 
                     print ("analysis complete," + analysisComplete) #send as server command
+
                     conn.sendall(b"analysis complete," + analysisComplete)
                 #conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
                 print(f'Analysis complete. Mask and Keywords sent.')
