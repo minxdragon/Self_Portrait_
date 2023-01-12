@@ -127,7 +127,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         dream = cv2.imwrite('/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', img)
                         return dream
         
-                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.5)
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.2)
 
                     #print ("analysis complete," + analysisComplete) #send as server command
 
@@ -135,8 +135,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
                 print(f'Analysis complete. Mask and Keywords sent.')
             elif splitMessage[0] == 'userSelected':
-                promptString = userSelected
-                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.5)
+                #listen for the userSelected message
+                userSelected = splitMessage[1]
+                
+                promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+                print(promptString)
+                
+                #StableDiffusion code for replicate. requires a replicate account and a export code
+                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.2)
                 print(f'Fetching mask...')  
                 time.sleep(4)
                 print(f'Sending...')                
