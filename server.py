@@ -71,6 +71,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 else: 
                     face = client.upload(file='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/opencv0.jpg', expiration=600)
                 print(face.url)
+                init = face.url
+
                 # When prompt is ready, send back to Processing
                 print(f'Sending...')
                 filelist = ['face.jpg'] #local, 
@@ -96,29 +98,29 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     terms = terms.replace("' '", ", ")
                     print (terms)
 
-                    #define list here
-                    var_holder = {}
-                    prediction_0 = None
-                    prediction_1 = None
-                    prediction_2 = None
-                    prediction_3 = None
-                    prediction_4 = None
-                    prediction_5 = None
-                    for i in range(6):
-                        var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
-                        #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
-                        map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
-                        print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
+                    # #define list here
+                    # var_holder = {}
+                    # prediction_0 = None
+                    # prediction_1 = None
+                    # prediction_2 = None
+                    # prediction_3 = None
+                    # prediction_4 = None
+                    # prediction_5 = None
+                    # for i in range(6):
+                    #     var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][top_6[i]]*100) #top 6 order
+                    #     #var_holder['prediction_' + str(i)] = "{:.3}".format(proba[0][i]*100) #for natural order
+                    #     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+                    #     print("{}".format(classes[top_6[i]])+" ({:.3})".format(proba[0][top_6[i]]*100))
 
                         # for key in var_holder.keys():
                         #     holder_clean = proba.replace('.', var_holder['+'])
 
                     #print(var_holder)
                     #break the results into separate variables for formatting
-                    locals().update(var_holder)
-                    map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
+                    # locals().update(var_holder)
+                    # map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
                     # create a variable with terms
-                    terms = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]]) + " " + str(classes[top_6[5]])
+                    #terms = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]]) + " " + str(classes[top_6[5]])
                     
                     #create a variable with terms separated into bytes
                     analysis = (classes[top_6[0]]).encode() + b"&" + (classes[top_6[1]]).encode() + b"&" + (classes[top_6[2]]).encode() + b"&" + (classes[top_6[3]]).encode() + b"&" + (classes[top_6[4]]).encode() + b"&" + (classes[top_6[5]]).encode()
@@ -130,6 +132,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist"
 
                     print (promptString)
+
+                    #StableDiffusion code for replicate. requires a replicate account and a export code
+                    def stable_diffusion(prompt, init_image, src_img, prompt_strength):
+                        prompt = promptString
+                        model = replicate.models.get("stability-ai/stable-diffusion")
+                        init_image = init
+                        prompt_strength = 0.3
+                        output_url = model.predict(prompt=(promptString), init_image=init)[0]
+                        print(output_url)
+                        # download the image, convert it to a NumPy array, and then read
+                        # it into OpenCV format
+                        request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+                        req = urlopen(request_site)
+                        arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+                        img = cv2.imdecode(arr, -1) # 'Load it as it is'
+                        img = np.array(img)
+                        dream = cv2.imwrite('dream.jpg', img)
+                        return dream
+        
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='dream.jpg', prompt_strength=0.3)
 
                     #print ("analysis complete," + analysisComplete) #send as server command
 
