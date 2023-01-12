@@ -165,7 +165,7 @@ filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv
 
 #generate a string for the prompt using the prediction results
 promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
-analysisComplete = promptString
+analysisComplete = 
 print (promptString)
 
 # face swap video from webcam class
