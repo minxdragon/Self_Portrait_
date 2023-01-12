@@ -124,10 +124,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
                         img = cv2.imdecode(arr, -1) # 'Load it as it is'
                         img = np.array(img)
-                        dream = cv2.imwrite('dream.jpg', img)
+                        dream = cv2.imwrite('/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', img)
                         return dream
         
-                    stable_diffusion(prompt = promptString, init_image=init, src_img='dream.jpg', prompt_strength=0.5)
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.5)
 
                     #print ("analysis complete," + analysisComplete) #send as server command
 
@@ -135,6 +135,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
                 print(f'Analysis complete. Mask and Keywords sent.')
             elif splitMessage[0] == 'userSelected':
+                promptString = userSelected
+                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.5)
                 print(f'Fetching mask...')  
                 time.sleep(4)
                 print(f'Sending...')                
