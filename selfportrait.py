@@ -26,7 +26,6 @@ import urllib
 import numpy as np
 import base64
 import json
-import imagebb
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -107,7 +106,7 @@ if __name__ == "__main__":
 
 ## Classification
 
-filelist = ['face.jpg'] #currently local, will be dynamic online later
+filelist = ['face.jpg'] #local, 
 for imagefile in filelist:
     img = tf.keras.utils.load_img(imagefile,target_size=(400,400,3))
     img = tf.keras.utils.img_to_array(img)
@@ -152,20 +151,19 @@ for imagefile in filelist:
     locals().update(var_holder)
     map(lambda var_holder: var_holder.replace('+' , '.'), var_holder)
     #create a variable with terms separated into the top three results
-    top_three = str(classes[top_6[0]]) + " " + str(classes[top_6[1]]) + " " + str(classes[top_6[2]]) + " " + str(classes[top_6[3]]) + " " + str(classes[top_6[4]])
+    analysisComplete = str(classes[top_6[0]]) + "&" + str(classes[top_6[1]]) + "&" + str(classes[top_6[2]]) + "&" + str(classes[top_6[3]]) + "&" + str(classes[top_6[4]]) + "&" + str(classes[top_6[5]])
     # create a variable with terms separated into the bottom three results
-    bottom_three = str(classes[top_6[5]])
-    print ("top three " + top_three)
-    print ("bottom three " + bottom_three)
+
+    print ("analysis complete," + analysisComplete)
 
 ### Face swap
 #will come from imagebb
-facefile = (face.url)
+facefile = ()
 filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
 #generate a string for the prompt using the prediction results
-promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_three + " painted in a " + bottom_three + " style by a portrait artist"
-analysisComplete = 
+promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + top_6 + " painted by a portrait artist"
+
 print (promptString)
 
 # face swap video from webcam class
