@@ -123,15 +123,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     #create a variable with terms separated into bytes
                     analysis = (classes[top_6[0]]).encode() + b"&" + (classes[top_6[1]]).encode() + b"&" + (classes[top_6[2]]).encode() + b"&" + (classes[top_6[3]]).encode() + b"&" + (classes[top_6[4]]).encode() + b"&" + (classes[top_6[5]]).encode()
                     response = b"analysisComplete,"
-                    analysisComplete = response + analysis.decode('utf-8')
+
+                    analysisComplete = response + analysis
+
                     #generate a string for the prompt using the prediction results
                     promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist"
 
                     print (promptString)
 
-                    print ("analysis complete," + analysisComplete) #send as server command
+                    #print ("analysis complete," + analysisComplete) #send as server command
 
-                    conn.sendall(b"analysis complete," + analysisComplete)
+                    conn.sendall(analysisComplete)
                 #conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
                 print(f'Analysis complete. Mask and Keywords sent.')
             elif splitMessage[0] == 'userSelected':
