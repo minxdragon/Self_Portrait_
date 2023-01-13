@@ -154,9 +154,6 @@ def selfPortrait():
 
         print (promptString)
 
-        print ("analysis complete," + analysisComplete) #send as server command
-        conn.sendall(b"analysis complete," + analysisComplete)
-
     ### Face swap
     #will come from imagebb
     facefile = ()
