@@ -69,7 +69,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if testMode == False:
                     face = client.upload(file='/Users/sgm_tech/Documents/sp-interactive/interactive/data/face.jpg', expiration=600)
                 else: 
-                    face = client.upload(file='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/opencv0.jpg', expiration=600)
+                    face = client.upload(file='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/face.jpg', expiration=600)
                 print(face.url)
                 init = face.url
 
@@ -98,6 +98,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     terms = terms.replace("' '", ", ")
                     print (terms)
                     
+                    #create a variable separating all of the terms
+                    terms = (classes[top_6[0]]) + " " + (classes[top_6[1]]) + " " + (classes[top_6[2]]) + " " + (classes[top_6[3]]) + " " + (classes[top_6[4]]) + " " + (classes[top_6[5]])
+
                     #create a variable with terms separated into bytes
                     analysis = (classes[top_6[0]]).encode() + b"&" + (classes[top_6[1]]).encode() + b"&" + (classes[top_6[2]]).encode() + b"&" + (classes[top_6[3]]).encode() + b"&" + (classes[top_6[4]]).encode() + b"&" + (classes[top_6[5]]).encode()
                     response = b"analysisComplete,"
@@ -113,9 +116,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     def stable_diffusion(prompt, init_image, src_img, prompt_strength):
                         prompt = promptString
                         model = replicate.models.get("stability-ai/stable-diffusion")
+                        version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
+                        #version.predict(prompt="a 19th century portrait of a wombat gentleman")
                         init_image = init
                         prompt_strength = 0.3
-                        output_url = model.predict(prompt=(promptString), init_image=init)[0]
+                        output_url = version.predict(prompt=(promptString), init_image=init)[0]
                         print(output_url)
                         # download the image, convert it to a NumPy array, and then read
                         # it into OpenCV format
@@ -125,9 +130,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         img = cv2.imdecode(arr, -1) # 'Load it as it is'
                         img = np.array(img)
                         dream = cv2.imwrite('/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', img)
+
                         return dream
         
-                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.2)
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
 
                     #print ("analysis complete," + analysisComplete) #send as server command
 
@@ -142,7 +148,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(promptString)
                 
                 #StableDiffusion code for replicate. requires a replicate account and a export code
-                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.2)
+                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
                 print(f'Fetching mask...')  
                 time.sleep(4)
                 print(f'Sending...')                
