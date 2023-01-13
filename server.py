@@ -42,6 +42,7 @@ testMode = True
 
 HOST = ''              
 PORT = 5008
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen(1)
@@ -134,7 +135,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         return dream
         
                     stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
-
+                    
                     #print ("analysis complete," + analysisComplete) #send as server command
 
                     conn.sendall(analysisComplete)
@@ -142,8 +143,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(f'Analysis complete. Mask and Keywords sent.')
 
                  # face swap video from webcam class
+                src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg'
                 parser = argparse.ArgumentParser(description='FaceSwap Video')
-                parser.add_argument('--src_img', required=False, default='dream.jpg', help='Path for source image')
+                parser.add_argument('--src_img', required=False, default=src_img, help='Path for source image')
                 parser.add_argument('--video_path', default=0,help='Path for video')
                 parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
                 parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
