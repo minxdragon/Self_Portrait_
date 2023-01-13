@@ -18,16 +18,11 @@ from PIL import Image
 from skimage import data
 from skimage.filters import threshold_otsu
 from skimage.color import rgb2gray
-import uuid
 import logging
 import argparse
 import replicate
-import urllib
 import numpy as np
-import base64
-import json
-import socket
-import time
+
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -188,9 +183,6 @@ def selfPortrait():
             self.video.release()
             self.writer.release()
             cv2.destroyAllWindows()
-
-    #load the initial image. currently static, will make dynamic later
-    filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
     if __name__ == '__main__':
         logging.basicConfig(level=logging.INFO,
