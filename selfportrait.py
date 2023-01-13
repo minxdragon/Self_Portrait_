@@ -27,6 +27,7 @@ import numpy as np
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
+from syphon import Client
 
 # ### Face detection
 #import the cascade for face detection
@@ -152,7 +153,6 @@ def selfPortrait():
     ### Face swap
     #will come from imagebb
     facefile = ()
-    filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
     userSelected = None #convert array to string
 
@@ -160,6 +160,7 @@ def selfPortrait():
 
     # face swap video from webcam class
     class VideoHandler(object):
+
         def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
             self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
             self.args = args
@@ -168,15 +169,19 @@ def selfPortrait():
                                         (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
         def start(self):
+            # Create a syphon client
+            client = Client()
             while self.video.isOpened():
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
-                _, dst_img = self.video.read()
+                _, frame, dst_img = self.video.read()
                 dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
                 if dst_points is not None:
                     dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
                 self.writer.write(dst_img)
+                # Send the frame to Syphon
+                client.publish(frame)
                 #if self.args.show:
                 cv2.imshow("Video", dst_img)
 

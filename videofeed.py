@@ -16,8 +16,6 @@ while(cap.isOpened()):
         # Display the frame
         cv2.imshow('frame',frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            #close window after 30 seconds
-            cv2.waitKey(30000)
             break
     else:
         break
