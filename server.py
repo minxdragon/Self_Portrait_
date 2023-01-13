@@ -185,20 +185,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             elif splitMessage[0] == 'userSelected':
                 #listen for the userSelected message
                 userSelected = splitMessage[1]
+                promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+                print(promptString)
+                        
+                #StableDiffusion code for replicate. requires a replicate account and a export code
+                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
+                print(f'Fetching mask...')
+                time.sleep(4)
+                print(f'Sending...')                
+                conn.sendall(b"cameraMaskReady,window frame name")
+                print(f'Analysis complete. Mask and Keywords sent.')
                 
                 counter = 0
                 while True:
                     try:
-                        promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
-                        print(promptString)
-                        
-                        #StableDiffusion code for replicate. requires a replicate account and a export code
-                        stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
-                        print(f'Fetching mask...')
-                        time.sleep(4)
-                        print(f'Sending...')                
-                        conn.sendall(b"cameraMaskReady,window frame name")
-                        print(f'Analysis complete. Mask and Keywords sent.')
                         # face swap video from webcam class
                         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
                     except TypeError:
