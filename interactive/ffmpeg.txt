@@ -14,10 +14,10 @@ Input #0, rawvideo, from 'pipe:':
   Stream #0:0: Video: rawvideo (RGB[24] / 0x18424752), rgb24, 608x1080, 472780 kb/s, 30 tbr, 30 tbn
 Stream mapping:
   Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
-[libx264 @ 0x7f7e71705d40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
-[libx264 @ 0x7f7e71705d40] profile High, level 3.1, 4:2:0, 8-bit
-[libx264 @ 0x7f7e71705d40] 264 - core 164 r3103 941cae6 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=24 lookahead_threads=4 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=15.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
-Output #0, mp4, to '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/gallery/1-18-13-16-55.mp4':
+[libx264 @ 0x7fea8f705d40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x7fea8f705d40] profile High, level 3.1, 4:2:0, 8-bit
+[libx264 @ 0x7fea8f705d40] 264 - core 164 r3103 941cae6 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=24 lookahead_threads=4 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=15.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/gallery/1-18-14-11-14.mp4':
   Metadata:
     comment         : Made with Video Export for Processing - https://git.io/vAXLk
     encoder         : Lavf59.34.102
@@ -26,24 +26,24 @@ Output #0, mp4, to '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/dat
       encoder         : Lavc59.56.100 libx264
     Side data:
       cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
-frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    5 fps=2.0 q=21.0 size=       0kB time=00:00:00.10 bitrate=   3.8kbits/s speed=0.0392x    frame=   20 fps=6.5 q=21.0 size=       0kB time=00:00:00.60 bitrate=   0.6kbits/s speed=0.195x    frame=   35 fps=9.7 q=21.0 size=       0kB time=00:00:01.10 bitrate=   0.3kbits/s speed=0.305x    frame=   50 fps= 12 q=21.0 size=       0kB time=00:00:01.60 bitrate=   0.2kbits/s speed=0.387x    frame=   65 fps= 14 q=21.0 size=       0kB time=00:00:02.10 bitrate=   0.2kbits/s speed=0.45x    frame=  141 fps= 28 q=-1.0 Lsize=     330kB time=00:00:04.60 bitrate= 586.9kbits/s speed=0.918x    
-video:327kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.787533%
-[libx264 @ 0x7f7e71705d40] frame I:1     Avg QP: 6.69  size: 56442
-[libx264 @ 0x7f7e71705d40] frame P:35    Avg QP:12.16  size:  7685
-[libx264 @ 0x7f7e71705d40] frame B:105   Avg QP:22.81  size:    83
-[libx264 @ 0x7f7e71705d40] consecutive B-frames:  0.7%  0.0%  0.0% 99.3%
-[libx264 @ 0x7f7e71705d40] mb I  I16..4: 52.3% 34.4% 13.4%
-[libx264 @ 0x7f7e71705d40] mb P  I16..4:  0.3%  1.7%  0.4%  P16..4:  6.7%  1.8%  2.3%  0.0%  0.0%    skip:86.8%
-[libx264 @ 0x7f7e71705d40] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  3.1%  0.0%  0.0%  direct: 0.0%  skip:96.9%  L0:28.1% L1:70.9% BI: 1.0%
-[libx264 @ 0x7f7e71705d40] 8x8 transform intra:51.9% inter:39.4%
-[libx264 @ 0x7f7e71705d40] coded y,uvDC,uvAC intra: 67.7% 64.0% 63.3% inter: 1.5% 1.6% 1.1%
-[libx264 @ 0x7f7e71705d40] i16 v,h,dc,p: 76%  8%  4% 12%
-[libx264 @ 0x7f7e71705d40] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 23% 14% 34%  4%  4%  7%  4%  5%  4%
-[libx264 @ 0x7f7e71705d40] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 21% 17% 18%  6%  8%  9%  9%  6%  5%
-[libx264 @ 0x7f7e71705d40] i8c dc,h,v,p: 76% 10%  8%  6%
-[libx264 @ 0x7f7e71705d40] Weighted P-Frames: Y:0.0% UV:0.0%
-[libx264 @ 0x7f7e71705d40] ref P L0: 82.6%  3.5% 13.3%  0.6%
-[libx264 @ 0x7f7e71705d40] ref B L0: 92.1%  7.8%  0.2%
-[libx264 @ 0x7f7e71705d40] ref B L1: 83.0% 17.0%
-[libx264 @ 0x7f7e71705d40] kb/s:568.77
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    4 fps=1.6 q=21.0 size=       0kB time=00:00:00.06 bitrate=   5.8kbits/s speed=0.026x    frame=   20 fps=6.5 q=21.0 size=       0kB time=00:00:00.56 bitrate=   0.7kbits/s speed=0.183x    frame=   33 fps=9.2 q=21.0 size=       0kB time=00:00:01.03 bitrate=   0.4kbits/s speed=0.287x    frame=   47 fps= 11 q=21.0 size=       0kB time=00:00:01.50 bitrate=   0.3kbits/s speed=0.364x    frame=   61 fps= 13 q=21.0 size=       0kB time=00:00:01.96 bitrate=   0.2kbits/s speed=0.425x    frame=  138 fps= 28 q=-1.0 Lsize=     141kB time=00:00:04.50 bitrate= 255.8kbits/s speed= 0.9x    
+video:138kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 1.840895%
+[libx264 @ 0x7fea8f705d40] frame I:1     Avg QP: 5.75  size: 71420
+[libx264 @ 0x7fea8f705d40] frame P:35    Avg QP:10.34  size:  1839
+[libx264 @ 0x7fea8f705d40] frame B:102   Avg QP:24.04  size:    47
+[libx264 @ 0x7fea8f705d40] consecutive B-frames:  1.4%  0.0%  0.0% 98.6%
+[libx264 @ 0x7fea8f705d40] mb I  I16..4: 55.3% 27.2% 17.6%
+[libx264 @ 0x7fea8f705d40] mb P  I16..4:  0.1%  0.3%  0.1%  P16..4:  2.7%  0.3%  0.4%  0.0%  0.0%    skip:96.1%
+[libx264 @ 0x7fea8f705d40] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  1.1%  0.0%  0.0%  direct: 0.0%  skip:98.9%  L0:14.6% L1:85.4% BI: 0.0%
+[libx264 @ 0x7fea8f705d40] 8x8 transform intra:32.5% inter:58.1%
+[libx264 @ 0x7fea8f705d40] coded y,uvDC,uvAC intra: 50.8% 50.6% 50.2% inter: 0.3% 0.3% 0.2%
+[libx264 @ 0x7fea8f705d40] i16 v,h,dc,p: 78% 12%  3%  7%
+[libx264 @ 0x7fea8f705d40] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 23% 23%  3%  5%  7%  6%  5%  4%
+[libx264 @ 0x7fea8f705d40] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 19% 13%  6%  8%  8% 10%  7%  5%
+[libx264 @ 0x7fea8f705d40] i8c dc,h,v,p: 76%  9%  8%  7%
+[libx264 @ 0x7fea8f705d40] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x7fea8f705d40] ref P L0: 82.9%  6.1% 10.6%  0.3%
+[libx264 @ 0x7fea8f705d40] ref B L0: 96.6%  3.1%  0.2%
+[libx264 @ 0x7fea8f705d40] ref B L1: 76.0% 24.0%
+[libx264 @ 0x7fea8f705d40] kb/s:244.52
 Exiting normally, received signal 15.

@@ -33,6 +33,7 @@ import base64
 import json
 import socket
 import time
+import syphon
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -169,6 +170,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                     def start(self):
                         while self.video.isOpened():
+
                             if cv2.waitKey(1) & 0xFF == ord('q'):
                                 break
 
@@ -179,8 +181,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             self.writer.write(dst_img)
                             #if self.args.show:
                             cv2.imshow("Video", dst_img)
-
+                            # delay for 5 seconds
+                            
                         self.video.release()
+                        cv2.waitKey(5000)
                         self.writer.release()
                         cv2.destroyAllWindows()
 
