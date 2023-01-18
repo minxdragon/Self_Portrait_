@@ -22,8 +22,11 @@ class VideoHandler(object):
                                       (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
     def start(self):
+        import time
+        time_to_close = 5
+        start_time = time.time()
         while self.video.isOpened():
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if cv2.waitKey(1) & 0xFF == ord('q') or time.time() - start_time > time_to_close:
                 break
 
             _, dst_img = self.video.read()
