@@ -1,8 +1,8 @@
 //Select keywords
-String[] allKeywords = {"creative", "visionary", "calm", "tortured", "weird", "provocative", "passionate", "analytical", "level-headed", "angry",
-                        "adventurous", "bizarre", "risk-taker", "assertive", "zealous", "musical", "vacant", "enchanting", "lonely", "expressive",
-                        "dilligent", "energetic", "contemplative", "serene", "chaotic", "calculating", "elegant", "reserved", "happy", "independant",
-                        "brooding", "sensual", "surreal", "mad"};
+String[] allKeywords = {"nurturing", "creative", "rational", "sensitive", "determined", "Introspective", "Caring", "Perceptive", "Intuitive", "Emotional",
+                        "Moody", "Intelligent", "Passionate", "Playful", "Shy", "Imaginative", "Decisive", "Strong", "Practical", "Intimidating",
+                        "Condescending", "Provocative", "Impulsive", "Inventive", "Conceptual", "Persistent", "Protective", "reserved", "happy", "independant",
+                        "brooding", "surreal", "mad"};
 
 LinkedHashMap<String,Boolean> allKeywordsHashMap = new LinkedHashMap<String,Boolean>();
 ArrayList<GButton> wordToggles = new ArrayList<GButton>();
