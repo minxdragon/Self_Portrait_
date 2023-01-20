@@ -27,7 +27,6 @@ import numpy as np
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
-from syphon import Client
 
 # ### Face detection
 #import the cascade for face detection
@@ -155,6 +154,7 @@ def selfPortrait():
     facefile = ()
 
     userSelected = None #convert array to string
+    filename = 'https://thispersondoesnotexist.com/image'
 
     promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 
@@ -170,7 +170,7 @@ def selfPortrait():
 
         def start(self):
             # Create a syphon client
-            client = Client()
+            # client = Client()
             while self.video.isOpened():
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
