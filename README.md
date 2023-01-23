@@ -1,46 +1,17 @@
-# Modified code based on Faceswap and integrated Stable Diffusion.
-The face swap code has stable diffusion worked into it, to allow generation of new faces on the fly. additionally a classifier has been added with personality traits to be classified and returned as a part of a process to generate the stablediffusion mask for the development of a new interactive artwork.
+Processing install:
+- Processing 4.0
+- Processing libraries(install via Processing): ControlP5, OpenCV, Syphon
+- Processing library -> Video Export(new Kotlin version - manual install: https://github.com/hamoid/video_export_processing/tree/kotlinGradle) - this library requires ffmpeg
+- ffmpeg https://ffmpeg.org/download.html
+- Syphoner
 
-### Stable Diffusion using Replicate
-### Face Swap using forked code below
-### Multi Label Classifier
-
-# Classify
-take a shot from the camera and crop to your face and classify (using the dummy classifier)
-```sh
-python sixpredict.py
-```
-
-# FaceSwap
-Swap face between two photos for Python 3 with OpenCV and dlib.
-
-# Get Started
-
-## Install
-### Requirements
-
-Create a virtual environment using conda and install requirements
-```
-conda create --name selfportrait --file requirements.txt
-```
-
-Note: See [requirements.txt](requirements.txt) for more details.
-
-### Swap Your Face
-```sh
-python main.py --src imgs/test6.jpg --dst dream.jpg --out test.jpg --correct_color --prompt 'image promt here'
-```
-Note: Run **python main.py -h** for more details.
-
-
-### Real-time camera
-```sh
-python main_video.py --src_img dream.jpg --show --correct_color --save_path {*.avi} --prompt 'image promt here'
-```
-### Video
-```sh
-python main_video.py --src_img dream.jpg --video_path {video_path} --show --correct_color --save_path {*.avi}
-```
-### To Do
-- make the local file save readable as an init or upload the file save
-- train a proper classifier!
+Environment setup:
+- Homebrew macosx
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+For some reason it corrupted and I had to do this:
+rm -fr $(brew --repo homebrew/core)
+brew tap homebrew/core
+- Install Python
+brew install python
+- Install imgbbpy
+pip3 install imgbbpy --user

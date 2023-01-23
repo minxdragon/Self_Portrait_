@@ -33,11 +33,11 @@ import base64
 import json
 import socket
 import time
-import syphon
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
+from syphonpy import Server
 
 testMode = True
 
@@ -167,10 +167,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         self.video = cv2.VideoCapture(video_path)
                         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
                                                     (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
-
+                    
                     def start(self):
                         while self.video.isOpened():
-
                             if cv2.waitKey(1) & 0xFF == ord('q'):
                                 break
 
@@ -180,6 +179,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
                             self.writer.write(dst_img)
                             #if self.args.show:
+                            # Send the frame to Syphon
+                            frame = self.read()
+                            server = Server()
+                            server.publish(dst_img)
+                            # Display the frame
+                            cv2.imshow('frame',dst_img)
+                            if cv2.waitKey(1) & 0xFF == ord('q'):
+                                break
                             cv2.imshow("Video", dst_img)
                             # delay for 5 seconds
                             
@@ -201,27 +208,29 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(f'Sending...')                
                 conn.sendall(b"cameraMaskReady,window frame name")
                 print(f'Analysis complete. Mask and Keywords sent.')
-                
-                counter = 0
-                while True:
-                    try:
-                        # face swap video from webcam class
-                        VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-                    except TypeError:
-                        counter += 1
-                        stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
-                        print(f'retrying mask...')
-                        time.sleep(4)
-                        print(f'Sending...')                
-                        conn.sendall(b"cameraMaskReady,window frame name")
-                        print(f'Analysis complete. Mask and Keywords sent.')
-                        raise TypeError
-                    if counter == 2:
-                        print(f'using existing mask')
-                        src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
-                        VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-                        break        
+                # Create a syphon client
 
+                VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+                
+                # counter = 0
+                # while True:
+                #     try:
+                #         # face swap video from webcam class
+                #         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+                #     except TypeError:
+                #         counter += 1
+                #         stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
+                #         print(f'retrying mask...')
+                #         time.sleep(4)
+                #         print(f'Sending...')                
+                #         conn.sendall(b"cameraMaskReady,window frame name")
+                #         print(f'Analysis complete. new Mask and Keywords sent.')
+                #         raise counter
+                #     if counter == 2:
+                #         print(f'using existing mask')
+                #         src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
+                #         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+                #         break        
             else:
                 print(f'Message type not identified')
 

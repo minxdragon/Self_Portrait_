@@ -7,15 +7,25 @@ int countdownCurrentTime = 0;
 
 void sceneOne(PGraphics scene){  
   scene.beginDraw(); 
+
+  if (client1.newFrame()) {
+    canvasWebcam = client1.getGraphics(canvasWebcam);
+    scene.image(canvasWebcam, 0, 0, 640, 508);
+  }   
+  
+  //if (client.newFrame()) {
+  //  sCanvas = client.getGraphics(sCanvas);
     
-  if (client.newFrame()) {
-    sCanvas = client.getGraphics(sCanvas);
-    scene.image(sCanvas, 0, 0, 640, 508);    
-  }  
-  userPhoto = scene.get(0,0,640, 508);
+  //  //photobooth image 1232 x 688px
+  //  scene.image(sCanvas, 0, 0, 640, 508);    
+  //  //userImage = createGraphics(608, 1080);
+  //  //userPhoto = createImage(608, 1080,RGB);
+  //}  
+  ////println(scene.width, scene.height);
+  userPhoto = scene.get(0,0,640, 508);  
   
   scene.fill(0);
-  scene.rect(0, 508,width,height-508);
+  scene.rect(0, 508,w,h-508);
   if (countdownOn){
     //3,2,1
     countdownCurrentTime = floor((millis() - countdownStartTime)/1000);
@@ -38,7 +48,7 @@ void defineGUIOne(){
   //             .setColorLabel(color(0, 0, 0))
   //             .setColorBackground(color(255, 255, 255));
   //b1.hide();
-  b1 = new GButton(this, width/2-50,height/2-20, 100, 40);
+  b1 = new GButton(this, w/2-50,h/2-20, 100, 40);
   b1.setText("Take Photo");
   b1.addEventHandler(this, "sceneOneButton");
   b1.setVisible(false);
@@ -48,38 +58,38 @@ void defineGUIOne(){
 void renderCounter(PGraphics currentScene, int counter){  
   currentScene.beginDraw();
   currentScene.fill(0);
-  currentScene.ellipse(width/2-150,height-250,30,30);
+  currentScene.ellipse(w/2-150,h-250,30,30);
   currentScene.fill(255);
-  currentScene.text("3", width/2-140,height-250,30,30);
+  currentScene.text("3", w/2-140,h-250,30,30);
 
   currentScene.fill(0);
-  currentScene.ellipse(width/2-50,height-250,30,30);
+  currentScene.ellipse(w/2-50,h-250,30,30);
   currentScene.fill(255);
-  currentScene.text("2", width/2-40,height-250,30,30);
+  currentScene.text("2", w/2-40,h-250,30,30);
   
   currentScene.fill(0);
-  currentScene.ellipse(width/2+50,height-250,30,30);
+  currentScene.ellipse(w/2+50,h-250,30,30);
   currentScene.fill(255);
-  currentScene.text("1", width/2+40,height-250,30,30);
+  currentScene.text("1", w/2+40,h-250,30,30);
 
   switch(counter){
     case 0:
       currentScene.fill(255);
-      currentScene.ellipse(width/2-150,height-250,30,30);
+      currentScene.ellipse(w/2-150,h-250,30,30);
       currentScene.fill(0);
-      currentScene.text("3", width/2-150,height-250,30,30);
+      currentScene.text("3", w/2-150,h-250,30,30);
       break;
     case 1:
       currentScene.fill(255);
-      currentScene.ellipse(width/2-50,height-250,30,30);
+      currentScene.ellipse(w/2-50,h-250,30,30);
       currentScene.fill(0);
-      currentScene.text("2", width/2-50,height-250,30,30); 
+      currentScene.text("2", w/2-50,h-250,30,30); 
       break;
     case 2:
       currentScene.fill(255);
-      currentScene.ellipse(width/2+50,height-250,30,30);
+      currentScene.ellipse(w/2+50,h-250,30,30);
       currentScene.fill(0);
-      currentScene.text("1", width/2+50,height-250,30,30);
+      currentScene.text("1", w/2+50,h-250,30,30);
       break;
   } 
   
@@ -124,5 +134,13 @@ void processImage(){
     println("Face crop successful.");
     faceImageCanvas.endDraw(); 
     userImage.endDraw(); 
+  } else {
+    //PGraphics faceImageCanvas = createGraphics(400,400);  
+
+    //faceImageCanvas.beginDraw();
+    //faceImageCanvas.image(faceDefault,0,0,400,400);
+    //faceImageCanvas.save("data/face.jpg");
+    //println("Face default successful.");
+    //faceImageCanvas.endDraw();     
   }  
 }

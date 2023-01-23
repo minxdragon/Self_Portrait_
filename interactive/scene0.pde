@@ -19,7 +19,7 @@ void defineGUIZero(){
   //     .setColorBackground(color(255, 255, 255))
   //     ;
   
-  b0 = new GButton(this, width/2-50,height/2-20, 100, 40);
+  b0 = new GButton(this, w/2-50, h/2-20, 100, 40);
   b0.setText("Start");
   b0.addEventHandler(this, "sceneZeroButton");
   b0.setVisible(true);

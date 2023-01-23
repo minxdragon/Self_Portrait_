@@ -10,6 +10,11 @@ import processing.net.*;
 import codeanticode.syphon.*;
 import videoExport.*;
 
+PGraphics canvasWebcam;
+PGraphics canvasSyphoner;
+SyphonClient client1;
+SyphonClient client2;
+
 Client myClient;
 String inString;
 
@@ -23,8 +28,8 @@ PGraphics userImage;
 PImage userPhoto;
 OpenCV opencv;
 
-PGraphics sCanvas;
-SyphonClient client;
+//PGraphics sCanvas;
+//SyphonClient client;
 
 String responseKeywordsString = "";
 
@@ -38,14 +43,30 @@ Movie userVideo;
 
 PGraphics videoLayer;
 PGraphics progressBarCanvas;
+PImage faceDefault;
 
+int w = 608;
+int h = 1080;
 
 void setup(){
-  size(608,1080,P3D);
+  size(608, 1080,P3D);
+  //Libraries seem to go bonkers with fullscreen mode and windowResize
+  //fullScreen(P3D);
+  //windowResize(608, 1080);
+  //delay(20);
+  //surface.setLocation(800, 0);  
+  
   createCanvases();
   frameRate(30);
   
-  client = new SyphonClient(this);
+  //client = new SyphonClient(this);
+
+  canvasWebcam = createGraphics(width, height);   
+  client1 = new SyphonClient(this, "syphoncam");
+  
+  canvasSyphoner = createGraphics(width, height); 
+  //to be switched out to 'python' window
+  client2 = new SyphonClient(this, "python");
   
   sceneGUI = new GToggleGroup();
   defineGUI();
@@ -54,17 +75,18 @@ void setup(){
   
   userImage = createGraphics(608, 1080);
   userPhoto = createImage(608, 1080,RGB);
+  faceDefault = loadImage("default.jpeg");
   
   myClient = new Client(this, "127.0.0.1", 5008); 
   
   
-  veCanvas = createGraphics(width, height,P3D);
+  veCanvas = createGraphics(w, h,P3D);
   //ve = new VideoExport(this, "/data/gallery/movie.mp4", veCanvas);
   ve = new VideoExport(this);
   ve.setGraphics(veCanvas);
   
-  videoLayer = createGraphics(width, height,P3D);
-  progressBarCanvas = createGraphics(width, height,P3D);
+  videoLayer = createGraphics(w, h,P3D);
+  progressBarCanvas = createGraphics(w, h,P3D);
   
   background(0,0,0);
 }
@@ -141,7 +163,7 @@ void renderScene(int currentSceneNumber){
 
 void createCanvases(){
   for(int i = 0; i < 10; i++){
-    scenes[i] = createGraphics(width, height, P3D);
+    scenes[i] = createGraphics(w, h, P3D);
   }
 }
 

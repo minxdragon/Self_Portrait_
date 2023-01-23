@@ -12,21 +12,28 @@ int videoCounter = 0;
 void sceneSeven(PGraphics scene){  
   scene.beginDraw();
   
-  if (client.newFrame()) {
-    sCanvas = client.getGraphics(sCanvas);    
+  //if (client2.newFrame()) {
+  //  sCanvas = client2.getGraphics(sCanvas);    
+  //}
+
+  if (client2.newFrame()) {
+    canvasSyphoner = client2.getGraphics(canvasSyphoner);
+    image(canvasSyphoner, 0, 0, 640, 508);
   }
-  
+
   videoLayer.beginDraw();
-    videoLayer.image(sCanvas, 0, 0, 640, 508); 
+  //int w = 608;int h = 1080;
+
+    videoLayer.image(canvasSyphoner, 0, 0, 640, 508); 
     //Cover rest of screen outside of video - openCV does not like background function
     videoLayer.fill(0);
-    videoLayer.rect(0,508,width,height-508);
+    //videoLayer.rect(0,508,w,h-508);
   
     for(int i = 0; i < selectedToggles.size(); i++){
       videoLayer.fill(30);
-      videoLayer.rect(width/2-100, 450+(30*i), 200,30);
+      videoLayer.rect(300, 450+(30*i), 200,30);
       videoLayer.fill(255);
-      videoLayer.text(selectedToggles.get(i), width/2-80, 470+(30*i));
+      videoLayer.text(selectedToggles.get(i), 300, 470+(30*i));
     }
   videoLayer.endDraw();
   
@@ -60,19 +67,19 @@ void sceneSeven(PGraphics scene){
 void renderProgressBar(PGraphics barCanvas){
   barCanvas.beginDraw();
   barCanvas.fill(255,0,0);
-  barCanvas.rect(width/2, height-150,200,20);
+  barCanvas.rect(w/2, h-150,200,20);
   barCanvas.fill(255);
-  barCanvas.text("Recording...", width/2, height-150);
+  barCanvas.text("Recording...", w/2, h-150);
   
   barCanvas.fill(255,255,255);
-  barCanvas.rect(0,height-20,width, 20);
+  barCanvas.rect(0,h-20,w, 20);
   
   //progress
   float b = (millis() - startTime - countdownTime)/5;
-  float barWidth = lerp(0,width,b/1000);
+  float barWidth = lerp(0,w,b/1000);
   //println(b);
   barCanvas.fill(255,0,0);
-  barCanvas.rect(0,height-20,barWidth,20);   
+  barCanvas.rect(0,h-20,barWidth,20);   
   barCanvas.endDraw();
 }
 
@@ -85,7 +92,7 @@ void defineGUISeven(){
   //             .setColorBackground(color(255, 255, 255));
   //b7.hide();
   
-  b7 = new GButton(this, width/2-50,height-100, 100, 40);
+  b7 = new GButton(this, w/2-50,h-100, 100, 40);
   b7.setText("Record clip");
   b7.addEventHandler(this, "sceneSevenButton");
   b7.setVisible(false);
@@ -109,6 +116,7 @@ void endRecording(){
   ve.dispose();
   
   println("Video created. Loading video in...");
+  myClient.write("videoCaptured");
   userVideo = new Movie(this, "gallery/"+userID + ".mp4");
   userVideo.loop();
   
