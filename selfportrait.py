@@ -18,16 +18,20 @@ from PIL import Image
 from skimage import data
 from skimage.filters import threshold_otsu
 from skimage.color import rgb2gray
+import uuid
 import logging
 import argparse
 import replicate
+import urllib
 import numpy as np
-
+import base64
+import json
+import socket
+import time
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
-from syphon import Client
 
 # ### Face detection
 #import the cascade for face detection
@@ -170,24 +174,27 @@ def selfPortrait():
 
         def start(self):
             # Create a syphon client
-            client = Client()
+            # client = Client()
             while self.video.isOpened():
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
-                _, frame, dst_img = self.video.read()
+                _, dst_img = self.video.read()
                 dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
                 if dst_points is not None:
                     dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
                 self.writer.write(dst_img)
                 # Send the frame to Syphon
-                client.publish(frame)
+                # client.publish(frame)
                 #if self.args.show:
                 cv2.imshow("Video", dst_img)
 
             self.video.release()
             self.writer.release()
             cv2.destroyAllWindows()
+
+    #load the initial image. currently static, will make dynamic later
+    filename = 'https://res.cloudinary.com/dj1ptpbol/image/upload/v1667791534/opencv0_o7mtqy.jpg' #Init image URL currently fixed, will make dynamic later
 
     if __name__ == '__main__':
         logging.basicConfig(level=logging.INFO,
