@@ -33,11 +33,18 @@ import base64
 import json
 import socket
 import time
+import syphonpy
 
+import numpy as np
+#import glfw
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import Syphon
+from Syphon import Client
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
-from syphonpy import Server
+#from syphonpy import Server
 
 testMode = True
 
@@ -131,11 +138,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
                         img = cv2.imdecode(arr, -1) # 'Load it as it is'
                         img = np.array(img)
-                        dream = cv2.imwrite('/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', img)
+                        dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
                         return dream
         
-                    stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
+                    stable_diffusion(prompt = promptString, init_image=init, src_img='interactive/data/dream.jpg', prompt_strength=0.3)
                     
                     #print ("analysis complete," + analysisComplete) #send as server command
 
@@ -144,7 +151,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(f'Analysis complete. Mask and Keywords sent.')
 
                  # face swap video from webcam class
-                src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg'
+                src_img='interactive/data/dream.jpg'
                 parser = argparse.ArgumentParser(description='FaceSwap Video')
                 parser.add_argument('--src_img', required=False, default=src_img, help='Path for source image')
                 parser.add_argument('--video_path', default=0,help='Path for video')
@@ -167,10 +174,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         self.video = cv2.VideoCapture(video_path)
                         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
                                                     (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
-                    
+
                     def start(self):
+                        import time
+                        time_to_close = 5
+                        start_time = time.time()
                         while self.video.isOpened():
-                            if cv2.waitKey(1) & 0xFF == ord('q'):
+                            if cv2.waitKey(1) & 0xFF == ord('q') or time.time() - start_time > time_to_close:
                                 break
 
                             _, dst_img = self.video.read()
@@ -179,19 +189,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
                             self.writer.write(dst_img)
                             #if self.args.show:
-                            # Send the frame to Syphon
-                            frame = self.read()
-                            server = Server()
-                            server.publish(dst_img)
-                            # Display the frame
-                            cv2.imshow('frame',dst_img)
-                            if cv2.waitKey(1) & 0xFF == ord('q'):
-                                break
+                            #start syphonpy
+                            # Create a syphon client
+                            client1 = Syphon.Client("client 1", show=False) # Syphon.Client("window name", show)
+                            client2 = Syphon.Client("client 2", show=False)
+                                
+                            while not client1.should_close() and not client2.should_close():
+                                frame = client1.draw(True)  # Syphon.Client.draw(True) return numpy array
+                                client2.draw() # Syphon.Client.draw(False) does not return numpy array
+                                
+                                if frame is not None:
+                                    cv2.imshow("client cv2", frame)
+                                
+                                if cv2.waitKey(1) & 0xFF == ord('q'):
+                                    break
+                                
+                                glfw.terminate()
+                                cv2.destroyAllWindows()
                             cv2.imshow("Video", dst_img)
-                            # delay for 5 seconds
-                            
+
                         self.video.release()
-                        cv2.waitKey(5000)
                         self.writer.release()
                         cv2.destroyAllWindows()
 
@@ -202,7 +219,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(promptString)
                         
                 #StableDiffusion code for replicate. requires a replicate account and a export code
-                stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
+                stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3)
                 print(f'Fetching mask...')
                 time.sleep(4)
                 print(f'Sending...')                
@@ -212,25 +229,25 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                 VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
                 
-                # counter = 0
-                # while True:
-                #     try:
-                #         # face swap video from webcam class
-                #         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-                #     except TypeError:
-                #         counter += 1
-                #         stable_diffusion(prompt = promptString, init_image=init, src_img='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream.jpg', prompt_strength=0.3)
-                #         print(f'retrying mask...')
-                #         time.sleep(4)
-                #         print(f'Sending...')                
-                #         conn.sendall(b"cameraMaskReady,window frame name")
-                #         print(f'Analysis complete. new Mask and Keywords sent.')
-                #         raise counter
-                #     if counter == 2:
-                #         print(f'using existing mask')
-                #         src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
-                #         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-                #         break        
+                counter = 0
+                while True:
+                    try:
+                        # face swap video from webcam class
+                        VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+                    except TypeError:
+                        counter += 1
+                        stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3)
+                        print(f'retrying mask...')
+                        time.sleep(4)
+                        print(f'Sending...')                
+                        conn.sendall(b"cameraMaskReady,window frame name")
+                        print(f'Analysis complete. new Mask and Keywords sent.')
+                        raise counter
+                    if counter == 2:
+                        print(f'using existing mask')
+                        src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
+                        VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+                        break        
             else:
                 print(f'Message type not identified')
 

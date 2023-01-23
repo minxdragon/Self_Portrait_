@@ -2,7 +2,7 @@
 PImage maskImageB;
 
 void sceneSix(PGraphics scene){  
-  maskImageB = loadImage("data/dream.jpg");
+  maskImageB = loadImage("data/maskB.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  
@@ -28,7 +28,7 @@ void defineGUISix(){
   //             .setColorBackground(color(255, 255, 255));
   //b6.hide();
   
-  b6 = new GButton(this, w/2-50,h-200, 100, 40);
+  b6 = new GButton(this, w/2-50,h-400, 100, 40);
   b6.setText("Next");
   b6.addEventHandler(this, "sceneSixButton");
   b6.setVisible(false);

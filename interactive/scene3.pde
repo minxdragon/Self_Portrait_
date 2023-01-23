@@ -3,7 +3,7 @@ PImage maskImageA;
 String[] returnedKeywords;
 
 void sceneThree(PGraphics scene){  
-  maskImageA = loadImage("data/dream.jpg");
+  maskImageA = loadImage("data/maskA.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  
@@ -40,7 +40,7 @@ void defineGUIThree(){
   //             .setColorBackground(color(255, 255, 255));
   //b3.hide();
   
-  b3 = new GButton(this, w/2-50,h-200, 100, 40);
+  b3 = new GButton(this, w/2-50,h-300, 100, 40);
   b3.setText("Next");
   b3.addEventHandler(this, "sceneThreeButton");
   b3.setVisible(false);

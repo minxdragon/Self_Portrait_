@@ -10,7 +10,7 @@ void sceneEight(PGraphics scene){
   }
   scene.image(userVideo, 0,0,w,h); 
   
-  scene.text("Would you like to display this on the gallery wall?",w/2-200,h/2+300,400,800);
+  scene.text("Would you like to display this on the gallery wall?",w/2-200,height/2+100,400,800);
   scene.endDraw();
 }
 
@@ -31,12 +31,12 @@ void defineGUIEight(){
   //b8a.hide();
   //b8b.hide();
   
-  b8a = new GButton(this, w/2-120,h-100, 100, 40);
+  b8a = new GButton(this, w/2-120,h-300, 100, 40);
   b8a.setText("Yes");
   b8a.addEventHandler(this, "sceneEightAButton");
   b8a.setVisible(false);
   
-  b8b = new GButton(this, w/2+10,h-100, 100, 40);
+  b8b = new GButton(this, w/2+10,h-300, 100, 40);
   b8b.setText("No thanks");
   b8b.addEventHandler(this, "sceneEightBButton");
   b8b.setVisible(false);

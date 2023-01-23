@@ -58,38 +58,38 @@ void defineGUIOne(){
 void renderCounter(PGraphics currentScene, int counter){  
   currentScene.beginDraw();
   currentScene.fill(0);
-  currentScene.ellipse(w/2-150,h-250,30,30);
+  currentScene.ellipse(w/2-50,h-150,30,30);
   currentScene.fill(255);
-  currentScene.text("3", w/2-140,h-250,30,30);
+  currentScene.text("3", w/2-55,h-160,30,30);
 
   currentScene.fill(0);
-  currentScene.ellipse(w/2-50,h-250,30,30);
+  currentScene.ellipse(w/2,h-150,30,30);
   currentScene.fill(255);
-  currentScene.text("2", w/2-40,h-250,30,30);
+  currentScene.text("2", w/2-5,h-160,30,30);
   
   currentScene.fill(0);
-  currentScene.ellipse(w/2+50,h-250,30,30);
+  currentScene.ellipse(w/2+50,h-150,30,30);
   currentScene.fill(255);
-  currentScene.text("1", w/2+40,h-250,30,30);
+  currentScene.text("1", w/2+45,h-160,30,30);
 
   switch(counter){
     case 0:
       currentScene.fill(255);
-      currentScene.ellipse(w/2-150,h-250,30,30);
+      currentScene.ellipse(w/2-50,h-150,30,30);
       currentScene.fill(0);
-      currentScene.text("3", w/2-150,h-250,30,30);
+      currentScene.text("3", w/2-55,h-160,30,30);
       break;
     case 1:
       currentScene.fill(255);
-      currentScene.ellipse(w/2-50,h-250,30,30);
+      currentScene.ellipse(w/2,h-150,30,30);
       currentScene.fill(0);
-      currentScene.text("2", w/2-50,h-250,30,30); 
+      currentScene.text("2", w/2-5,h-160,30,30); 
       break;
     case 2:
       currentScene.fill(255);
-      currentScene.ellipse(w/2+50,h-250,30,30);
+      currentScene.ellipse(w/2+50,h-150,30,30);
       currentScene.fill(0);
-      currentScene.text("1", w/2+50,h-250,30,30);
+      currentScene.text("1", w/2+45,h-160,30,30);
       break;
   } 
   

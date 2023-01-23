@@ -3,7 +3,7 @@ String[] allKeywords = {"nurturing", "creative", "rational", "sensitive", "deter
                         "Moody", "Intelligent", "Passionate", "Playful", "Shy", "Imaginative", "Decisive", "Strong", "Practical", "Intimidating",
                         "Condescending", "Provocative", "Impulsive", "Inventive", "Conceptual", "Persistent", "Protective", "reserved", "happy", "independant",
                         "brooding", "surreal", "mad"};
-
+                        
 LinkedHashMap<String,Boolean> allKeywordsHashMap = new LinkedHashMap<String,Boolean>();
 ArrayList<GButton> wordToggles = new ArrayList<GButton>();
 StringList selectedToggles;
@@ -71,12 +71,12 @@ void defineGUIFour(){
   //b4b.hide();
   
   
-  b4a = new GButton(this, width/2-50,height-200, 120, 50);
+  b4a = new GButton(this, w/2-50,h-200, 120, 50);
   b4a.setText("Generate");
   b4a.addEventHandler(this, "sceneFourAButton");
   b4a.setVisible(false);
   
-  b4b = new GButton(this, width/2-50,height-270, 120, 50);
+  b4b = new GButton(this, w/2-50,h-270, 120, 50);
   b4b.setText("Clear all");
   b4b.addEventHandler(this, "sceneFourBButton");
   b4b.setVisible(false);

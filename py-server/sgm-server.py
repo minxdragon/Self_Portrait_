@@ -38,7 +38,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(face.url)
                 # When prompt is ready, send back to Processing
                 print(f'Sending...')
-                conn.sendall(b"analysisComplete,musical&level-headed&visionary&risk-taker&creative")
+                conn.sendall(b"analysisComplete,creative&Impulsive&surreal&Moody&rational")
                 print(f'Analysis complete. Mask and Keywords sent.')
             elif splitMessage[0] == 'userSelected':
                 print(f'Fetching mask...')  
