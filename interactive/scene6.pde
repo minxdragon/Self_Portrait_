@@ -2,7 +2,7 @@
 PImage maskImageB;
 
 void sceneSix(PGraphics scene){  
-  maskImageB = loadImage("data/maskB.jpg");
+  maskImageB = loadImage("data/dream.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  

@@ -191,23 +191,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             #if self.args.show:
                             #start syphonpy
                             # Create a syphon client
-                            #client1 = Syphon.Client("client 1", show=False) # 
                             Syphon.Client("python3", show=True)
-                            #client2 = Syphon.Client("client 2", show=False)
-                                
-                            while not Client.should_close():
-                                Syphon.Client.draw(True) 
-                                return self.frame
-                                #Syphon.Client.draw(False) does not return numpy array
-                                
-                            if self.frame is not None:
-                                cv2.imshow("python3", dst_img)
-                                cv2.resizeWindow("python3", 640, 480)
+                            Syphon.Client.draw(cv2.imshow("python3", dst_img)) #draws the frame
+                            
+                            cv2.resizeWindow("python3", 640, 480)
                             if cv2.waitKey(1) & 0xFF == ord('q'):
                                 break
                             
-                            cv2.destroyAllWindows()
-                            
+                            cv2.destroyAllWindows()  
 
                         self.video.release()
                         self.writer.release()
