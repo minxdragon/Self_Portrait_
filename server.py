@@ -191,22 +191,23 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             #if self.args.show:
                             #start syphonpy
                             # Create a syphon client
-                            client1 = Syphon.Client("client 1", show=False) # Syphon.Client("window name", show)
-                            client2 = Syphon.Client("client 2", show=False)
+                            #client1 = Syphon.Client("client 1", show=False) # 
+                            Syphon.Client("python3", show=True)
+                            #client2 = Syphon.Client("client 2", show=False)
                                 
-                            while not client1.should_close() and not client2.should_close():
-                                frame = client1.draw(True)  # Syphon.Client.draw(True) return numpy array
-                                client2.draw() # Syphon.Client.draw(False) does not return numpy array
+                            while not Client.should_close():
+                                Syphon.Client.draw(True) 
+                                return self.frame
+                                #Syphon.Client.draw(False) does not return numpy array
                                 
-                                if frame is not None:
-                                    cv2.imshow("client cv2", frame)
-                                
-                                if cv2.waitKey(1) & 0xFF == ord('q'):
-                                    break
-                                
-                                glfw.terminate()
-                                cv2.destroyAllWindows()
-                            cv2.imshow("Video", dst_img)
+                            if self.frame is not None:
+                                cv2.imshow("python3", dst_img)
+                                cv2.resizeWindow("python3", 640, 480)
+                            if cv2.waitKey(1) & 0xFF == ord('q'):
+                                break
+                            
+                            cv2.destroyAllWindows()
+                            
 
                         self.video.release()
                         self.writer.release()
