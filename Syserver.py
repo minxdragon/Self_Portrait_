@@ -36,6 +36,9 @@ class VideoHandler(object):
         self.video = cv2.VideoCapture(video_path)
 
     def start(self):
+            # window details
+        size = (640, 400)
+        server2 = Syphon.Server("python", size, show=False)
         while self.video.isOpened():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -44,9 +47,6 @@ class VideoHandler(object):
             dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
             if dst_points is not None:
                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-
-            resized = cv2.resize(dst_img, (640, 400))
-            cv2.imshow("python", resized)
 
         self.video.release()
         #self.writer.release()
@@ -102,6 +102,11 @@ def main():
         
         # cv2.imshow("python", dst_img)
         # server2.draw_and_send(dst_img)
+        resized = cv2.resize(self.dst_img, (640, 400))
+        print ('showing video')
+        cv2.imshow("python", resized)
+        print ('sending video')
+        server2.draw_and_send(resized)
             
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
