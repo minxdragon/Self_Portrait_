@@ -210,7 +210,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 								break
 						# start syphon server
 						#size = (640, 400)
-						#server = Server("python", size)
+						server = Server("python", size)
 						while self.video.isOpened():
 							if cv2.waitKey(1) & 0xFF == ord('q'):
 								break
