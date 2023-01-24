@@ -99,7 +99,7 @@ class Client:
         if not glfw.init():
             raise RuntimeError('Failed to initialize GLFW')
         
-        self.window = glfw.create_window(1280, 720, name, None, None)
+        self.window = glfw.create_window(640, 480, name, None, None)
         
         if not self.window:
             glfw.terminate()
