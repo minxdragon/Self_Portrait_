@@ -2,11 +2,8 @@
 import cv2
 import Syphon
 import glfw
-import threading
 
 def main():
-    # Create a lock
-    window_lock = threading.Lock()
 
     # window details
     size = (640, 400)
@@ -17,10 +14,6 @@ def main():
 
 
     cap = cv2.VideoCapture(0)
-
-    # Acquire the lock
-    window_lock.acquire()
-
     if cap.isOpened() is False:
         raise("IO Error")
         
@@ -41,8 +34,7 @@ def main():
             
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        
-    window_lock.release()
+
     glfw.terminate()
     cv2.destroyAllWindows()
     exit()
