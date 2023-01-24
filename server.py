@@ -152,33 +152,33 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				print(f'Analysis complete. Mask and Keywords sent.')
 
 				 # face swap video from webcam class
-				src_img='interactive/data/dream.jpg'
-				parser = argparse.ArgumentParser(description='FaceSwap Video')
-				parser.add_argument('--src_img', required=False, default=src_img, help='Path for source image')
-				parser.add_argument('--video_path', default=0,help='Path for video')
-				parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
-				parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
-				parser.add_argument('--show', default=False, action='store_true', help='Show')
-				parser.add_argument('--save_path', required=False, default= "test/test.avi", help='Path for storing output video')
-				parser.add_argument('--prompt', type=str, required=False, default = promptString, help='Prompt for generation')
-				parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
-				parser.add_argument('--init', type=str, default=init, required=False, help='Prompt for generation')
-				args = parser.parse_args()
+				# src_img='interactive/data/dream.jpg'
+				# parser = argparse.ArgumentParser(description='FaceSwap Video')
+				# parser.add_argument('--src_img', required=False, default=src_img, help='Path for source image')
+				# parser.add_argument('--video_path', default=0,help='Path for video')
+				# parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
+				# parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
+				# parser.add_argument('--show', default=False, action='store_true', help='Show')
+				# parser.add_argument('--save_path', required=False, default= "test/test.avi", help='Path for storing output video')
+				# parser.add_argument('--prompt', type=str, required=False, default = promptString, help='Prompt for generation')
+				# parser.add_argument('--strength', type=str, required=False, help='Prompt for generation')
+				# parser.add_argument('--init', type=str, default=init, required=False, help='Prompt for generation')
+				# args = parser.parse_args()
 
-				dir_path = os.path.dirname(args.save_path)
-				if not os.path.isdir(dir_path):
-					os.makedirs(dir_path)
+				# dir_path = os.path.dirname(args.save_path)
+				# if not os.path.isdir(dir_path):
+				# 	os.makedirs(dir_path)
 
-				class VideoHandler(object):
+				# class VideoHandler(object):
 
-					def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
-						self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-						self.args = args
-						self.video = cv2.VideoCapture(video_path)
-						self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
-													(int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+				# 	def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
+				# 		self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+				# 		self.args = args
+				# 		self.video = cv2.VideoCapture(video_path)
+				# 		self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
+				# 									(int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
-					def start(self):
+					# def start(self):
 						# # window details
 						# size = (640, 400)
 
@@ -211,26 +211,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						# start syphon server
 						#size = (640, 400)
 						# server = Server("python", size)
-						while self.video.isOpened():
-							if cv2.waitKey(1) & 0xFF == ord('q'):
-								break
-							_, dst_img = self.video.read()
-							dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
-							if dst_points is not None:
-								dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-							self.writer.write(dst_img)
-							#if self.args.show:
-							#set window size to 640x480
-							height = 480
-							width = 640
-							cv2.resizeWindow("python", width, height)
-							cv2.imshow("python", dst_img)
-							# Send the face swapped frame to the Processing sketch
-							# server.draw_and_send(dst_img)
+						# while self.video.isOpened():
+						# 	if cv2.waitKey(1) & 0xFF == ord('q'):
+						# 		break
+						# 	_, dst_img = self.video.read()
+						# 	dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
+						# 	if dst_points is not None:
+						# 		dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
+						# 	self.writer.write(dst_img)
+						# 	#if self.args.show:
+						# 	#set window size to 640x480
+						# 	height = 480
+						# 	width = 640
+						# 	cv2.resizeWindow("python", width, height)
+						# 	cv2.imshow("python", dst_img)
+						# 	# Send the face swapped frame to the Processing sketch
+						# 	# server.draw_and_send(dst_img)
 					
-						self.video.release()
-						self.writer.release()
-						cv2.destroyAllWindows()
+						# self.video.release()
+						# self.writer.release()
+						# cv2.destroyAllWindows()
 
 			elif splitMessage[0] == 'userSelected':
 				#listen for the userSelected message
@@ -247,28 +247,28 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				print(f'Analysis complete. Mask and Keywords sent.')
 
 
-				VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+				# VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
 				
-				counter = 0
-				while True:
-					try:
-						# face swap video from webcam class
-						VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-					except TypeError:
-						counter += 1
-						stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3)
-						print(f'retrying mask...')
-						time.sleep(4)
-						print(f'Sending...')                
-						conn.sendall(b"cameraMaskReady,window frame name")
-						print(f'Analysis complete. new Mask and Keywords sent.')
-						raise counter
-					if counter == 2:
-						print(f'using existing mask')
-						src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
-						VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
-						break        
-			else:
-				print(f'Message type not identified')
-				conn.sendall(b"messageTypeNotIdentified")
+			# 	counter = 0
+			# 	while True:
+			# 		try:
+			# 			# face swap video from webcam class
+			# 			VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+			# 		except TypeError:
+			# 			counter += 1
+			# 			stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3)
+			# 			print(f'retrying mask...')
+			# 			time.sleep(4)
+			# 			print(f'Sending...')                
+			# 			conn.sendall(b"cameraMaskReady,window frame name")
+			# 			print(f'Analysis complete. new Mask and Keywords sent.')
+			# 			raise counter
+			# 		if counter == 2:
+			# 			print(f'using existing mask')
+			# 			src_img = '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/dream2.jpg'
+			# 			VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
+			# 			break        
+			# else:
+			# 	print(f'Message type not identified')
+			# 	conn.sendall(b"messageTypeNotIdentified")
 
