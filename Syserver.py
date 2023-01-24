@@ -10,7 +10,7 @@ def main():
 
     # window setup
     # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-    server2 = Syphon.Server("Server Gray", size, show=False)
+    server2 = Syphon.Server("python", size, show=False)
 
 
     cap = cv2.VideoCapture(0)
@@ -29,7 +29,7 @@ def main():
         #cv2.imshow("rgb", frame)
         #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
         
-        cv2.imshow("gray", frame_gray)
+        cv2.imshow("python", frame_gray)
         server2.draw_and_send(frame_gray)
             
         if cv2.waitKey(1) & 0xFF == ord('q'):

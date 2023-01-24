@@ -36,11 +36,11 @@ import time
 import syphonpy
 
 import numpy as np
-#import glfw
+import glfw
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import Syphon
-from Syphon import Client
+from Syphon import Server
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
@@ -66,6 +66,40 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(f'Received | ' + stringdata)
 
             splitMessage = stringdata.split(',')
+
+            #start syphon servers
+            # window details
+            size = (640, 400)
+
+            # window setup
+            # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
+            server2 = Syphon.Server("python", size, show=False)
+
+
+            cap = cv2.VideoCapture(0)
+            if cap.isOpened() is False:
+                raise("IO Error")
+                
+            # loop
+            # while not server1.should_close() and not server2.should_close():
+            while not server2.should_close():
+                ret, frame = cap.read() #read camera image
+                frame = cv2.resize(frame, size)
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
+                frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
+                frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
+                
+                #cv2.imshow("rgb", frame)
+                #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
+                
+                cv2.imshow("python", frame_gray)
+                server2.draw_and_send(frame_gray)
+                    
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+            glfw.terminate()
+            cv2.destroyAllWindows()
 
             # face or userSelected
             if splitMessage[0] == 'cameraNoMask':
@@ -167,6 +201,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 dir_path = os.path.dirname(args.save_path)
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
+
                 class VideoHandler(object):
                     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
                         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
@@ -176,69 +211,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                                                     (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
                     def start(self):
-                        # window details
-                        size = (640, 400)
-
-                        # window setup
-                        # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-                        server2 = Syphon.Server("Server Gray", size, show=False)
-
-
-                        #cap = cv2.VideoCapture(0)
-                        if self.isOpened() is False:
-                            raise("IO Error")
-                            
-                        # loop
-                        # while not server1.should_close() and not server2.should_close():
-                        while not server2.should_close():
-                            ret, frame = self.read() #read camera image
-                            frame = cv2.resize(frame, size)
-                            while self.video.isOpened():
-                                _, dst_img = self.video.read()
-                                dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
-                                if dst_points is not None:
-                                    dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-                                self.writer.write(dst_img)
-                            #if self.args.show:
-                            #start syphonpy
-                            # Create a syphon client
-                            #Syphon.Client("python3", show=True)
-                            cv2.imshow("python3", dst_img) #draws the frame
-                            #frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-                            #frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
-                            #frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
-                            
-                            #cv2.imshow("rgb", frame)
-                            #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
-                            
-                            cv2.imshow("gray", dst_img)
-                            server2.draw_and_send(dst_img)
-                                
+                        while self.video.isOpened():
                             if cv2.waitKey(1) & 0xFF == ord('q'):
                                 break
-                        import time
-                        time_to_close = 5
-                        start_time = time.time()
-                        while self.video.isOpened():
-                            if cv2.waitKey(1) & 0xFF == ord('q') or time.time() - start_time > time_to_close:
-                                break
-
                             _, dst_img = self.video.read()
                             dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
                             if dst_points is not None:
                                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
                             self.writer.write(dst_img)
                             #if self.args.show:
-                            #start syphonpy
-                            # Create a syphon client
-                            #Syphon.Client("python3", show=True)
-                            cv2.imshow("python3", dst_img) #draws the frame
-                            
-                            cv2.resizeWindow("python", 640, 480)
-                            if cv2.waitKey(1) & 0xFF == ord('q'):
-                                break
-                            
-                            cv2.destroyAllWindows()  
+                            #set window size to 640x480
+                            height = 480
+                            width = 640
+                            cv2.resizeWindow("python", width, height)
+                            cv2.imshow("python", dst_img)
 
                         self.video.release()
                         self.writer.release()
