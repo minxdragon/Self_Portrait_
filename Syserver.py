@@ -46,7 +46,7 @@ class VideoHandler(object):
                 dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
 
             resized = cv2.resize(dst_img, (640, 400))
-            cv2.imshow("Video", resized)
+            cv2.imshow("python", resized)
 
         self.video.release()
         #self.writer.release()
@@ -79,7 +79,7 @@ def main():
     size = (640, 400)
 
     # window setup
-    # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
+    #server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
     server2 = Syphon.Server("python", size, show=False)
 
 

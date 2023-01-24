@@ -45,6 +45,7 @@ from Syphon import Server
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
+from Syserver import main
 #from syphonpy import Server
 
 testMode = True
@@ -246,7 +247,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				conn.sendall(b"cameraMaskReady,window frame name")
 				print(f'Analysis complete. Mask and Keywords sent.')
 
-
+				main()
 				# VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
 				
 			# 	counter = 0
