@@ -45,7 +45,8 @@ from Syphon import Server
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
-from Syserver import main
+#from Syserver import main
+from grayServer import main
 #from syphonpy import Server
 
 testMode = True
