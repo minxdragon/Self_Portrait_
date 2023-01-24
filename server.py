@@ -34,6 +34,7 @@ import json
 import socket
 import time
 import syphonpy
+import threading   
 
 import numpy as np
 import glfw
@@ -169,43 +170,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     os.makedirs(dir_path)
 
                 class VideoHandler(object):
-                                #start syphon servers
-                    # window details
-                    size = (640, 400)
 
-                    # window setup
-                    # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-                    server2 = Syphon.Server("python", size, show=False)
-
-
-                    cap = cv2.VideoCapture(0)
-                    if cap.isOpened() is False:
-                        raise("IO Error")
-                        
-                    # loop
-                    # while not server1.should_close() and not server2.should_close():
-                    while not server2.should_close():
-                        ret, frame = cap.read() #read camera image
-                        frame = cv2.resize(frame, size)
-                        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-                        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
-                        frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
-                        
-                        #cv2.imshow("rgb", frame)
-                        #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
-                        
-                        cv2.imshow("python", frame_gray)
-                        server2.draw_and_send(frame_gray)
-                        
                     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
                         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
                         self.args = args
                         self.video = cv2.VideoCapture(video_path)
                         self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
                                                     (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+                        
 
                     def start(self):
+                        window_lock = threading.Lock()
+                        
+                        
                         while self.video.isOpened():
+                            # Acquire the lock
+                            window_lock.acquire()
                             if cv2.waitKey(1) & 0xFF == ord('q'):
                                 break
                             _, dst_img = self.video.read()
@@ -219,6 +199,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             width = 640
                             cv2.resizeWindow("python", width, height)
                             cv2.imshow("python", dst_img)
+                            cv2.waitKey(0)
+
+                            # Release the lock
+                            window_lock.release()
 
                         self.video.release()
                         self.writer.release()
@@ -237,7 +221,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(f'Sending...')                
                 conn.sendall(b"cameraMaskReady,window frame name")
                 print(f'Analysis complete. Mask and Keywords sent.')
-                # Create a syphon client
+
 
                 VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
                 
