@@ -179,38 +179,38 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 													(int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
 					def start(self):
-						# window details
-						size = (640, 400)
+						# # window details
+						# size = (640, 400)
 
-						# window setup
-						# server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-						server2 = Syphon.Server("python", size, show=False)
+						# # window setup
+						# # server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
+						# server2 = Syphon.Server("python", size, show=False)
 
 
-						cap = cv2.VideoCapture(0)
-						if cap.isOpened() is False:
-							raise("IO Error")
+						# cap = cv2.VideoCapture(0)
+						# if cap.isOpened() is False:
+						# 	raise("IO Error")
 							
-						# loop
-						# while not server1.should_close() and not server2.should_close():
-						while not server2.should_close():
-							ret, frame = cap.read() #read camera image
-							frame = cv2.resize(frame, size)
-							frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-							frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
-							frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
+						# # loop
+						# # while not server1.should_close() and not server2.should_close():
+						# while not server2.should_close():
+						# 	ret, frame = cap.read() #read camera image
+						# 	frame = cv2.resize(frame, size)
+						# 	frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
+						# 	frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
+						# 	frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
 							
-							#cv2.imshow("rgb", frame)
-							#server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
+						# 	#cv2.imshow("rgb", frame)
+						# 	#server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
 							
-							cv2.imshow("python", frame_gray)
-							server2.draw_and_send(frame_gray)
+						# 	cv2.imshow("python", frame_gray)
+						# 	server2.draw_and_send(frame_gray)
 								
-							if cv2.waitKey(1) & 0xFF == ord('q'):
-								break
+						# 	if cv2.waitKey(1) & 0xFF == ord('q'):
+						# 		break
 						# start syphon server
 						#size = (640, 400)
-						server = Server("python", size)
+						# server = Server("python", size)
 						while self.video.isOpened():
 							if cv2.waitKey(1) & 0xFF == ord('q'):
 								break
@@ -226,7 +226,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 							cv2.resizeWindow("python", width, height)
 							cv2.imshow("python", dst_img)
 							# Send the face swapped frame to the Processing sketch
-							server.draw_and_send(dst_img)
+							# server.draw_and_send(dst_img)
 					
 						self.video.release()
 						self.writer.release()

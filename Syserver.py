@@ -2,6 +2,44 @@
 import cv2
 import Syphon
 import glfw
+from urllib.request import urlopen, Request
+from face_detection import select_face
+from face_swap import face_swap
+
+# face swap video from webcam class
+class VideoHandler(object):
+    src_img='interactive/data/dream.jpg'
+    # window details
+    size = (640, 400)
+    server2 = Syphon.Server("python", size, show=False)
+
+    def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
+        self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+        self.args = args
+        self.video = cv2.VideoCapture(video_path)
+        self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
+                                      (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+
+    def start(self):
+        import time
+        time_to_close = 5
+        start_time = time.time()
+        while self.video.isOpened():
+            if cv2.waitKey(1) & 0xFF == ord('q') or time.time() - start_time > time_to_close:
+                break
+
+            _, dst_img = self.video.read()
+            dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
+            if dst_points is not None:
+                dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
+            self.writer.write(dst_img)
+            #if self.args.show:
+            cv2.imshow("Video", dst_img)
+            server2.draw_and_send(dst_img)
+
+        self.video.release()
+        self.writer.release()
+        cv2.destroyAllWindows()
 
 def main():
 
@@ -22,15 +60,16 @@ def main():
     while not server2.should_close():
         ret, frame = cap.read() #read camera image
         frame = cv2.resize(frame, size)
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
-        frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
+        # frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
+        # frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
+        # frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
+        VideoHandler(video_path=0, img_path="interactive/data/dream.jpg", args=None)
         
         #cv2.imshow("rgb", frame)
         #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
         
-        cv2.imshow("python", frame_gray)
-        server2.draw_and_send(frame_gray)
+        # cv2.imshow("python", dst_img)
+        # server2.draw_and_send(dst_img)
             
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
