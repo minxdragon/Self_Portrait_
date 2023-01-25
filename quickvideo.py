@@ -23,15 +23,16 @@ class VideoHandler(object):
             dst_points, dst_shape, dst_face = select_face(frame, choose=False)
             if dst_points is not None:
                 frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
-
-            cv2.imshow("Video", frame)
+            
+            resized = cv2.resize(frame, (640, 400))
+            cv2.imshow("Video", resized)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
         cap.release()
         cv2.destroyAllWindows()
 
-        # resized = cv2.resize(dst_img, (640, 400))
+        # 
         # cv2.imshow("Video", resized)
 
 
