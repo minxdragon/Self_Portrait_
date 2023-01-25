@@ -124,13 +124,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
-					def stable_diffusion(prompt, init_image, src_img, prompt_strength):
+					def stable_diffusion(prompt, init_image, src_img, prompt_strength, negative_prompt):
 						prompt = promptString
 						model = replicate.models.get("stability-ai/stable-diffusion")
 						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
 						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
 						init_image = init
 						prompt_strength = 0.3
+						negative_prompt = 'profile, NSFW, abstract, cropped'
 						output_url = version.predict(prompt=(promptString), init_image=init)[0]
 						print(output_url)
 						# download the image, convert it to a NumPy array, and then read
@@ -143,8 +144,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
 						return dream
-		
-					stable_diffusion(prompt = promptString, init_image=init, src_img='interactive/data/dream.jpg', prompt_strength=0.3)
+					negative = "profile, NSFW, abstract, cropped"
+					stable_diffusion(prompt = promptString, init_image=init, src_img='interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt=negative)
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
 
@@ -159,9 +160,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
 				negative = "profile, NSFW, abstract, cropped"
 				print(promptString)
-						
+				
 				#StableDiffusion code for replicate. requires a replicate account and a export code
-				stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt=negative)
+				stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt='profile, NSFW, abstract, cropped')
 				print(f'Fetching mask...')
 				time.sleep(4)
 				print(f'Sending...')                
