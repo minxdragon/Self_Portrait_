@@ -5,35 +5,48 @@ import argparse
 
 from face_detection import select_face
 from face_swap import face_swap
-
+import threading
+import queue
 
 class VideoHandler(object):
-    def __init__(self, video_path=0, img_path=None):
+    def __init__(self, video_path=0, img_path=None, args=None):
         self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
         if self.src_points is None:
             print('No face detected in the source image !!!')
             exit(-1)
         self.args = args
         self.video = cv2.VideoCapture(video_path)
+        self.stopped = False
+        self.dst_queue = queue.Queue()
 
-        cap = cv2.VideoCapture(0)
-
-        while True:
-            _, frame = cap.read()
-            dst_points, dst_shape, dst_face = select_face(frame, choose=False)
-            if dst_points is not None:
-                frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
-            
-            resized = cv2.resize(frame, (640, 400))
-            cv2.imshow("Video", resized)
+    def start(self):
+        t = threading.Thread(target=self.process_video)
+        t.daemon = True
+        t.start()
+        print("starting VideoHandler.start")
+        while not self.stopped:
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                self.stopped = True
                 break
+            if self.video.isOpened():
+                dst_img = self.dst_queue.get()
+                resized = cv2.resize(dst_img, (640, 400))
+                cv2.imshow("Video", resized)
 
-        cap.release()
+
+        self.video.release()
         cv2.destroyAllWindows()
 
-        # 
-        # cv2.imshow("Video", resized)
+    def process_video(self):
+        print("starting VideoHandler.process_video")
+        while not self.stopped:
+            _, dst_img = self.video.read()
+            dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
+            if dst_points is not None:
+                self.dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
+            else:
+                self.dst_img = dst_img
+
 
 
 if __name__ == '__main__':
@@ -55,4 +68,4 @@ if __name__ == '__main__':
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    VideoHandler(video_path=0, img_path='interactive/data/dream.jpg')
+    VideoHandler(video_path=0, img_path='interactive/data/dream.jpg').start()

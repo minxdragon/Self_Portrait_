@@ -80,7 +80,7 @@ def main():
 
     # window setup
     #server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-    server2 = Syphon.Server("python", size, show=False)
+    server2 = Syphon.Server("face", size, show=False)
 
 
     cap = cv2.VideoCapture(0)
@@ -88,7 +88,7 @@ def main():
         raise("IO Error")
         
     # loop
-    # while not server1.should_close() and not server2.should_close():
+    #while not server1.should_close() and not server2.should_close():
     while not server2.should_close():
         class VideoHandler(object):
             def __init__(self, video_path=0, img_path=None):
@@ -108,7 +108,8 @@ def main():
                         frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
                     
                     resized = cv2.resize(frame, (640, 400))
-                    cv2.imshow("Video", resized)
+                    cv2.imshow("python", resized)
+                    server2.publish_frame(resized)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
 
