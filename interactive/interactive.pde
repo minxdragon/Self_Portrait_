@@ -66,7 +66,7 @@ void setup(){
   
   canvasSyphoner = createGraphics(width, height); 
   //to be switched out to 'python' window
-  client2 = new SyphonClient(this, "face");
+  client2 = new SyphonClient(this, "python");
   
   sceneGUI = new GToggleGroup();
   defineGUI();

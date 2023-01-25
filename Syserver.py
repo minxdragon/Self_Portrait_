@@ -79,7 +79,7 @@ def main():
     size = (640, 400)
 
     # window setup
-    #server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
+    server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
     server2 = Syphon.Server("face", size, show=False)
 
 
@@ -88,36 +88,33 @@ def main():
         raise("IO Error")
         
     # loop
-    #while not server1.should_close() and not server2.should_close():
-    while not server2.should_close():
-        class VideoHandler(object):
-            def __init__(self, video_path=0, img_path=None):
-                self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-                if self.src_points is None:
-                    print('No face detected in the source image !!!')
-                    exit(-1)
-                self.args = args
-                self.video = cv2.VideoCapture(video_path)
+    while not server1.should_close() and not server2.should_close():
+        while not server2.should_close():
+            class VideoHandler(object):
+                def __init__(self, video_path=0, img_path=None):
+                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+                    if self.src_points is None:
+                        print('No face detected in the source image !!!')
+                        exit(-1)
+                    self.args = args
+                    self.video = cv2.VideoCapture(video_path)
 
-                cap = cv2.VideoCapture(0)
+                    cap = cv2.VideoCapture(0)
 
-                while True:
-                    _, frame = cap.read()
-                    dst_points, dst_shape, dst_face = select_face(frame, choose=False)
-                    if dst_points is not None:
-                        frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
-                    
-                    resized = cv2.resize(frame, (640, 400))
-                    cv2.imshow("python", resized)
-                    server2.publish_frame(resized)
-                    if cv2.waitKey(1) & 0xFF == ord('q'):
-                        break
+                    while True:
+                        _, frame = cap.read()
+                        dst_points, dst_shape, dst_face = select_face(frame, choose=False)
+                        if dst_points is not None:
+                            frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
+                        
+                        resized = cv2.resize(frame, (640, 400))
+                        cv2.imshow("python", resized)
+                        server2.publish_frame(resized)
+                        if cv2.waitKey(1) & 0xFF == ord('q'):
+                            break
 
-                cap.release()
-                cv2.destroyAllWindows()
-
-                # 
-                # cv2.imshow("Video", resized)
+                    cap.release()
+                    cv2.destroyAllWindows()
 
 
         if __name__ == '__main__':

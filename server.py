@@ -95,8 +95,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					img = img/255
 				# save the image file to dataset
 					img_save = tf.keras.utils.img_to_array(img)
-					# unique_filename = str(uuid.uuid4())
-					# Saved_img = tf.keras.utils.save_img(unique_filename + '.jpg', img_save, file_format='jpeg',)
 
 					# get the model
 					train = pd.read_csv('traitsdataset/train.csv') # don't forget to update this to the dataset
@@ -158,18 +156,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 			elif splitMessage[0] == 'userSelected':
 				#listen for the userSelected message
 				userSelected = splitMessage[1]
-				promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+				negative = "profile, NSFW, abstract, cropped"
 				print(promptString)
 						
 				#StableDiffusion code for replicate. requires a replicate account and a export code
-				stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3)
+				stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt=negative)
 				print(f'Fetching mask...')
 				time.sleep(4)
 				print(f'Sending...')                
 				conn.sendall(b"cameraMaskReady,window frame name")
 				print(f'Analysis complete. Mask and Keywords sent.')
-
-				main()
 				
 				
 			# 	counter = 0
