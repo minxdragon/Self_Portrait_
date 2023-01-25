@@ -144,7 +144,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
 						return dream
-					negative = "profile, NSFW, abstract, cropped"
+					negative = "profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo"
 					stable_diffusion(prompt = promptString, init_image=init, src_img='interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt=negative)
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
@@ -160,7 +160,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
 				negative = "profile, NSFW, abstract, cropped"
 				print(promptString)
-				
+
 				#StableDiffusion code for replicate. requires a replicate account and a export code
 				stable_diffusion(prompt = promptString, init_image=init, src_img='/interactive/data/dream.jpg', prompt_strength=0.3, negative_prompt='profile, NSFW, abstract, cropped')
 				print(f'Fetching mask...')
