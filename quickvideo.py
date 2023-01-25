@@ -16,22 +16,23 @@ class VideoHandler(object):
         self.args = args
         self.video = cv2.VideoCapture(video_path)
 
-    def start(self):
-        while self.video.isOpened():
+        cap = cv2.VideoCapture(0)
+
+        while True:
+            _, frame = cap.read()
+            dst_points, dst_shape, dst_face = select_face(frame, choose=False)
+            if dst_points is not None:
+                frame = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, frame, args, 68)
+
+            cv2.imshow("Video", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            _, dst_img = self.video.read()
-            dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
-            if dst_points is not None:
-                dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-
-            resized = cv2.resize(dst_img, (640, 400))
-            cv2.imshow("Video", resized)
-
-        self.video.release()
-        #self.writer.release()
+        cap.release()
         cv2.destroyAllWindows()
+
+        # resized = cv2.resize(dst_img, (640, 400))
+        # cv2.imshow("Video", resized)
 
 
 if __name__ == '__main__':
@@ -53,4 +54,4 @@ if __name__ == '__main__':
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    VideoHandler(args.video_path, args.src_img, args).start()
+    VideoHandler(args.video_path, args.src_img, args)
