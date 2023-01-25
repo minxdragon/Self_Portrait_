@@ -34,9 +34,6 @@ class VideoHandler(object):
                 cv2.imshow("Video", resized)
 
 
-        self.video.release()
-        cv2.destroyAllWindows()
-
     def process_video(self):
         print("starting VideoHandler.process_video")
         while not self.stopped:
@@ -44,8 +41,10 @@ class VideoHandler(object):
             dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
             if dst_points is not None:
                 self.dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
+                self.dst_queue.put(self.dst_img)
             else:
                 self.dst_img = dst_img
+                self.dst_queue.put(self.dst_img)
 
 
 
@@ -68,4 +67,4 @@ if __name__ == '__main__':
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    VideoHandler(video_path=0, img_path='interactive/data/dream.jpg').start()
+    VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
