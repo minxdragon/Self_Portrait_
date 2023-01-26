@@ -26,7 +26,17 @@ Output #0, mp4, to '/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/dat
       encoder         : Lavc59.56.100 libx264
     Side data:
       cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
-frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    frame=    5 fps=2.0 q=21.0 size=       0kB time=00:00:00.10 bitrate=   3.8kbits/s speed=0.0391x    frame=   20 fps=6.5 q=21.0 size=       0kB time=00:00:00.60 bitrate=   0.6kbits/s speed=0.194x    frame=   34 fps=9.5 q=21.0 size=       0kB time=00:00:01.06 bitrate=   0.4kbits/s speed=0.297x    frame=   49 fps= 12 q=21.0 size=       0kB time=00:00:01.56 bitrate=   0.2kbits/s speed=0.381x    frame=   64 fps= 14 q=21.0 size=       0kB time=00:00:02.06 bitrate=   0.2kbits/s speed=0.447x    frame=  142 fps= 28 q=-1.0 Lsize=      86kB time=00:00:04.63 bitrate= 151.6kbits/s speed=0.924x    
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+frame=    5 fps=2.0 q=21.0 size=       0kB time=00:00:00.10 bitrate=   3.8kbits/s speed=0.0391x    
+frame=   20 fps=6.5 q=21.0 size=       0kB time=00:00:00.60 bitrate=   0.6kbits/s speed=0.194x    
+frame=   34 fps=9.5 q=21.0 size=       0kB time=00:00:01.06 bitrate=   0.4kbits/s speed=0.297x    
+frame=   49 fps= 12 q=21.0 size=       0kB time=00:00:01.56 bitrate=   0.2kbits/s speed=0.381x    
+frame=   64 fps= 14 q=21.0 size=       0kB time=00:00:02.06 bitrate=   0.2kbits/s speed=0.447x    
+frame=  142 fps= 28 q=-1.0 Lsize=      86kB time=00:00:04.63 bitrate= 151.6kbits/s speed=0.924x    
 video:83kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 3.111236%
 [libx264 @ 0x7fa5c4f05d40] frame I:1     Avg QP: 5.21  size: 74984
 [libx264 @ 0x7fa5c4f05d40] frame P:36    Avg QP: 7.50  size:   163
