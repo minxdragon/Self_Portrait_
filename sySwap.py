@@ -21,8 +21,7 @@ class VideoHandler(object):
                     img_path = 'interactive/data/dream2.jpg'
                     print('Using default image')
                     self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-                #size = (640, 400)
-                #self.syphon_server = Syphon.Server("FaceSwap", size)
+
                 self.args = args
                 self.video = cv2.VideoCapture(video_path)
                 self.stopped = False
@@ -57,8 +56,9 @@ class VideoHandler(object):
                 if self.video.isOpened():
                     dst_img = self.dst_queue.get()
                     resized = cv2.resize(dst_img, (640, 400))
+                    frame = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
                     #cv2.imshow("python", resized)
-                server2.draw_and_send(resized)
+                server2.draw_and_send(frame)
 
 
     def process_video(self):
@@ -96,3 +96,6 @@ if __name__ == '__main__':
         os.makedirs(dir_path)
 
     VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+
+    #todo: add a way to stop the video handler and restart the sequence when processing sends the end signal
+    
