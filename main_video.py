@@ -7,6 +7,7 @@ import urllib
 import numpy as np
 import base64
 import json
+import queue
 
 from urllib.request import urlopen, Request
 from face_detection import select_face
@@ -23,6 +24,8 @@ class VideoHandler(object):
 
     def start(self):
         import time
+            # create a queue to hold the frames
+        frames_queue = queue.Queue()
         time_to_close = 10
         start_time = time.time()
         while self.video.isOpened():
