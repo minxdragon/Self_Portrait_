@@ -11,6 +11,7 @@ import queue
 
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, args=None):
+                print("starting VideoHandler.__init__")
                 try:
                     self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
                     if self.src_points is None:
@@ -40,6 +41,7 @@ class VideoHandler(object):
         # while not server1.should_close() and not server2.should_close():
         size = (640, 400)
         server2 = Syphon.Server("python", size, show=False)
+        print("starting syphon server")
         while not server2.should_close():
             ret, frame = self.video.read() #read camera image
             frame = cv2.resize(frame, size)
@@ -56,7 +58,7 @@ class VideoHandler(object):
                     dst_img = self.dst_queue.get()
                     resized = cv2.resize(dst_img, (640, 400))
                     #cv2.imshow("python", resized)
-                    server2.draw_and_send(resized)
+                server2.draw_and_send(resized)
 
 
     def process_video(self):
@@ -74,6 +76,7 @@ class VideoHandler(object):
 
 
 if __name__ == '__main__':
+    print('starting sySwap.py')
     logging.basicConfig(level=logging.INFO,
                         format="%(levelname)s:%(lineno)d:%(message)s")
 
