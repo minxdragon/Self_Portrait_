@@ -9,7 +9,7 @@ import threading
 import queue
 
 class VideoHandler(object):
-    def __init__(self, video_path=0, img_path=None, args=None):
+    def __init__(self, dst_queue, video_path=0, img_path=None, args=None):
                 try:
                     self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
                     if self.src_points is None:

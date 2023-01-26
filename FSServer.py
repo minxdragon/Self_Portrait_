@@ -45,20 +45,24 @@ def main():
         
     # loop
     # while not server1.should_close() and not server2.should_close():
+    import queue
+
+    # create a queue to hold the frames
+    dst_queue = queue.Queue()
+
+    # pass the queue to the VideoHandler
+    VideoHandler(args.video_path, args.src_img, args, dst_queue).start()
+
+    # loop
     while not server2.should_close():
-        ret, frame = cap.read() #read camera image
-        frame = cv2.resize(frame, size)
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-        #frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #BGR --> GRAY
-        #frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2RGB) # GRAY (3 channels)
-        #VideoHandler(args.video_path, args.src_img, args).start()
-        
-        #cv2.imshow("rgb", frame)
-        #server1.draw_and_send(frame_rgb) # Syphon.Server.draw_and_send(frame) draw frame using opengl and send it to syphon
-        #cv2.imshow("python", frame_gray)
-        #server2.draw_and_send(frame_gray)
-        #cv2.imshow("python", resized)
-        server2.draw_and_send(VideoHandler(args.video_path, args.src_img, args).start())
+        try:
+            # try to get a frame from the queue
+            frame = dst_queue.get(timeout=1)
+            server2.draw_and_send(frame)
+        except queue.Empty:
+            # if the queue is empty, do nothing
+            pass
+
             
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
