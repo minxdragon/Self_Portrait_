@@ -9,22 +9,21 @@ import threading
 import queue
 
 class VideoHandler(object):
-    def __init__(self, frames_queue, video_path=0, img_path=None, args=None):
-        video_path = cv2.VideoCapture(0)
-        self.frames_queue = frames_queue
-        self.video_path = video_path
-        self.img_path = img_path
-        self.args = args  # assign args to self.args 
-        self.stopped = False  # add this line
-        try:
-            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-            if self.src_points is None:
-                raise Exception('No face detected in the source image')
-        except Exception as e:
-            print(e)
-            img_path = 'interactive/data/dream2.jpg'
-            print('Using default image')
-            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+    def __init__(self, video_path=0, img_path=None, args=None):
+                try:
+                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+                    if self.src_points is None:
+                        raise Exception('No face detected in the source image')
+                except Exception as e:
+                    print(e)
+                    img_path = 'interactive/data/dream2.jpg'
+                    print('Using default image')
+                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+                
+                self.args = args
+                self.video = cv2.VideoCapture(video_path)
+                self.stopped = False
+                self.dst_queue = queue.Queue()
 
     def start(self):
         t = threading.Thread(target=self.process_video, args=(self.args,))

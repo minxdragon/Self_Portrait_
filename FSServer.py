@@ -96,12 +96,6 @@ if __name__ == '__main__':
     if cap.isOpened() is False:
         raise("IO Error")
         
-    # create a queue to hold the frames
-    frames_queue = queue.Queue()
-
-    # pass the queue to the VideoHandler
-    VideoHandler(frames_queue, args.video_path, args.src_img, args ).start()
-
     # loop
     # while not server1.should_close() and not server2.should_close():
     while not server2.should_close():
