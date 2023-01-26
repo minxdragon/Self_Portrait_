@@ -10,14 +10,20 @@ import queue
 
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, args=None):
-        self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-        if self.src_points is None:
-            print('No face detected in the source image !!!')
-            exit(-1)
-        self.args = args
-        self.video = cv2.VideoCapture(video_path)
-        self.stopped = False
-        self.dst_queue = queue.Queue()
+                try:
+                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+                    if self.src_points is None:
+                        raise Exception('No face detected in the source image')
+                except Exception as e:
+                    print(e)
+                    img_path = 'interactive/data/dream2.jpg'
+                    print('Using default image')
+                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+                
+                self.args = args
+                self.video = cv2.VideoCapture(video_path)
+                self.stopped = False
+                self.dst_queue = queue.Queue()
 
     def start(self):
         t = threading.Thread(target=self.process_video)
