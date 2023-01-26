@@ -37,7 +37,7 @@ def main():
 
     # window setup
     #server1 = Syphon.Server("Server RGB", size, show=False) # Syphon.Server("window and syphon server name", frame size, show)
-    server2 = Syphon.Server("python", size, show=False)
+    server2 = Syphon.Server("python", size, show=True)
 
 
     cap = cv2.VideoCapture(0)

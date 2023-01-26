@@ -31,7 +31,7 @@ class VideoHandler(object):
             if self.video.isOpened():
                 dst_img = self.dst_queue.get()
                 resized = cv2.resize(dst_img, (640, 400))
-                cv2.imshow("python", resized)
+                cv2.imshow("FaceSwap", resized,)
 
 
     def process_video(self):
