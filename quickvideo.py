@@ -10,10 +10,12 @@ import queue
 
 class VideoHandler(object):
     def __init__(self, frames_queue, video_path=0, img_path=None, args=None):
+        video_path = cv2.VideoCapture(0)
         self.frames_queue = frames_queue
         self.video_path = video_path
         self.img_path = img_path
-        self.args = args
+        self.args = args  # assign args to self.args 
+        self.stopped = False  # add this line
         try:
             self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
             if self.src_points is None:
@@ -23,39 +25,33 @@ class VideoHandler(object):
             img_path = 'interactive/data/dream2.jpg'
             print('Using default image')
             self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-                
-            self.args = args
-            self.video = cv2.VideoCapture(video_path)
-            self.stopped = False
-            self.dst_queue = queue.Queue()
-                # create a queue to hold the frames
 
     def start(self):
-        t = threading.Thread(target=self.process_video)
+        t = threading.Thread(target=self.process_video, args=(self.args,))
         t.daemon = True
         t.start()
         print("starting VideoHandler.start")
-        while not self.stopped:
+        while True:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 self.stopped = True
                 break
-            if self.video.isOpened():
+            if self.video_path.isOpened():
                 dst_img = self.dst_queue.get()
                 resized = cv2.resize(dst_img, (640, 400))
                 cv2.imshow("python", resized,)
 
 
-    def process_video(self):
-        print("starting VideoHandler.process_video")
+    def process_video(self, args):
         while not self.stopped:
-            _, dst_img = self.video.read()
-            dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
-            if dst_points is not None:
-                self.dst_img = face_swap(self.src_face, dst_face, self.src_points, dst_points, dst_shape, dst_img, self.args, 68)
-                self.dst_queue.put(self.dst_img)
-            else:
-                self.dst_img = dst_img
-                self.dst_queue.put(self.dst_img)
+            ret, frame = self.video_path.read()
+            if not ret:
+                break
+            frame = cv2.resize(frame, (640, 480))
+            self.frames_queue.put(frame)
+            dst_img = face_swap(frame, self.src_points, self.src_shape, self.src_face, args)
+            resized = cv2.resize(dst_img, (640, 400))
+            cv2.imshow("python", resized)
+
 
 
 
@@ -80,4 +76,4 @@ if __name__ == '__main__':
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
 
-    VideoHandler(frames_queue, video_path=0, img_path='interactive/data/dream.jpg', args=args.parse_args()).start()
+    VideoHandler(frames_queue, video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
