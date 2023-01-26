@@ -32,19 +32,19 @@ class VideoHandler(object):
         t.daemon = True
         t.start()
         print("starting VideoHandler.start")
-        cap = cv2.VideoCapture(0)
-        if cap.isOpened() is False:
-            raise("IO Error")
+        # cap = cv2.VideoCapture(0)
+        # if cap.isOpened() is False:
+        #     raise("IO Error")
             
         # loop
         # while not server1.should_close() and not server2.should_close():
         size = (640, 400)
-        server2 = Syphon.Server("python", size, show=True)
+        server2 = Syphon.Server("python", size, show=False)
         while not server2.should_close():
-            ret, frame = cap.read() #read camera image
+            ret, frame = self.video.read() #read camera image
             frame = cv2.resize(frame, size)
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR --> RGB
-            server2.draw_and_send(frame_rgb)
+
+            server2.draw_and_send(frame)
                 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -55,7 +55,7 @@ class VideoHandler(object):
                 if self.video.isOpened():
                     dst_img = self.dst_queue.get()
                     resized = cv2.resize(dst_img, (640, 400))
-                    cv2.imshow("python", resized)
+                    #cv2.imshow("python", resized)
                     server2.draw_and_send(resized)
 
 
