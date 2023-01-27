@@ -190,9 +190,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					if not os.path.isdir(dir_path):
 						os.makedirs(dir_path)
 
-					VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+					while True:
+						VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+						time.sleep(5)
+						VideoHandler.self.stopped = True
 					#add timeout code for cv2.imshow
-					cv2.waitKey(5000)
+					#cv2.waitKey(5000)
 
 			elif splitMessage[0] == 'videoCaptured':
 					print('videoCaptured')
