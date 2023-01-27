@@ -191,13 +191,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						os.makedirs(dir_path)
 
 					VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+					#add timeout code for cv2.imshow
+					cv2.waitKey(5000)
 
 			elif splitMessage[0] == 'videoCaptured':
-				print('videoCaptured')
-				#listen for the userSelected message
-				#quit videoHandler
-				print('stopping videoHandler')
-				VideoHandler.stop()
+					print('videoCaptured')
+					#listen for the userSelected message
+					#quit videoHandler
+					print('stopping videoHandler')
+					VideoHandler.self.stopped = True
+			else:
+				print('message not recognized')
 
 
 

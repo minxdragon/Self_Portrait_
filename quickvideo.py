@@ -2,6 +2,7 @@ import os
 import cv2
 import logging
 import argparse
+import time
 
 from face_detection import select_face
 from face_swap import face_swap
@@ -10,35 +11,41 @@ import queue
 
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, args=None):
-                try:
-                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-                    if self.src_points is None:
-                        raise Exception('No face detected in the source image')
-                except Exception as e:
-                    print(e)
-                    img_path = 'interactive/data/dream2.jpg'
-                    print('Using default image')
-                    self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-                
-                self.args = args
-                self.video = cv2.VideoCapture(video_path)
-                self.stopped = False
-                self.dst_queue = queue.Queue()
+        try:
+            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+            if self.src_points is None:
+                raise Exception('No face detected in the source image')
+        except Exception as e:
+            print(e)
+            img_path = 'interactive/data/dream2.jpg'
+            print('Using default image')
+            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+        
+        self.args = args
+        self.video = cv2.VideoCapture(video_path)
+        self.stopped = False
+        self.timeout = 5 
+        self.dst_queue = queue.Queue()
 
     def start(self):
         t = threading.Thread(target=self.process_video)
         t.daemon = True
         t.start()
         print("starting VideoHandler.start")
+        timer_thread = threading.Thread(target=self.timer)
+        timer_thread.daemon = True
+        timer_thread.start()
+        print("starting timer thread")
         while not self.stopped:
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                # Wait for 5 seconds
+                print('ending')
                 self.stopped = True
                 break
-            if self.video.isOpened():
+            if self.video.isOpened(): #nothing in this loop!
                 dst_img = self.dst_queue.get()
                 resized = cv2.resize(dst_img, (640, 400))
-                cv2.imshow("FaceSwap", resized,)
-
+                cv2.imshow("FaceSwap", resized)
 
     def process_video(self):
         print("starting VideoHandler.process_video")
@@ -52,7 +59,13 @@ class VideoHandler(object):
                 self.dst_img = dst_img
                 self.dst_queue.put(self.dst_img)
 
+    def timer(self):
+        time.sleep(self.timeout)
+        self.stopped = True
 
+    def stop(self):
+        self.stopped = True
+        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,

@@ -50,7 +50,7 @@ class VideoHandler(object):
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             while not self.stopped:
-                if cv2.waitKey(1) & 0xFF == ord('q'):
+                if cv2.waitKey() & 0xFF == ord('q'):
                     self.stopped = True
                     break
                 if self.video.isOpened():
