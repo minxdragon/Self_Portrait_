@@ -73,6 +73,13 @@ class VideoHandler(object):
                 self.dst_img = dst_img
                 self.dst_queue.put(self.dst_img)
 
+    def stop(self):
+        print("starting VideoHandler.stop")
+        self.stopped = True
+        self.cap.release()
+        self.out.release()
+        cv2.destroyAllWindows()
+
 
 
 if __name__ == '__main__':
@@ -98,4 +105,3 @@ if __name__ == '__main__':
     VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
 
     #todo: add a way to stop the video handler and restart the sequence when processing sends the end signal
-    

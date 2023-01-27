@@ -192,6 +192,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 					VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
 
+			elif splitMessage[0] == 'videoCaptured':
+				print('videoCaptured')
+				#listen for the userSelected message
+				#quit videoHandler
+				print('stopping videoHandler')
+				VideoHandler.stop()
+
+
 
 
 			# 	counter = 0
