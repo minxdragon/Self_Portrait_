@@ -1,0 +1,67 @@
+2023-01-28 14:28:53.583693: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/server.py", line 60, in <module>
+    s.bind((HOST, PORT))
+OSError: [Errno 48] Address already in use
+2023-01-28 14:30:07.702937: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/server.py", line 60, in <module>
+    s.bind((HOST, PORT))
+OSError: [Errno 48] Address already in use
+2023-01-28 14:30:53.838330: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-01-28 14:31:53.219879: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Connected by ('127.0.0.1', 51380)
+Received | cameraNoMask
+Removed any existing masks
+Sending...
+Received | faceCaptured
+https://i.ibb.co/GPBDntG/image.jpg
+Sending...
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 131ms/step
+2023-01-28 14:32:12.491 python[1178:7889914] SYPHON DEBUG: SyphonServerConnectionManager: Start Connection
+2023-01-28 14:32:12.492 python[1178:7889914] SYPHON DEBUG: SyphonServerConnectionManager: Created connection with UUID: info.v002.Syphon.A438545B-5E34-471A-B64C-21C615BCE1DF
+2023-01-28 14:32:12.521 python[1178:7889914] SYPHON DEBUG: SyphonServerConnectionManager: Add info client: info.v002.Syphon.50A1ECFB-17BB-41E1-9FBA-29A9D51CAE81
+Exception in thread Thread-1 (process_video):
+Strong, Intimidating, Practical, Rational, Decisive, Condescending'
+ 'Caring, Intuitive
+a head and shoulders portrait of a person, full face, with a neutral expression of a person who is Strong Intimidating Practical Rational Decisive Condescending painted by a portrait artist
+https://replicate.delivery/pbxt/CQPVVsY0xhabB5dUlVeicBtT3ioy0Bo47RRkMq2iQdRXSSMIA/out-0.png
+Analysis complete. Mask and Keywords sent.
+Received | userSelected,Decisive&Strong&Practical&Intimidating&Condescending
+a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is Decisive&Strong&Practical&Intimidating&Condescending painted by a portrait artist
+https://replicate.delivery/pbxt/SPeLLYhNmdQlDKIdzEr5fM1NevLFrBd3Zs4F49zS3W1tJJxgA/out-0.png
+Fetching mask...
+Sending...
+Analysis complete. Mask and Keywords sent.
+starting sySwap.py
+starting VideoHandler.__init__
+starting VideoHandler.process_video
+starting VideoHandler.start
+starting syphon server
+Traceback (most recent call last):
+  File "/Users/j.rosenbaum/opt/anaconda3/envs/selfportrait/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+Traceback (most recent call last):
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/server.py", line 194, in <module>
+    VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/sySwap.py", line 69, in start
+    server2.stop()
+AttributeError: 'Server' object has no attribute 'stop'
+    self.run()
+  File "/Users/j.rosenbaum/opt/anaconda3/envs/selfportrait/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/sySwap.py", line 77, in process_video
+    dst_points, dst_shape, dst_face = select_face(dst_img, choose=False)
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/face_detection.py", line 30, in select_face
+2023-01-28 14:32:17.979 python[1178:7889914] SYPHON DEBUG: SyphonServerConnectionManager: stopping
+2023-01-28 14:32:17.979 python[1178:7889914] SYPHON DEBUG: SyphonServerConnectionManager: Releasing SyphonServerConnectionManager for server "info.v002.Syphon.A438545B-5E34-471A-B64C-21C615BCE1DF"
+2023-01-28 14:32:17.980 python[1178:7889914] SYPHON DEBUG: SyphonServer: Server deallocing, name: python, UUID: info.v002.Syphon.A438545B-5E34-471A-B64C-21C615BCE1DF
+2023-01-28 14:32:32.266265: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/server.py", line 60, in <module>
+    s.bind((HOST, PORT))
+OSError: [Errno 48] Address already in use
