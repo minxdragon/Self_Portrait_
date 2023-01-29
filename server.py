@@ -133,7 +133,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						init_image = init
 						prompt_strength = 0.3
 						negative_prompt = 'profile, NSFW, abstract, cropped'
-						output_url = version.predict(prompt=(promptString), init_image=init)[0]
+						output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=negative_prompt, prompt_strength=0.3)[0]
 						print(output_url)
 						# download the image, convert it to a NumPy array, and then read
 						# it into OpenCV format
@@ -203,6 +203,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					#quit videoHandler
 					print('stopping videoHandler')
 					VideoHandler.self.stopped = True
+					#close window
+					glfw.destroy_window(window=server2.window)
 			else:
 				print('message not recognized')
 

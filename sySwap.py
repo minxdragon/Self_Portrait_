@@ -45,7 +45,8 @@ class VideoHandler(object):
 		size = (640, 400)
 		server2 = Syphon.Server("python", size, show=False)
 		print("starting syphon server")
-		while not server2.should_close():
+		keep_running = True
+		while keep_running and not server2.should_close():
 			ret, frame = self.video.read() #read camera image
 			
 			frame = cv2.resize(frame, size)
@@ -65,16 +66,12 @@ class VideoHandler(object):
 								#cv2.imshow("python", resized)
 							server2.draw_and_send(frame)
 							current_time = time.time()
-							if current_time - self.start_time > self.duration: #timer script. mostly working, CV2 error.
-								print('stopping self')
+							if current_time - self.start_time > self.duration:
 								self.stopped = True
-								print('destroying windows')
+								keep_running = False
 								cv2.destroyAllWindows()
-								# glfw.terminate()
-								print('releasing video')
-								self.video.release()
-								print('closing syphon server')
-								server2.should_close()
+								# self.video.release()
+								# server2.stop()
 								break
 
 
@@ -113,6 +110,3 @@ if __name__ == '__main__':
 		os.makedirs(dir_path)
 
 	VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
-
-	#todo: add a way to stop the video handler and restart the sequence when processing sends the end signal
-	
