@@ -150,9 +150,9 @@ def selfPortrait():
         # create a variable with terms separated into the bottom three results
 
         #generate a string for the prompt using the prediction results
-        promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+        #promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 
-        print (promptString)
+        
 
     ### Face swap
     #will come from imagebb
@@ -160,8 +160,8 @@ def selfPortrait():
 
     userSelected = None #convert array to string
 
-    promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
-
+    promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+    print (promptString)
     # face swap video from webcam class
     class VideoHandler(object):
 
@@ -239,8 +239,11 @@ def selfPortrait():
 
             return dream
         negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure"
-        stable_diffusion(prompt = (promptString), init_image=filename, prompt_strength=0.5, negative_prompt='profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo')
-
+        try:
+            stable_diffusion(prompt = (promptString), init_image=filename, prompt_strength=0.5, negative_prompt='profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo')
+        except replicate.exceptions.ModelError as e:
+            print(e)
+            print("Model error")
         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
 
 if __name__ == "__main__":
