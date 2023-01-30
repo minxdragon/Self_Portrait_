@@ -202,7 +202,7 @@ def selfPortrait():
 
     # argument parser for terminal input
         parser = argparse.ArgumentParser(description='FaceSwap Video')
-        parser.add_argument('--src_img', required=False, default='dream.jpg', help='Path for source image')
+        parser.add_argument('--src_img', required=False, default='interactive/data/dream.jpg', help='Path for source image')
         parser.add_argument('--video_path', default=0,help='Path for video')
         parser.add_argument('--warp_2d', default=False, action='store_true', help='2d or 3d warp')
         parser.add_argument('--correct_color', default=False, action='store_true', help='Correct color')
@@ -218,12 +218,15 @@ def selfPortrait():
             os.makedirs(dir_path)
 
         #StableDiffusion code for replicate. requires a replicate account and a export code
-        def stable_diffusion(prompt, init_image, src_img, prompt_strength):
-            prompt = args.prompt
+        def stable_diffusion(prompt, init_image, prompt_strength, negative_prompt,):
+            prompt = promptString
             model = replicate.models.get("stability-ai/stable-diffusion")
-            init_image = args.init
-            prompt_strength = args.strength
-            output_url = model.predict(prompt=(args.prompt), init_image=filename)[0]
+            version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
+            #version.predict(prompt="a 19th century portrait of a wombat gentleman")
+            init_image = filename
+            prompt_strength = 0.5
+            negative_prompt = ''
+            output_url = version.predict(prompt=(promptString), init_image=filename, negative_prompt=negative, prompt_strength=0.8)[0] #this is the one that parses the information
             print(output_url)
             # download the image, convert it to a NumPy array, and then read
             # it into OpenCV format
@@ -232,10 +235,11 @@ def selfPortrait():
             arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
             img = cv2.imdecode(arr, -1) # 'Load it as it is'
             img = np.array(img)
-            dream = cv2.imwrite('dream.jpg', img)
+            dream = cv2.imwrite('interactive/data/dream.jpg', img)
+
             return dream
-        
-        stable_diffusion(prompt = args.prompt, init_image=filename, src_img='dream.jpg', prompt_strength=0.3)
+        negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure"
+        stable_diffusion(prompt = (promptString), init_image=filename, prompt_strength=0.5, negative_prompt='profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo')
 
         VideoHandler(args.video_path, args.src_img, args.prompt, args).start()
 
