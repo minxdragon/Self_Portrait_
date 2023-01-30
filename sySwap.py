@@ -29,7 +29,7 @@ class VideoHandler(object):
 				self.stopped = False
 				self.dst_queue = queue.Queue()
 				self.start_time = time.time()
-				self.duration = 5 # 30 seconds
+				self.duration = 15 # 30 seconds
 
 	def start(self):
 		t = threading.Thread(target=self.process_video)
@@ -46,33 +46,39 @@ class VideoHandler(object):
 		server2 = Syphon.Server("python", size, show=False)
 		print("starting syphon server")
 		keep_running = True
+		
 		while keep_running and not server2.should_close():
-			ret, frame = self.video.read() #read camera image
-			
-			frame = cv2.resize(frame, size)
-
-			server2.draw_and_send(frame)
+			try:
+				ret, frame = self.video.read() #read camera image
 				
-			if cv2.waitKey(1) & 0xFF == ord('q'):
-				break
-			while not self.stopped:
-							if cv2.waitKey(1) & 0xFF == ord('q'):
-								self.stopped = True
-								break
-							if self.video.isOpened():
-								dst_img = self.dst_queue.get()
-								resized = cv2.resize(dst_img, (640, 400))
-								frame = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
-								#cv2.imshow("python", resized)
-							server2.draw_and_send(frame)
-							current_time = time.time()
-							if current_time - self.start_time > self.duration:
-								self.stopped = True
-								keep_running = False
-								cv2.destroyAllWindows()
-								# self.video.release()
-								# server2.stop()
-								break
+				frame = cv2.resize(frame, size)
+
+				server2.draw_and_send(frame)
+					
+				if cv2.waitKey(1) & 0xFF == ord('q'):
+					break
+				while not self.stopped:
+								if cv2.waitKey(1) & 0xFF == ord('q'):
+									self.stopped = True
+									break
+								if self.video.isOpened():
+									dst_img = self.dst_queue.get()
+									resized = cv2.resize(dst_img, (640, 400))
+									frame = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+									#cv2.imshow("python", resized)
+								server2.draw_and_send(frame)
+								current_time = time.time()
+								if current_time - self.start_time > self.duration:
+									self.stopped = True
+									keep_running = False
+									cv2.destroyAllWindows()
+									glfw.terminate()
+									# self.video.release()
+									# server2.stop()
+									break
+			except IndexError:
+				print("IndexError")
+				pass
 
 
 	def process_video(self):
