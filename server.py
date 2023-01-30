@@ -125,7 +125,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
-					def stable_diffusion(prompt, init_image, src_img,): #prompt_strength, negative_prompt,
+					def stable_diffusion(prompt, init_image, prompt_strength, negative_prompt,):
 						prompt = promptString
 						model = replicate.models.get("stability-ai/stable-diffusion")
 						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
@@ -133,7 +133,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						init_image = init
 						prompt_strength = 0.5
 						negative_prompt = ''
-						output_url = version.predict(prompt=(promptString), init_image=init, )[0] #negative_prompt=negative_prompt, prompt_strength=0.3
+						output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=negative, prompt_strength=0.8)[0] #this is the one that parses the information
 						print(output_url)
 						# download the image, convert it to a NumPy array, and then read
 						# it into OpenCV format
@@ -145,8 +145,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
 						return dream
-					negative = "profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo"
-					stable_diffusion(prompt = promptString, init_image=init, src_img='interactive/data/dream.jpg',) #prompt_strength=0.5, negative_prompt=0
+						negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure"
+						try:
+							stable_diffusion(prompt = (promptString), init_image=filename, prompt_strength=0.5, negative_prompt='profile, NSFW, abstract, cropped, animal, cartoon, landscape, food, text, logo')
+						except replicate.exceptions.ModelError as e:
+							print(e)
+							print("Model error")
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
 
