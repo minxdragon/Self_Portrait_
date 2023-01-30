@@ -72,7 +72,7 @@ class VideoHandler(object):
 									self.stopped = True
 									keep_running = False
 									cv2.destroyAllWindows()
-									glfw.terminate()
+									glfw.destroy_window(server2.window)
 									# self.video.release()
 									# server2.stop()
 									break
