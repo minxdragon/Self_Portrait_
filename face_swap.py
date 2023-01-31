@@ -70,12 +70,13 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
         out_coords = np.dot(tri_affines[simplex_index],
                             np.vstack((coords.T, np.ones(num_coords))))
         x, y = coords.T
+        x = np.clip(x, 0, src_img.shape[1]-1)
+        y = np.clip(y, 0, src_img.shape[0]-1)
         try:
             result_img[y, x] = bilinear_interpolate(src_img, out_coords-1)
         except IndexError:
-            # print("IndexError: Shape mismatch")
-            # logging.warning("Shape mismatch")
             pass
+
 
     return None
 
