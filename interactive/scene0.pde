@@ -28,13 +28,14 @@ void defineGUIZero(){
 public void sceneZeroButton(GButton source, GEvent event) {
   println("a button event from sceneZeroButton: "+event);
   userID = month()+"-"+day()+"-"+hour()+"-"+minute()+"-"+second();
-
+  //myClient = new Client(this, "127.0.0.1", 5008); 
+  
   countdownStartTime = 0;
   countdownCurrentTime = 0;
     
   b0.setVisible(false);  
-  myClient.write("cameraNoMask");
-
+  //myClient.write("cameraNoMask");
+  
   for(int i = 0; i < wordToggles.size(); i++){  
     allKeywordsHashMap.put(allKeywords[i], false);
   }

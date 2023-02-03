@@ -45,11 +45,8 @@ void defineGUIEight(){
 public void sceneEightAButton(GButton source, GEvent event) {
   println("a button event from sceneEightAButton: "+event);
   userSavedVideo = true;
-  //b8a.hide();
-  //b8b.hide();
   b8a.setVisible(false);
   b8b.setVisible(false);
-  //b9.show();
   b9.setVisible(true);
   
   currentScene = 9;
@@ -65,11 +62,8 @@ public void sceneEightBButton(GButton source, GEvent event) {
     println("File deleted.");
   }
   
-  //b8a.hide();
-  //b8b.hide();
   b8a.setVisible(false);
   b8b.setVisible(false);
-  //b9.show();
   b9.setVisible(true);
   
   currentScene = 9;

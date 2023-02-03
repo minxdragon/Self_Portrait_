@@ -2,7 +2,7 @@
 PImage maskImageB;
 
 void sceneSix(PGraphics scene){  
-  maskImageB = loadImage("data/dream.jpg");
+  maskImageB = loadImage("data/maskB.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  
@@ -18,27 +18,27 @@ void sceneSix(PGraphics scene){
   scene.endDraw();
 }
 
-
 void defineGUISix(){
-  //b6 = sceneGUI.addButton("sceneSixButton")
-  //             .setLabel("Next")
-  //             .setPosition(width/2-50,height-200)
-  //             .setSize(100,40)
-  //             .setColorLabel(color(0, 0, 0))
-  //             .setColorBackground(color(255, 255, 255));
-  //b6.hide();
-  
   b6 = new GButton(this, w/2-50,h-400, 100, 40);
-  b6.setText("Next");
+  b6.setText("Record video");
   b6.addEventHandler(this, "sceneSixButton");
   b6.setVisible(false);
 }
 
 public void sceneSixButton(GButton source, GEvent event) {
-  println("a button event from sceneSixButton: " + event);
-  //b6.hide(); 
+  println("a button event from sceneSixButton: " + event);  
+  client2 = new SyphonClient(this, syphonClient2Name);
+  println("Syphon Client 2 connected to: " + client2.getServerName()); 
+  
   b6.setVisible(false);
-  //b7.show();
-  b7.setVisible(true);
+  //b7.setVisible(true);
   currentScene = 7;
+  
+  //println("a button event from sceneSevenButton: "+event);
+  recordingOn = true;
+  ve.setMovieFileName("data/gallery/"+ userID + ".mp4");
+  ve.startMovie();
+  println("Starting to record...");
+  startTime = millis();
+  //b7.setVisible(false);  
 }

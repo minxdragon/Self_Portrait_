@@ -84,6 +84,7 @@ void defineGUIFour(){
 
 public void sceneFourAButton(GButton source, GEvent event) {
   println("a button event from sceneFourAButton: "+event);
+
   selectedToggles = new StringList();
   
   for(int i = 0; i < allKeywords.length; i++){  
@@ -97,7 +98,8 @@ public void sceneFourAButton(GButton source, GEvent event) {
   String userSelectedKeywords = join(toggledKeywords, "&"); 
   
   String clientMessageString = "userSelected," + userSelectedKeywords;
-  
+
+  //connectAllClients();
   myClient.write(clientMessageString);
   println("Message sent to server: " + clientMessageString);
   
@@ -126,11 +128,11 @@ public void wordToggleEvent(GButton source, GEvent event) {
     source.setLocalColorScheme(1);
     println(event, source.getText());
     allKeywordsHashMap.put(source.getText(),true);
-    println(allKeywordsHashMap);
+    //println(allKeywordsHashMap);
   } else if ((event == GEvent.CLICKED) && (source.getLocalColorScheme() == 1)){
     source.setLocalColorScheme(6);
     println(event, source.getText());
     allKeywordsHashMap.put(source.getText(),false);
-    println(allKeywordsHashMap);
+    //println(allKeywordsHashMap);
   }
 }

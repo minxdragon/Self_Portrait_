@@ -112,6 +112,7 @@ void takeUserPhoto(){
   userImage.endDraw();
   
   processImage();
+  //connectAllClients();
   myClient.write("faceCaptured");
 }
 

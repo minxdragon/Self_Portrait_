@@ -14,9 +14,13 @@ PGraphics canvasWebcam;
 PGraphics canvasSyphoner;
 SyphonClient client1;
 SyphonClient client2;
+String syphonClient2Name = "Syphoner";
+
 
 Client myClient;
+
 String inString;
+String inString2;
 
 PGraphics[] scenes = new PGraphics[10];
 GToggleGroup sceneGUI;
@@ -45,11 +49,11 @@ PGraphics videoLayer;
 PGraphics progressBarCanvas;
 PImage faceDefault;
 
-int w = 608;
-int h = 1080;
+int w = 568;
+int h = 1010;
 
 void setup(){
-  size(608, 1080,P3D);
+  size(568, 1010,P3D);
   //Libraries seem to go bonkers with fullscreen mode and windowResize
   //fullScreen(P3D);
   //windowResize(608, 1080);
@@ -60,25 +64,22 @@ void setup(){
   frameRate(30);
   
   //client = new SyphonClient(this);
-
   canvasWebcam = createGraphics(width, height);   
   client1 = new SyphonClient(this, "syphoncam");
   
   canvasSyphoner = createGraphics(width, height); 
-  //to be switched out to 'python' window
-  client2 = new SyphonClient(this, "python");
+  client2 = new SyphonClient(this, syphonClient2Name);
+  
+  myClient = new Client(this, "127.0.0.1", 5008); 
   
   sceneGUI = new GToggleGroup();
   defineGUI();
   
   sceneFourSetup();
   
-  userImage = createGraphics(608, 1080);
-  userPhoto = createImage(608, 1080,RGB);
+  userImage = createGraphics(w, h);
+  userPhoto = createImage(w, h,RGB);
   faceDefault = loadImage("default.jpeg");
-  
-  myClient = new Client(this, "127.0.0.1", 5008); 
-  
   
   veCanvas = createGraphics(w, h,P3D);
   //ve = new VideoExport(this, "/data/gallery/movie.mp4", veCanvas);
@@ -98,7 +99,7 @@ void draw(){
   image(scenes[currentScene], 0, 0); 
 }
 
-void listenServerClient(){
+void listenServerClient(){  
   if (myClient.available() > 0) {    
     inString = myClient.readString(); 
     println(inString);
@@ -175,7 +176,7 @@ void defineGUI(){
   defineGUIFour();
   defineGUIFive();
   defineGUISix();
-  defineGUISeven();
+  //defineGUISeven();
   defineGUIEight();
   defineGUINine();
 }

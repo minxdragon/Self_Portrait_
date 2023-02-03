@@ -3,7 +3,7 @@ PImage maskImageA;
 String[] returnedKeywords;
 
 void sceneThree(PGraphics scene){  
-  maskImageA = loadImage("data/dream.jpg");
+  maskImageA = loadImage("data/maskA.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  
