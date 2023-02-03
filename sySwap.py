@@ -36,6 +36,9 @@ class VideoHandler(object):
 		t.daemon = True
 		t.start()
 		print("starting VideoHandler.start")
+		# Initialize GLFW
+		glfw.init()
+
 		# cap = cv2.VideoCapture(0)
 		# if cap.isOpened() is False:
 		#     raise("IO Error")
@@ -54,7 +57,11 @@ class VideoHandler(object):
 				frame = cv2.resize(frame, size)
 
 				server2.draw_and_send(frame)
-					
+				x = 0
+				y = 0
+				window = glfw.get_current_context()
+				glfw.show_window(window)
+				glfw.set_window_pos(window, x, y)
 				if cv2.waitKey(1) & 0xFF == ord('q'):
 					break
 				while not self.stopped:
