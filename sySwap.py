@@ -54,8 +54,8 @@ class VideoHandler(object):
 			try:
 				x = 0
 				y = 0
-				window = glfw.get_current_context()
-				glfw.set_window_pos(window, x, y)
+				python = glfw.get_current_context()
+				glfw.set_window_pos(python, x, y)
 
 				
 				ret, frame = self.video.read() #read camera image
@@ -63,7 +63,7 @@ class VideoHandler(object):
 				frame = cv2.resize(frame, size)
 
 				server2.draw_and_send(frame)
-				glfw.show_window(window)
+				glfw.show_window(python)
 				
 				if cv2.waitKey(1) & 0xFF == ord('q'):
 					break
