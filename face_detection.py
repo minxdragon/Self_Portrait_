@@ -26,7 +26,7 @@ def face_points_detection(img, bbox:dlib.rectangle):
     # return the array of (x, y)-coordinates
     return coords
 
-def select_face(im, r=10, choose=True):
+def select_face(im, r=10, choose=False):
     faces = face_detection(im)
 
     if len(faces) == 0:
