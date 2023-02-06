@@ -1,121 +1,15 @@
-//Record video screen
-boolean recordingOn = false;
-int startTime = 0;
-int captureTime = 5000;
-float b = 0;
-float barWidth = 0;
-int countdownTime = 3000;
-int videoCounter = 0;
-
-//TO DO: Black frame at start, look at adding a delay.
+//Connecting hold screen
 
 void sceneSeven(PGraphics scene){  
-  scene.beginDraw();
-
-  if (client2.newFrame()) {
-    canvasSyphoner = client2.getGraphics(canvasSyphoner);
-    image(canvasSyphoner, 0, 0, 640, 508);
-  }
-
-  videoLayer.beginDraw();
-    videoLayer.image(canvasSyphoner, 0, 0, 640, 508); 
-    //Cover rest of screen outside of video - openCV does not like background function
-    videoLayer.fill(0);
-    //videoLayer.rect(0,508,w,h-508);
-    
-    for(int i = 0; i < selectedToggles.size(); i++){
-      videoLayer.fill(30);
-      videoLayer.rect(w/2-100, 450+(30*i), 200,30);
-      videoLayer.fill(255);
-      videoLayer.text(selectedToggles.get(i), w/2-80, 470+(30*i));
-    }
-    
-  videoLayer.endDraw();
-  
-  if(recordingOn){
-    veCanvas.beginDraw();
-    veCanvas.image(videoLayer, 0,0);
-    veCanvas.endDraw();     
-    
-    if ((millis() > startTime)&&(millis() < startTime+countdownTime)){
-      //b7.setVisible(false);
-      videoCounter = floor((millis() - startTime)/1000);
-      renderCounter(progressBarCanvas, videoCounter);      
-    } else {
-      renderProgressBar(progressBarCanvas);
-      ve.saveFrame();   
-    }
-
-    scene.image(videoLayer,0,0);
-    scene.image(progressBarCanvas,0,0);
-    
-    if (millis() > startTime+captureTime+countdownTime){
-      endRecording();
-      restartProgressBar(progressBarCanvas);
-    } 
+  if ((millis() > delayTimer)&&(millis() < delayTimer+delaySyphonConnect)){
+    scene.beginDraw();
+    scene.background(0,0,0);  
+    scene.textAlign(CENTER);
+    scene.textSize(40);
+    scene.text("Connecting...", w/2, h/2);
+    scene.endDraw();
   } else {
-    scene.image(videoLayer,0,0);
+    syphonServerReady();
+    println("Delay timer complete. Connected.");
   }
-  scene.endDraw();
-}
-
-
-void renderProgressBar(PGraphics barCanvas){
-  barCanvas.beginDraw();
-  //Hide record button
-  barCanvas.fill(0);
-  barCanvas.rect(w/2-50,h-350, 100, 40);  
-  barCanvas.fill(255,255,255);
-  barCanvas.rect(0,h-170,w, 50);
-  
-  //progress
-  float b = (millis() - startTime - countdownTime)/5;
-  float barWidth = lerp(0,w,b/1000);
-  barCanvas.fill(255,0,0);
-  barCanvas.rect(0,h-170,barWidth,50);  
-  barCanvas.endDraw();
-}
-
-void restartProgressBar(PGraphics barCanvas){
-  barCanvas.beginDraw();
-  barCanvas.fill(0,0,0);
-  barCanvas.rect(0,h-170,width,50);  
-  barCanvas.endDraw();
-}
-
-//void defineGUISeven(){
-  //b7 = new GButton(this, w/2-50,h-350, 100, 40);
-  //b7.setText("Record clip");
-  //b7.addEventHandler(this, "sceneSevenButton");
-  //b7.setVisible(false);
-//}
-
-//public void sceneSevenButton(GButton source, GEvent event) {
-//  println("a button event from sceneSevenButton: "+event);
-  
-//  recordingOn = true;
-//  ve.setMovieFileName("data/gallery/"+ userID + ".mp4");
-//  ve.startMovie();
-//  println("Starting to record...");
-//  startTime = millis();
-
-//  b7.setVisible(false);
-//}
-
-void endRecording(){
-  recordingOn = false;
-  ve.dispose();
-  
-  println("Video created. Loading video in...");
-  //myClient.write("videoCaptured");
-  client2.stop();
-  println("Syphon Client 2 disconnected"); 
-  
-  userVideo = new Movie(this, "gallery/"+userID + ".mp4");
-  userVideo.loop();
-  
-  println("Video ready.");
-  b8a.setVisible(true);
-  b8b.setVisible(true);
-  currentScene = 8;
 }

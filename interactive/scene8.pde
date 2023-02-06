@@ -1,70 +1,100 @@
-//Would you like to display?
-boolean userSavedVideo = false;
+//Record video screen
+boolean recordingOn = false;
+int startTime = 0;
+int captureTime = 5000;
+float b = 0;
+float barWidth = 0;
+int countdownTime = 3000;
+int videoCounter = 0;
 
 void sceneEight(PGraphics scene){  
   scene.beginDraw();
-  scene.textAlign(CENTER);
-  scene.textSize(24);
-  if (userVideo.available()) {
-    userVideo.read();
+
+  if (client2.newFrame()) {
+    canvasSyphoner = client2.getGraphics(canvasSyphoner);
+    image(canvasSyphoner, 0, 0, 640, 508);
   }
-  scene.image(userVideo, 0,0,w,h); 
+
+  videoLayer.beginDraw();
+    videoLayer.image(canvasSyphoner, 0, 0, 640, 508); 
+    //Cover rest of screen outside of video - openCV does not like background function
+    videoLayer.fill(0);
+    //videoLayer.rect(0,508,w,h-508);
+    
+    for(int i = 0; i < selectedToggles.size(); i++){
+      videoLayer.fill(30);
+      videoLayer.rect(w/2-100, 450+(30*i), 200,30);
+      videoLayer.fill(255);
+      videoLayer.text(selectedToggles.get(i), w/2-80, 470+(30*i));
+    }
+    
+  videoLayer.endDraw();
   
-  scene.text("Would you like to display this on the gallery wall?",w/2-200,height/2+100,400,800);
+  if(recordingOn){
+    veCanvas.beginDraw();
+    veCanvas.image(videoLayer, 0,0);
+    veCanvas.endDraw();     
+    
+    if ((millis() > startTime)&&(millis() < startTime+countdownTime)){
+      //b7.setVisible(false);
+      videoCounter = floor((millis() - startTime)/1000);
+      renderCounter(progressBarCanvas, videoCounter);      
+    } else {
+      renderProgressBar(progressBarCanvas);
+      ve.saveFrame();   
+    }
+
+    scene.image(videoLayer,0,0);
+    scene.image(progressBarCanvas,0,0);
+    
+    if (millis() > startTime+captureTime+countdownTime){
+      endRecording();
+      restartProgressBar(progressBarCanvas);
+    } 
+  } else {
+    scene.image(videoLayer,0,0);
+  }
   scene.endDraw();
 }
 
-void defineGUIEight(){
-  //b8a = sceneGUI.addButton("sceneEightAButton")
-  //              .setLabel("Yes")
-  //              .setPosition(width/2-120,height-100)
-  //              .setSize(100,40)
-  //              .setColorLabel(color(0, 0, 0))
-  //              .setColorBackground(color(255, 255, 255));
-                
-  //b8b = sceneGUI.addButton("sceneEightBButton")
-  //              .setLabel("No thanks")
-  //              .setPosition(width/2+10,height-100)
-  //              .setSize(100,40)
-  //              .setColorLabel(color(0, 0, 0))
-  //              .setColorBackground(color(255, 255, 255));
-  //b8a.hide();
-  //b8b.hide();
+
+void renderProgressBar(PGraphics barCanvas){
+  barCanvas.beginDraw();
+  //Hide record button
+  barCanvas.fill(0);
+  barCanvas.rect(w/2-50,h-350, 100, 40);  
+  barCanvas.fill(255,255,255);
+  barCanvas.rect(0,h-170,w, 50);
   
-  b8a = new GButton(this, w/2-120,h-300, 100, 40);
-  b8a.setText("Yes");
-  b8a.addEventHandler(this, "sceneEightAButton");
-  b8a.setVisible(false);
-  
-  b8b = new GButton(this, w/2+10,h-300, 100, 40);
-  b8b.setText("No thanks");
-  b8b.addEventHandler(this, "sceneEightBButton");
-  b8b.setVisible(false);
+  //progress
+  float b = (millis() - startTime - countdownTime)/5;
+  float barWidth = lerp(0,w,b/1000);
+  barCanvas.fill(255,0,0);
+  barCanvas.rect(0,h-170,barWidth,50);  
+  barCanvas.endDraw();
 }
 
-public void sceneEightAButton(GButton source, GEvent event) {
-  println("a button event from sceneEightAButton: "+event);
-  userSavedVideo = true;
-  b8a.setVisible(false);
-  b8b.setVisible(false);
-  b9.setVisible(true);
-  
-  currentScene = 9;
+void restartProgressBar(PGraphics barCanvas){
+  barCanvas.beginDraw();
+  barCanvas.fill(0,0,0);
+  barCanvas.rect(0,h-170,width,50);  
+  barCanvas.endDraw();
 }
 
-public void sceneEightBButton(GButton source, GEvent event) {
-  println("a button event from sceneEightBButton: "+event);
-  userSavedVideo = false;
-  //Delete movie
-  File getFile = dataFile(dataPath("gallery/"+ userID + ".mp4"));
-  if(getFile.isFile()){
-    getFile.delete();
-    println("File deleted.");
-  }
+void endRecording(){
+  recordingOn = false;
+  ve.dispose();
   
-  b8a.setVisible(false);
-  b8b.setVisible(false);
-  b9.setVisible(true);
+  println("Video created. Loading video in...");
+  //myClient.write("videoCaptured");
+  client2.stop();
+  println("Syphon Client 2 disconnected"); 
   
+  userVideo = new Movie(this, "gallery/"+userID + ".mp4");
+  userVideo.loop();
+  
+  println("Video ready.");
+  b9a.setVisible(true);
+  b9b.setVisible(true);
   currentScene = 9;
 }

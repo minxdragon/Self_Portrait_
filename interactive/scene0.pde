@@ -35,6 +35,7 @@ public void sceneZeroButton(GButton source, GEvent event) {
     
   b0.setVisible(false);  
   //myClient.write("cameraNoMask");
+  allKeywordsHashMap = new LinkedHashMap<String,Boolean>();
   
   for(int i = 0; i < wordToggles.size(); i++){  
     allKeywordsHashMap.put(allKeywords[i], false);

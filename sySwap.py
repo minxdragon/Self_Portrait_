@@ -29,7 +29,7 @@ class VideoHandler(object):
 				self.stopped = False
 				self.dst_queue = queue.Queue()
 				self.start_time = time.time()
-				self.duration = 12 # 30 seconds
+				self.duration = 14 # 30 seconds
 
 	def start(self):
 		t = threading.Thread(target=self.process_video)

@@ -108,6 +108,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					terms = terms.replace("['", "")
 					terms = terms.replace("']", "")
 					terms = terms.replace("' '", ", ")
+					terms = terms.replace("'''", "")
 					print (terms)
 					
 					#create a variable separating all of the terms
@@ -120,8 +121,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					analysisComplete = response + analysis
 
 					#generate a string for the prompt using the prediction results
-					promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist"
-					negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure"
+					promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
+					negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
@@ -131,11 +132,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
 						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
 						init_image = init
-						prompt_strength = 0.8
-						negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure"
+						prompt_strength = 0.7
+						negative = "NSFW, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
 						
 						try:
-							output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=(negative), prompt_strength=0.8)[0] #this is the one that parses the information
+							output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=(negative), prompt_strength=0.7)[0] #this is the one that parses the information
 							print(output_url)
 							# download the image, convert it to a NumPy array, and then read
 							# it into OpenCV format
@@ -163,7 +164,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 			elif splitMessage[0] == 'userSelected':
 				#listen for the userSelected message
 				userSelected = splitMessage[1]
-				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist"
+				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
 				negative = "profile, abstract, cropped, animal, cartoon, landscape, food, text, logo"
 				print(promptString)
 

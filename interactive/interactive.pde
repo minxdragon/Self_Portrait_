@@ -14,17 +14,17 @@ PGraphics canvasWebcam;
 PGraphics canvasSyphoner;
 SyphonClient client1;
 SyphonClient client2;
-String syphonClient2Name = "Syphoner";
-
+//String syphonClient2Name = "Syphoner";
+String syphonClient2Name = "python";
 
 Client myClient;
 
 String inString;
 String inString2;
 
-PGraphics[] scenes = new PGraphics[10];
+PGraphics[] scenes = new PGraphics[11];
 GToggleGroup sceneGUI;
-GButton b0,b1,b2,b3,b4a,b4b,b5,b6,b7,b8a,b8b,b9;
+GButton b0,b1,b2,b3,b4a,b4b,b5,b6,b7,b8,b9a,b9b,b10;
 GButton tog1;
 GButton tog2;
 
@@ -159,11 +159,14 @@ void renderScene(int currentSceneNumber){
     case 9: 
       sceneNine(scenes[9]);
       break;
+    case 10: 
+      sceneTen(scenes[10]);
+      break;
     }
 }
 
 void createCanvases(){
-  for(int i = 0; i < 10; i++){
+  for(int i = 0; i < 11; i++){
     scenes[i] = createGraphics(w, h, P3D);
   }
 }
@@ -177,6 +180,7 @@ void defineGUI(){
   defineGUIFive();
   defineGUISix();
   //defineGUISeven();
-  defineGUIEight();
+  //defineGUIEight();
   defineGUINine();
+  defineGUITen();
 }

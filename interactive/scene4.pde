@@ -1,8 +1,11 @@
 //Select keywords
-String[] allKeywords = {"nurturing", "creative", "rational", "sensitive", "determined", "Introspective", "Caring", "Perceptive", "Intuitive", "Emotional",
-                        "Moody", "Intelligent", "Passionate", "Playful", "Shy", "Imaginative", "Decisive", "Strong", "Practical", "Intimidating",
-                        "Condescending", "Provocative", "Impulsive", "Inventive", "Conceptual", "Persistent", "Protective", "reserved", "happy", "independant",
-                        "brooding", "surreal", "mad"};
+String[] allKeywords = {"Nurturing", "Creative", "Rational", "Sensitive", "Determined", 
+                        "Introspective", "Caring", "Perceptive", "Intuitive", "Emotional",
+                        "Moody", "Intelligent", "Passionate", "Playful", "Shy", "Imaginative", 
+                        "Decisive", "Strong", "Practical", "Intimidating", "Condescending", 
+                        "Provocative", "Impulsive", "Inventive", "Conceptual", "Persistent", 
+                        "Protective", "Reserved", "Happy", "Independant", "Brooding", "Surreal", 
+                        "Mad"};
                         
 LinkedHashMap<String,Boolean> allKeywordsHashMap = new LinkedHashMap<String,Boolean>();
 ArrayList<GButton> wordToggles = new ArrayList<GButton>();
@@ -41,36 +44,6 @@ void defineGUIFour(){
     increment+=2;
   }
   
-  //for(int i = 0; i < allKeywords.length-1; i+=2){    
-  //  scenes[4].fill(30);    
-  //  //wordToggle[i] = sceneGUI.addToggle("toggle-" + allKeywords[i]).setPosition(50, 50+(30*increment+10)).setSize(200,30).setValue(false);
-  //  //sceneGUI.addToggle("toggle-" + allKeywords[i+1]).setPosition(260, 50+(30*increment+10)).setSize(200,30).setValue(false);
-    
-  //  //scenes[4].fill(255);    
-  //  //scenes[4].text(allKeywords[i], 70, 70+(30*increment+2));
-  //  //scenes[4].text(allKeywords[i+1], 280, 70+(30*increment+2));
-    
-  //  increment++;
-  //}  
-  
-  //b4a = sceneGUI.addButton("sceneFourAButton")
-  //             .setLabel("Generate")
-  //             .setPosition(width/2-50,height-100)
-  //             .setSize(100,40)
-  //             .setColorLabel(color(0, 0, 0))
-  //             .setColorBackground(color(255, 255, 255));
-  
-  //b4b = sceneGUI.addButton("sceneFourBButton")
-  //             .setLabel("Clear all")
-  //             .setPosition(width/2-50,height-200)
-  //             .setSize(100,40)
-  //             .setColorLabel(color(0, 0, 0))
-  //             .setColorBackground(color(255, 255, 255));
-               
-  //b4a.hide();
-  //b4b.hide();
-  
-  
   b4a = new GButton(this, w/2-50,h-200, 120, 50);
   b4a.setText("Generate");
   b4a.addEventHandler(this, "sceneFourAButton");
@@ -94,7 +67,7 @@ public void sceneFourAButton(GButton source, GEvent event) {
     }
   }  
   
-  String[] toggledKeywords = selectedToggles.array();
+  String[] toggledKeywords = selectedToggles.toArray(new String[0]);
   String userSelectedKeywords = join(toggledKeywords, "&"); 
   
   String clientMessageString = "userSelected," + userSelectedKeywords;
@@ -107,8 +80,6 @@ public void sceneFourAButton(GButton source, GEvent event) {
     wordToggles.get(i).setVisible(false);
   }
   
-  //b4a.hide();
-  //b4b.hide();
   b4a.setVisible(false);
   b4b.setVisible(false);
   currentScene = 5;

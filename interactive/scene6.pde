@@ -1,8 +1,11 @@
 //Results screen
 PImage maskImageB;
 
+int delaySyphonConnect = 3000;
+int delayTimer;
+
 void sceneSix(PGraphics scene){  
-  maskImageB = loadImage("data/maskB.jpg");
+  maskImageB = loadImage("data/dream.jpg");
   
   scene.beginDraw();
   scene.background(0,0,0);  
@@ -25,20 +28,25 @@ void defineGUISix(){
   b6.setVisible(false);
 }
 
-public void sceneSixButton(GButton source, GEvent event) {
-  println("a button event from sceneSixButton: " + event);  
+//send server message that video is ready
+void syphonServerReady(){
   client2 = new SyphonClient(this, syphonClient2Name);
-  println("Syphon Client 2 connected to: " + client2.getServerName()); 
-  
-  b6.setVisible(false);
-  //b7.setVisible(true);
-  currentScene = 7;
-  
-  //println("a button event from sceneSevenButton: "+event);
+  println("Syphon Client 2 connected to: " + client2.getServerName());
+  currentScene = 8;
+
   recordingOn = true;
   ve.setMovieFileName("data/gallery/"+ userID + ".mp4");
   ve.startMovie();
   println("Starting to record...");
   startTime = millis();
-  //b7.setVisible(false);  
+}
+
+public void sceneSixButton(GButton source, GEvent event) {
+  println("a button event from sceneSixButton: " + event);  
+  
+  myClient.write("connectSyphonServer");    
+  //timer 3 seconds
+  delayTimer = millis();
+  b6.setVisible(false);
+  currentScene = 7;
 }
