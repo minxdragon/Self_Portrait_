@@ -15,22 +15,6 @@ void sceneNine(PGraphics scene){
 }
 
 void defineGUINine(){
-  //b8a = sceneGUI.addButton("sceneEightAButton")
-  //              .setLabel("Yes")
-  //              .setPosition(width/2-120,height-100)
-  //              .setSize(100,40)
-  //              .setColorLabel(color(0, 0, 0))
-  //              .setColorBackground(color(255, 255, 255));
-                
-  //b8b = sceneGUI.addButton("sceneEightBButton")
-  //              .setLabel("No thanks")
-  //              .setPosition(width/2+10,height-100)
-  //              .setSize(100,40)
-  //              .setColorLabel(color(0, 0, 0))
-  //              .setColorBackground(color(255, 255, 255));
-  //b8a.hide();
-  //b8b.hide();
-  
   b9a = new GButton(this, w/2-120,h-300, 100, 40);
   b9a.setText("Yes");
   b9a.addEventHandler(this, "sceneNineAButton");
@@ -50,6 +34,7 @@ public void sceneNineAButton(GButton source, GEvent event) {
   b10.setVisible(true);
   
   currentScene = 10;
+  createNewVideoExport();
 }
 
 public void sceneNineBButton(GButton source, GEvent event) {
@@ -67,4 +52,5 @@ public void sceneNineBButton(GButton source, GEvent event) {
   b10.setVisible(true);
   
   currentScene = 10;
+  createNewVideoExport();
 }

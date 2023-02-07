@@ -9,16 +9,6 @@ void sceneZero(PGraphics scene){
 }
 
 void defineGUIZero(){
-  //.setImages(loadImage("Arrow-Left.png"), loadImage("Arrow-Right.png"), loadImage("Refresh.png"))
-  //b0 = sceneGUI
-  //     .addButton("sceneZeroButton")
-  //     .setLabel("Start")
-  //     .setPosition(width/2-50,height/2-20)
-  //     .setSize(100,40)
-  //     .setColorLabel(color(0, 0, 0))
-  //     .setColorBackground(color(255, 255, 255))
-  //     ;
-  
   b0 = new GButton(this, w/2-50, h/2-20, 100, 40);
   b0.setText("Start");
   b0.addEventHandler(this, "sceneZeroButton");
@@ -27,14 +17,11 @@ void defineGUIZero(){
 
 public void sceneZeroButton(GButton source, GEvent event) {
   println("a button event from sceneZeroButton: "+event);
-  userID = month()+"-"+day()+"-"+hour()+"-"+minute()+"-"+second();
-  //myClient = new Client(this, "127.0.0.1", 5008); 
-  
+  userID = month()+"-"+day()+"-"+hour()+"-"+minute()+"-"+second();  
   countdownStartTime = 0;
   countdownCurrentTime = 0;
     
   b0.setVisible(false);  
-  //myClient.write("cameraNoMask");
   allKeywordsHashMap = new LinkedHashMap<String,Boolean>();
   
   for(int i = 0; i < wordToggles.size(); i++){  

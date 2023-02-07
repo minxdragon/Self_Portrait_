@@ -36,7 +36,6 @@ void sceneEight(PGraphics scene){
     veCanvas.endDraw();     
     
     if ((millis() > startTime)&&(millis() < startTime+countdownTime)){
-      //b7.setVisible(false);
       videoCounter = floor((millis() - startTime)/1000);
       renderCounter(progressBarCanvas, videoCounter);      
     } else {
@@ -86,7 +85,6 @@ void endRecording(){
   ve.dispose();
   
   println("Video created. Loading video in...");
-  //myClient.write("videoCaptured");
   client2.stop();
   println("Syphon Client 2 disconnected"); 
   

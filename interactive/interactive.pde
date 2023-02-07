@@ -83,8 +83,7 @@ void setup(){
   
   veCanvas = createGraphics(w, h,P3D);
   //ve = new VideoExport(this, "/data/gallery/movie.mp4", veCanvas);
-  ve = new VideoExport(this);
-  ve.setGraphics(veCanvas);
+  createNewVideoExport();
   
   videoLayer = createGraphics(w, h,P3D);
   progressBarCanvas = createGraphics(w, h,P3D);
@@ -183,4 +182,9 @@ void defineGUI(){
   //defineGUIEight();
   defineGUINine();
   defineGUITen();
+}
+
+void createNewVideoExport(){
+  ve = new VideoExport(this);
+  ve.setGraphics(veCanvas);  
 }
