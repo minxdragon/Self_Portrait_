@@ -3,9 +3,11 @@ import cv2
 import numpy as np
 import scipy.spatial as spatial
 import logging
+import random
 
 
 ## 3D Transform
+
 def bilinear_interpolate(img, coords):
     #add try except for out of bounds
     """ Interpolates over every image channel
@@ -75,7 +77,14 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
         try:
             result_img[y, x] = bilinear_interpolate(src_img, out_coords-1)
         except IndexError:
-            pass
+            logging.warning("Out of index")
+            default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+            random_index = random.randint(0, len(default_images) - 1)
+            default_image = default_images[random_index]
+
+            result_img = default_image
+            print('Using random default image')
+            #pass
 
 
     return None
