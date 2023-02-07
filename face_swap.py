@@ -20,27 +20,30 @@ def bilinear_interpolate(img, coords):
     int_coords = np.int32(coords)
     x0, y0 = int_coords
     dx, dy = coords - int_coords
-
+    try:
     # 4 Neighour pixels
-    q11 = img[y0, x0]
-    q21 = img[y0, x0 + 1]
-    q12 = img[y0 + 1, x0]
-    q22 = img[y0 + 1, x0 + 1]
+        q11 = img[y0, x0]
+        q21 = img[y0, x0 + 1]
+        q12 = img[y0 + 1, x0]
+        q22 = img[y0 + 1, x0 + 1]
 
         # q11 = x0 = np.clip(x0, 0, img.shape[1]-1)
         # q21 = y0 = np.clip(y0, 0, img.shape[0]-1)
         # q12 = x1 = np.clip(x0+1, 0, img.shape[1]-1)
         # q22 = y1 = np.clip(y0+1, 0, img.shape[0]-1)
 
-    # except IndexError:
-    #     logging.warning("Out of index")
-    #     default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
-    #     random_index = random.randint(0, len(default_images) - 1)
-    #     default_image = default_images[random_index]
+    except IndexError:
+        print("IndexError")
+        logging.warning("Out of index bilinear_interpolate")
+        default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+        random_index = random.randint(0, len(default_images) - 1)
+        default_image = default_images[random_index]
 
-    #     img = cv2.imread(default_image)
-    #     #result_img[:] = img
-    #     print(f'Using default image {default_image}')
+        img_path = default_image
+        print(f'Using default image: {img_path}')
+        img = cv2.imread(img_path)
+
+        return img
 
     btm = q21.T * dx + q11.T * (1 - dx)
     top = q22.T * dx + q12.T * (1 - dx)
@@ -79,18 +82,7 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
         x, y = coords.T
         x = np.clip(x, 0, src_img.shape[1]-1)
         y = np.clip(y, 0, src_img.shape[0]-1)
-    try:
         result_img[y, x] = bilinear_interpolate(src_img, out_coords-1)
-    except IndexError:
-        logging.warning("Out of index")
-        default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
-        random_index = random.randint(0, len(default_images) - 1)
-        default_image = default_images[random_index]
-
-        img = cv2.imread(default_image)
-        result_img[:] = img
-        print(f'Using default image {default_image}')
-
 
     return None
 

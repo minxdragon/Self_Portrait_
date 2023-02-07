@@ -96,9 +96,15 @@ class VideoHandler(object):
 									# self.video.release()
 									# server2.stop()
 									break
-			except IndexError:
-				print("IndexError")
-				pass
+			except IndexError as e:
+				print(e)
+				default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+				random_index = random.randint(0, len(default_images) - 1)
+				default_image = default_images[random_index]
+
+				img_path = default_image
+				print('Using random default image')
+				self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
 
 
 	def process_video(self):
@@ -135,4 +141,6 @@ if __name__ == '__main__':
 	if not os.path.isdir(dir_path):
 		os.makedirs(dir_path)
 
+
 	VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
+
