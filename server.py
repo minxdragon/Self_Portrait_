@@ -36,6 +36,7 @@ import time
 import syphonpy
 import threading
 import queue
+import random
 
 import numpy as np
 import glfw
@@ -51,7 +52,7 @@ from Syserver import main
 #from grayServer import main
 #from syphonpy import Server
 
-testMode = False
+testMode = True
 
 HOST = ''              
 PORT = 5008
@@ -121,7 +122,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					analysisComplete = response + analysis
 
 					#generate a string for the prompt using the prediction results
-					promptString = "a head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
+					promptString = "a head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
 					negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
 					print (promptString)
 
@@ -151,8 +152,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						except replicate.exceptions.ModelError as e:
 							print(e)
 							print("Model error")
-							unableToGetMask = b"unableToGetMask"
-							conn.sendall(unableToGetMask)
+							default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+							random_index = random.randint(0, len(default_images) - 1)
+							default_image = default_images[random_index]
+
+							img_path = default_image
+							print('Using random default image')
+							# unableToGetMask = b"unableToGetMask"
+							# conn.sendall(unableToGetMask)
 							return None
 
 						return dream			
@@ -168,7 +175,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 			elif splitMessage[0] == 'userSelected':
 				#listen for the userSelected message
 				userSelected = splitMessage[1]
-				promptString = "a full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
+				promptString = "a full head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
 				negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo"
 				print(promptString)
 
