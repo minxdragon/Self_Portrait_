@@ -180,6 +180,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				print(f'Sending...')                
 				conn.sendall(b"cameraMaskReady,window frame name")
 				print(f'Analysis complete. Mask and Keywords sent.')
+				
 				# run videoHandler from the syswap file
 				if __name__ == '__main__':
 					print('starting sySwap.py')

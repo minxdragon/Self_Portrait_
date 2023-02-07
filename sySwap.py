@@ -58,6 +58,7 @@ class VideoHandler(object):
 		
 		while keep_running and not server2.should_close():
 			try:
+				#set window position to top left corner
 				x = 0
 				y = 0
 				python = glfw.get_current_context()
@@ -72,6 +73,7 @@ class VideoHandler(object):
 				server2.draw_and_send(frame)
 				glfw.show_window(python)
 				
+				#Video loop and syphon server processing
 				if cv2.waitKey(1) & 0xFF == ord('q'):
 					break
 				while not self.stopped:
@@ -81,7 +83,8 @@ class VideoHandler(object):
 								if self.video.isOpened():
 									dst_img = self.dst_queue.get()
 									resized = cv2.resize(dst_img, (640, 400))
-									frame = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+									flip = cv2.flip(resized, 1)
+									frame = cv2.cvtColor(flip, cv2.COLOR_BGR2RGB)
 									#cv2.imshow("python", resized)
 								server2.draw_and_send(frame)
 								current_time = time.time()
