@@ -5,6 +5,7 @@ import argparse
 import Syphon
 import time
 import glfw
+import random
 
 from face_detection import select_face
 from face_swap import face_swap
@@ -21,8 +22,12 @@ class VideoHandler(object):
 				#no face error handling
 				except Exception as e:
 					print(e)
-					img_path = 'interactive/data/dream2.jpg'
-					print('Using default image')
+					default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+					random_index = random.randint(0, len(default_images) - 1)
+					default_image = default_images[random_index]
+
+					img_path = default_image
+					print('Using random default image')
 					self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
 
 				self.args = args

@@ -36,6 +36,7 @@ import time
 import syphonpy
 import threading
 import queue
+import random
 
 import numpy as np
 import glfw
