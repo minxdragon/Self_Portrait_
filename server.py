@@ -36,7 +36,6 @@ import time
 import syphonpy
 import threading
 import queue
-import random
 
 import numpy as np
 import glfw
@@ -52,7 +51,7 @@ from Syserver import main
 #from grayServer import main
 #from syphonpy import Server
 
-testMode = True
+testMode = False
 
 HOST = ''              
 PORT = 5008
@@ -180,8 +179,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				print(f'Sending...')                
 				conn.sendall(b"cameraMaskReady,window frame name")
 				print(f'Analysis complete. Mask and Keywords sent.')
-				
-				# run videoHandler from the syswap file
+
+			elif splitMessage[0] == 'connectSyphonServer':
+				print(f'Received | Request to connect Syphon Server')
+                # run videoHandler from the syswap file
 				if __name__ == '__main__':
 					print('starting sySwap.py')
 					logging.basicConfig(level=logging.INFO,
@@ -205,7 +206,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					
 					VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
 
-						#VideoHandler.self.stopped = True
+					#VideoHandler.self.stopped = True
 					#add timeout code for cv2.imshow
 					#cv2.waitKey(5000)
 
