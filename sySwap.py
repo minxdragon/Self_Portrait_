@@ -18,6 +18,7 @@ class VideoHandler(object):
 					self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
 					if self.src_points is None:
 						raise Exception('No face detected in the source image')
+				#no face error handling
 				except Exception as e:
 					print(e)
 					img_path = 'interactive/data/dream2.jpg'
@@ -61,6 +62,7 @@ class VideoHandler(object):
 				ret, frame = self.video.read() #read camera image
 				
 				frame = cv2.resize(frame, size)
+				frame = cv2.flip(frame, 1)
 
 				server2.draw_and_send(frame)
 				glfw.show_window(python)
