@@ -35,15 +35,8 @@ def bilinear_interpolate(img, coords):
     except IndexError:
         print("IndexError")
         logging.warning("Out of index bilinear_interpolate")
-        default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
-        random_index = random.randint(0, len(default_images) - 1)
-        default_image = default_images[random_index]
-
-        img_path = default_image
-        print(f'Using default image: {img_path}')
-        img = cv2.imread(img_path)
-
-        return img
+        
+        return None
 
     btm = q21.T * dx + q11.T * (1 - dx)
     top = q22.T * dx + q12.T * (1 - dx)
