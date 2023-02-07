@@ -156,12 +156,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 							random_index = random.randint(0, len(default_images) - 1)
 							default_image = default_images[random_index]
 
-							img_path = default_image
+							default_img = cv2.imread('interactive/data/' + default_image)
+							dream = cv2.imwrite('interactive/data/dream.jpg', default_img)
 							print('Using random default image')
 							# unableToGetMask = b"unableToGetMask"
 							# conn.sendall(unableToGetMask)
-							return None
-
+							
 						return dream			
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
