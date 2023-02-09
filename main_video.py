@@ -12,15 +12,27 @@ import queue
 from urllib.request import urlopen, Request
 from face_detection import select_face
 from face_swap import face_swap
+import random
 
 # face swap video from webcam class
 class VideoHandler(object):
     def __init__(self, video_path=0, img_path=None, prompt=None, args=None):
-        self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
-        self.args = args
-        self.video = cv2.VideoCapture(video_path)
-        self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
-                                      (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+        try:
+            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
+            self.args = args
+            self.video = cv2.VideoCapture(video_path)
+            self.writer = cv2.VideoWriter(args.save_path, cv2.VideoWriter_fourcc(*'MJPG'), self.video.get(cv2.CAP_PROP_FPS),
+                                        (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+        except Exception as e:
+            print(e)
+            print('No face detected in the source image')
+            default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+            random_index = random.randint(0, len(default_images) - 1)
+            default_image = default_images[random_index]
+
+            img_path = default_image
+            print('Using random default image')
+            self.src_points, self.src_shape, self.src_face = select_face(cv2.imread(img_path))
 
     def start(self):
         import time

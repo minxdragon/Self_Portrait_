@@ -10,6 +10,8 @@ default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
 random_index = random.randint(0, len(default_images) - 1)
 global  default_image, img_path
 default_image = default_images[random_index]
+print (default_image)
+src_img = cv2.imread(default_image)
 
 ## 3D Transform
 def bilinear_interpolate(img, coords):
@@ -30,6 +32,7 @@ def bilinear_interpolate(img, coords):
         q22 = img[y0 + 1, x0 + 1]
 
     except IndexError:
+        #print ("using " + default_image)
         return np.zeros((3,))
 
     btm = q21.T * dx + q11.T * (1 - dx)
@@ -211,7 +214,13 @@ def check_points(img,points):
 def face_swap(src_face, dst_face, src_points, dst_points, dst_shape, dst_img, args, end=48):
     h, w = dst_face.shape[:2]
 
+    # print ('src_points', src_points)
+    # print ('dst_points', dst_points)
+
     ## 3d warp
+    if src_points is None or dst_points is None:
+        raise Exception("src_points or dst_points is None")
+
     warped_src_face = warp_image_3d(src_face, src_points[:end], dst_points[:end], (h, w))
     ## Mask for blending
     mask = mask_from_points((h, w), dst_points)
