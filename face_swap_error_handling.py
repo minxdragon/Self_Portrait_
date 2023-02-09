@@ -3,24 +3,42 @@ import cv2
 import numpy as np
 import scipy.spatial as spatial
 import logging
+import random
+
 
 ## 3D Transform
+default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+random_index = random.randint(0, len(default_images) - 1)
+global  default_image, img_path
+default_image = default_images[random_index]
+
+img_path = default_image
 def bilinear_interpolate(img, coords):
+    #add try except for out of bounds
     """ Interpolates over every image channel
     http://en.wikipedia.org/wiki/Bilinear_interpolation
     :param img: max 3 channel image
     :param coords: 2 x _m_ array. 1st row = xcoords, 2nd row = ycoords
     :returns: array of interpolated pixels with same shape as coords
     """
+    
     int_coords = np.int32(coords)
     x0, y0 = int_coords
     dx, dy = coords - int_coords
-
+    try:
     # 4 Neighour pixels
-    q11 = img[y0, x0]
-    q21 = img[y0, x0 + 1]
-    q12 = img[y0 + 1, x0]
-    q22 = img[y0 + 1, x0 + 1]
+        q11 = img[y0, x0]
+        q21 = img[y0, x0 + 1]
+        q12 = img[y0 + 1, x0]
+        q22 = img[y0 + 1, x0 + 1]
+
+        # q11 = x0 = np.clip(x0, 0, img.shape[1]-1)
+        # q21 = y0 = np.clip(y0, 0, img.shape[0]-1)
+        # q12 = x1 = np.clip(x0+1, 0, img.shape[1]-1)
+        # q22 = y1 = np.clip(y0+1, 0, img.shape[0]-1)
+
+    except IndexError:
+        return np.zeros((3,))
 
     btm = q21.T * dx + q11.T * (1 - dx)
     top = q22.T * dx + q12.T * (1 - dx)
@@ -57,7 +75,20 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
         out_coords = np.dot(tri_affines[simplex_index],
                             np.vstack((coords.T, np.ones(num_coords))))
         x, y = coords.T
-        result_img[y, x] = bilinear_interpolate(src_img, out_coords)
+        x = np.clip(x, 0, src_img.shape[1]-1)
+        y = np.clip(y, 0, src_img.shape[0]-1)
+        try:
+            result_img[y, x] = bilinear_interpolate(src_img, out_coords-1)
+        except IndexError:
+            logging.warning("Out of index")
+            default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+            random_index = random.randint(0, len(default_images) - 1)
+            default_image = default_images[random_index]
+
+            result_img = default_image
+            print('Using random default image')
+            #pass
+
 
     return None
 
