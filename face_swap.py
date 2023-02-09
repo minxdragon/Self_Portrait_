@@ -8,6 +8,14 @@ import random
 
 ## 3D Transform
 
+#random default image for indexError
+default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+random_index = random.randint(0, len(default_images) - 1)
+global  default_image, img_path
+default_image = default_images[random_index]
+
+img_path = default_image
+
 def bilinear_interpolate(img, coords):
     #add try except for out of bounds
     """ Interpolates over every image channel
@@ -27,16 +35,11 @@ def bilinear_interpolate(img, coords):
         q12 = img[y0 + 1, x0]
         q22 = img[y0 + 1, x0 + 1]
 
-        # q11 = x0 = np.clip(x0, 0, img.shape[1]-1)
-        # q21 = y0 = np.clip(y0, 0, img.shape[0]-1)
-        # q12 = x1 = np.clip(x0+1, 0, img.shape[1]-1)
-        # q22 = y1 = np.clip(y0+1, 0, img.shape[0]-1)
-
     except IndexError:
-        print("IndexError")
-        logging.warning("Out of index bilinear_interpolate")
-        
-        return None
+        #print("IndexError")
+
+        #print('Using random default image'+default_image)
+        return np.zeros((3,))
 
     btm = q21.T * dx + q11.T * (1 - dx)
     top = q22.T * dx + q12.T * (1 - dx)
