@@ -3,6 +3,13 @@ import cv2
 import numpy as np
 import scipy.spatial as spatial
 import logging
+import random
+
+## 3D Transform
+default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+random_index = random.randint(0, len(default_images) - 1)
+global  default_image, img_path
+default_image = default_images[random_index]
 
 ## 3D Transform
 def bilinear_interpolate(img, coords):
@@ -15,12 +22,15 @@ def bilinear_interpolate(img, coords):
     int_coords = np.int32(coords)
     x0, y0 = int_coords
     dx, dy = coords - int_coords
+    try:
+        # 4 Neighour pixels
+        q11 = img[y0, x0]
+        q21 = img[y0, x0 + 1]
+        q12 = img[y0 + 1, x0]
+        q22 = img[y0 + 1, x0 + 1]
 
-    # 4 Neighour pixels
-    q11 = img[y0, x0]
-    q21 = img[y0, x0 + 1]
-    q12 = img[y0 + 1, x0]
-    q22 = img[y0 + 1, x0 + 1]
+    except IndexError:
+        return np.zeros((3,))
 
     btm = q21.T * dx + q11.T * (1 - dx)
     top = q22.T * dx + q12.T * (1 - dx)
