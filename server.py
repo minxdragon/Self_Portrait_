@@ -152,7 +152,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						except replicate.exceptions.ModelError as e:
 							print(e)
 							print("Model error")
-							default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg',]
+							default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg', 'dream4.jpg','dream5.jpg', 'dream6.jpg', 'dream7.jpg', 'dream8.jpg',]
 							random_index = random.randint(0, len(default_images) - 1)
 							default_image = default_images[random_index]
 
