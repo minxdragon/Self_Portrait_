@@ -121,9 +121,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 					analysisComplete = response + analysis
 
+					style_list = ['watercolor', 'oils', 'impasto', 'pastel', 'acrylic', 'charcoal', 'ink', 'pencil', 'marker']
+					random_index = random.randint(0, len(style_list) - 1)
+					random_style = style_list[random_index]
+
 					#generate a string for the prompt using the prediction results
-					promptString = "a head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
-					negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
+					promptString = "a " + random_style + " head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
+					negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
@@ -134,7 +138,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
 						init_image = init
 						prompt_strength = 0.7
-						negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
+						negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
 						
 						try:
 							output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=(negative), prompt_strength=0.7)[0] #this is the one that parses the information
@@ -175,7 +179,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 			elif splitMessage[0] == 'userSelected':
 				#listen for the userSelected message
 				userSelected = splitMessage[1]
-				promptString = "a full head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
+				promptString = "a " + random_style + " full head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
 				negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo"
 				print(promptString)
 
