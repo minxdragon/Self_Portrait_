@@ -4,7 +4,8 @@
 source activate selfportrait
 
 #go to directory
-cd /Users/j.rosenbaum/Documents/GitHub/FaceSwap 
+#cd /Users/j.rosenbaum/Documents/GitHub/FaceSwap 
+cd /Users/sgm_tech/Documents/Self_Portrait_-base
 
 #export Key
 export REPLICATE_API_TOKEN=798257c4fb85e3ea496075c8904fcd44d56012f7
