@@ -14,8 +14,12 @@ PGraphics canvasWebcam;
 PGraphics canvasSyphoner;
 SyphonClient client1;
 SyphonClient client2;
-//String syphonClient2Name = "Syphoner";
-String syphonClient2Name = "python";
+
+Boolean testMode = true;
+
+String syphonClient2Name = "";
+String syphonClientHome = "Syphoner";
+String syphonClientSGM = "python";
 
 Client myClient;
 
@@ -32,12 +36,7 @@ PGraphics userImage;
 PImage userPhoto;
 OpenCV opencv;
 
-//PGraphics sCanvas;
-//SyphonClient client;
-
 String responseKeywordsString = "";
-
-//setBroadcast(false) to prevent a controller from triggering an event
 int currentScene = 0;
 
 VideoExport ve;
@@ -49,29 +48,42 @@ PGraphics videoLayer;
 PGraphics progressBarCanvas;
 PImage faceDefault;
 
-int w = 568;
-int h = 1010;
+int w = 630;
+int h = 1030;
+PFont mono;
+int sceneTimer = 0;
+PImage pointEmoji;
+ArrayList<Portrait> portraits = new ArrayList<Portrait>();
 
 void setup(){
-  size(568, 1010,P3D);
+  size(630, 1030,P3D);
   //Libraries seem to go bonkers with fullscreen mode and windowResize
   //fullScreen(P3D);
   //windowResize(608, 1080);
   //delay(20);
-  //surface.setLocation(800, 0);  
+  surface.setLocation(800, 0);  
+  
+  if (testMode){
+    syphonClient2Name = syphonClientHome;
+  } else {
+    syphonClient2Name = syphonClientSGM;
+  } 
   
   createCanvases();
   frameRate(30);
   
+  mono = createFont("fonts/JetBrainsMono-Regular.ttf", 20);
+  textFont(mono);
   //client = new SyphonClient(this);
-  canvasWebcam = createGraphics(width, height);   
+  canvasWebcam = createGraphics(width, height);  
   client1 = new SyphonClient(this, "syphoncam");
   
-  canvasSyphoner = createGraphics(width, height); 
+  canvasSyphoner = createGraphics(640, 480); 
   client2 = new SyphonClient(this, syphonClient2Name);
   
   myClient = new Client(this, "127.0.0.1", 5008); 
   
+  G4P.setDisplayFont("JetBrains Mono", G4P.PLAIN, 20); // New for G4P V4.3
   sceneGUI = new GToggleGroup();
   defineGUI();
   
@@ -82,17 +94,21 @@ void setup(){
   faceDefault = loadImage("default.jpeg");
   
   veCanvas = createGraphics(w, h,P3D);
-  //ve = new VideoExport(this, "/data/gallery/movie.mp4", veCanvas);
   createNewVideoExport();
   
   videoLayer = createGraphics(w, h,P3D);
   progressBarCanvas = createGraphics(w, h,P3D);
   
   background(0,0,0);
+  
+  pointEmoji = loadImage("icons/emoji-point.png");
+
+  for (int i = 0; i < 20; i++){
+    portraits.add(new Portrait(i));
+  }
 }
 
 void draw(){
-  //background(0);
   listenServerClient();
   renderScene(currentScene);
   image(scenes[currentScene], 0, 0); 
@@ -105,9 +121,6 @@ void listenServerClient(){
     
     String[] responseList = split(inString, ',');
     switch(responseList[0]) {
-      case "cameraNoMaskReady": 
-        println("Recognised response.");
-        break;
       case "analysisComplete": 
         currentScene = 3;
         responseKeywordsString = responseList[1];
@@ -187,4 +200,8 @@ void defineGUI(){
 void createNewVideoExport(){
   ve = new VideoExport(this);
   ve.setGraphics(veCanvas);  
+}
+
+void screenTimeOut(){
+  
 }

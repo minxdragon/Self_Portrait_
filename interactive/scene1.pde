@@ -7,25 +7,14 @@ int countdownCurrentTime = 0;
 
 void sceneOne(PGraphics scene){  
   scene.beginDraw(); 
-
   if (client1.newFrame()) {
     canvasWebcam = client1.getGraphics(canvasWebcam);
-    scene.image(canvasWebcam, 0, 0, 640, 508);
+    scene.image(canvasWebcam, -400, 0, 1372, 1030);
   }   
+  userPhoto = scene.get(0,0,width, height);  
   
-  //if (client.newFrame()) {
-  //  sCanvas = client.getGraphics(sCanvas);
-    
-  //  //photobooth image 1232 x 688px
-  //  scene.image(sCanvas, 0, 0, 640, 508);    
-  //  //userImage = createGraphics(608, 1080);
-  //  //userPhoto = createImage(608, 1080,RGB);
-  //}  
-  ////println(scene.width, scene.height);
-  userPhoto = scene.get(0,0,640, 508);  
-  
-  scene.fill(0);
-  scene.rect(0, 508,w,h-508);
+  //scene.fill(0);
+  //scene.rect(0, 580,w,h-580);
   if (countdownOn){
     //3,2,1
     countdownCurrentTime = floor((millis() - countdownStartTime)/1000);
@@ -41,55 +30,62 @@ void sceneOne(PGraphics scene){
 }
 
 void defineGUIOne(){
-  //b1 = sceneGUI.addButton("sceneOneButton")
-  //             .setLabel("Take Photo")
-  //             .setPosition(width/2-50,height-200)
-  //             .setSize(100,40)
-  //             .setColorLabel(color(0, 0, 0))
-  //             .setColorBackground(color(255, 255, 255));
-  //b1.hide();
-  b1 = new GButton(this, w/2-50,h/2-20, 100, 40);
-  b1.setText("Take Photo");
+  b1 = new GButton(this, w/2-100, h/2, 200, 60);
+  b1.setText("TAKE PHOTO");
   b1.addEventHandler(this, "sceneOneButton");
+  b1.setIcon("data/icons/emoji-cam.png", 1);
+  b1.setIconPos(GAlign.WEST);
+  b1.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   b1.setVisible(false);
 }
 
 
 void renderCounter(PGraphics currentScene, int counter){  
   currentScene.beginDraw();
-  currentScene.fill(0);
-  currentScene.ellipse(w/2-50,h-150,30,30);
+  currentScene.textAlign(CENTER);
+  currentScene.textSize(20);
+  currentScene.textFont(mono);
+  currentScene.ellipseMode(CENTER);
+  currentScene.noStroke();
+  
   currentScene.fill(255);
-  currentScene.text("3", w/2-55,h-160,30,30);
-
-  currentScene.fill(0);
-  currentScene.ellipse(w/2,h-150,30,30);
-  currentScene.fill(255);
-  currentScene.text("2", w/2-5,h-160,30,30);
+  currentScene.text("LOOK UP AT CAM", w/2, 50);
+  currentScene.image(pointEmoji, w/2-130, 16, 48, 48);
+  currentScene.image(pointEmoji, w/2+82, 16, 48, 48);
   
   currentScene.fill(0);
-  currentScene.ellipse(w/2+50,h-150,30,30);
+  currentScene.ellipse(w/2-62-10,101,62,62);
   currentScene.fill(255);
-  currentScene.text("1", w/2+45,h-160,30,30);
+  currentScene.text("3", w/2-62-10-31,101-14,62,62);
+
+  currentScene.fill(0);
+  currentScene.ellipse(w/2,101,62,62);
+  currentScene.fill(255);
+  currentScene.text("2", w/2-31,101-14,62,62);
+  
+  currentScene.fill(0);
+  currentScene.ellipse(w/2+62+10,101,62,62);
+  currentScene.fill(255);
+  currentScene.text("1", w/2+62+10-31,101-14,62,62);
 
   switch(counter){
     case 0:
       currentScene.fill(255);
-      currentScene.ellipse(w/2-50,h-150,30,30);
+      currentScene.ellipse(w/2-62-10,101,62,62);
       currentScene.fill(0);
-      currentScene.text("3", w/2-55,h-160,30,30);
+      currentScene.text("3", w/2-62-10-31,101-14,62,62);
       break;
     case 1:
       currentScene.fill(255);
-      currentScene.ellipse(w/2,h-150,30,30);
+      currentScene.ellipse(w/2,101,62,62);
       currentScene.fill(0);
-      currentScene.text("2", w/2-5,h-160,30,30); 
+      currentScene.text("2", w/2-31,101-14,62,62);
       break;
     case 2:
       currentScene.fill(255);
-      currentScene.ellipse(w/2+50,h-150,30,30);
+      currentScene.ellipse(w/2+62+10,101,62,62);
       currentScene.fill(0);
-      currentScene.text("1", w/2+45,h-160,30,30);
+      currentScene.text("1", w/2+62+10-31,101-14,62,62);
       break;
   } 
   
@@ -103,7 +99,6 @@ public void sceneOneButton(GButton source, GEvent event) {
   countdownOn = true; 
 }
 
-
 void takeUserPhoto(){
   userImage.beginDraw();
   userImage.image(userPhoto,0,0);
@@ -112,8 +107,8 @@ void takeUserPhoto(){
   userImage.endDraw();
   
   processImage();
-  //connectAllClients();
   myClient.write("faceCaptured");
+  client1.stop();
 }
 
 void processImage(){
@@ -126,22 +121,21 @@ void processImage(){
     userImage.beginDraw();
     userImage.loadPixels();
     userImage.image(opencv.getInput(),0,0);
+    userImage.endDraw(); 
+    
     PImage faceCrop = get(faces[0].x-40, faces[0].y-40, faces[0].width+80, faces[0].height+80);
     PGraphics faceImageCanvas = createGraphics(400,400);  
-    
     faceImageCanvas.beginDraw();
     faceImageCanvas.image(faceCrop,0,0,400,400);
     faceImageCanvas.save("data/face.jpg");
     println("Face crop successful.");
     faceImageCanvas.endDraw(); 
-    userImage.endDraw(); 
   } else {
-    //PGraphics faceImageCanvas = createGraphics(400,400);  
-
-    //faceImageCanvas.beginDraw();
-    //faceImageCanvas.image(faceDefault,0,0,400,400);
-    //faceImageCanvas.save("data/face.jpg");
-    //println("Face default successful.");
-    //faceImageCanvas.endDraw();     
+    PGraphics defaultImageCanvas = createGraphics(400,400);
+    defaultImageCanvas.beginDraw();
+    defaultImageCanvas.image(faceDefault,0,0,400,400);
+    defaultImageCanvas.save("data/face.jpg");
+    println("Face not found. Saved default.");
+    defaultImageCanvas.endDraw(); 
   }  
 }

@@ -5,8 +5,11 @@ void sceneSeven(PGraphics scene){
     scene.beginDraw();
     scene.background(0,0,0);  
     scene.textAlign(CENTER);
-    scene.textSize(40);
-    scene.text("Connecting...", w/2, h/2);
+    scene.textSize(20);
+    scene.textFont(mono);
+    scene.text("GET READY TO RECORD", w/2, h/2-20);
+    scene.text("YOUR 5 SECOND PORTRAIT", w/2, h/2);
+    scene.text("...", w/2, h/2+20);
     scene.endDraw();
   } else {
     syphonServerReady();

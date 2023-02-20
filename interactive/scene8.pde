@@ -9,25 +9,24 @@ int videoCounter = 0;
 
 void sceneEight(PGraphics scene){  
   scene.beginDraw();
-
+  
   if (client2.newFrame()) {
     canvasSyphoner = client2.getGraphics(canvasSyphoner);
-    image(canvasSyphoner, 0, 0, 640, 508);
+    image(canvasSyphoner, -400, 0, 1372, 1030);
   }
 
   videoLayer.beginDraw();
-    videoLayer.image(canvasSyphoner, 0, 0, 640, 508); 
-    //Cover rest of screen outside of video - openCV does not like background function
-    videoLayer.fill(0);
-    //videoLayer.rect(0,508,w,h-508);
-    
-    for(int i = 0; i < selectedToggles.size(); i++){
-      videoLayer.fill(30);
-      videoLayer.rect(w/2-100, 450+(30*i), 200,30);
-      videoLayer.fill(255);
-      videoLayer.text(selectedToggles.get(i), w/2-80, 470+(30*i));
-    }
-    
+    videoLayer.image(canvasSyphoner, -400, 0, 1372, 1030); 
+    videoLayer.rectMode(CENTER);
+    videoLayer.textAlign(CENTER);
+    videoLayer.textSize(16);
+    videoLayer.textFont(mono);
+    videoLayer.fill(255);
+    for (Keyword words : keywords){
+      words.move();
+      words.bounce();
+      words.display(videoLayer);
+    } 
   videoLayer.endDraw();
   
   if(recordingOn){
@@ -59,24 +58,30 @@ void sceneEight(PGraphics scene){
 
 void renderProgressBar(PGraphics barCanvas){
   barCanvas.beginDraw();
-  //Hide record button
-  barCanvas.fill(0);
-  barCanvas.rect(w/2-50,h-350, 100, 40);  
-  barCanvas.fill(255,255,255);
-  barCanvas.rect(0,h-170,w, 50);
-  
+  barCanvas.clear();
+  barCanvas.noStroke();
+    
   //progress
   float b = (millis() - startTime - countdownTime)/5;
   float barWidth = lerp(0,w,b/1000);
+  barCanvas.fill(0);
+  barCanvas.rect(0,0,width,40);  
+  
   barCanvas.fill(255,0,0);
-  barCanvas.rect(0,h-170,barWidth,50);  
+  barCanvas.rect(0,0,barWidth,40);  
+
+  barCanvas.textAlign(CENTER);
+  barCanvas.textSize(16);
+  barCanvas.textFont(mono);
+  barCanvas.fill(255);
+  barCanvas.text("NOW RECORDING", w/2, 24);
+  
   barCanvas.endDraw();
 }
 
 void restartProgressBar(PGraphics barCanvas){
   barCanvas.beginDraw();
-  barCanvas.fill(0,0,0);
-  barCanvas.rect(0,h-170,width,50);  
+  barCanvas.clear();
   barCanvas.endDraw();
 }
 
@@ -88,11 +93,55 @@ void endRecording(){
   client2.stop();
   println("Syphon Client 2 disconnected"); 
   
-  userVideo = new Movie(this, "gallery/"+userID + ".mp4");
+  userVideo = new Movie(this, "galleryPlayer/"+userID + ".mp4");
   userVideo.loop();
-  
+  keywords.clear();
   println("Video ready.");
   b9a.setVisible(true);
   b9b.setVisible(true);
+  sceneTimer = millis();
   currentScene = 9;
+}
+
+class Keyword {
+  PVector size; 
+  PVector location;
+  PVector velocity;
+  String wordLabel;
+  
+  Keyword(String label, int index){
+     size = new PVector(170,50);
+     if (index < 4){
+       location = new PVector(random(size.x, width-size.x), height-150-(70*index));
+     } else {
+       location = new PVector(random(size.x, width-size.x), 50+(70*(index-3)));
+     }
+     velocity = new PVector(random(2),0);
+     wordLabel = label;
+  }
+   
+  void move(){
+    location.x = location.x + velocity.x;
+     //location = location.add(velocity);
+  }
+
+  void bounce(){
+    if ((location.x > width-(size.x/2)) || (location.x < (size.x/2))){
+      velocity.x = velocity.x * -1;
+    }
+    //if ((location.y > height-(size.y/2)) || (location.y < (size.y/2))){
+    //  velocity.y = velocity.y * -1;
+    //}
+  }   
+   
+  void display(PGraphics scene){
+     scene.rectMode(CENTER);
+     scene.textAlign(CENTER);
+     scene.textSize(16);
+     scene.textFont(mono);
+     scene.noFill();
+     scene.stroke(255);
+     scene.rect(location.x, location.y, size.x, size.y, 10);
+     scene.text(wordLabel.toUpperCase(), location.x, location.y+4);
+  }
 }

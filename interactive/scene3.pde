@@ -7,13 +7,16 @@ void sceneThree(PGraphics scene){
   
   scene.beginDraw();
   scene.background(0,0,0);  
-  scene.image(maskImageA,w/2-150, 100,300,300);
-
+  scene.image(maskImageA,w/2-219, 136,438,438);
+  scene.fill(255);
+  scene.textAlign(CENTER);
+  scene.textSize(20);
+  scene.textFont(mono);
+  scene.text("YOU HAVE BEEN CATEGORISED AS:",w/2,620);
+    
   for(int i = 0; i < returnedKeywords.length; i++){
-    scene.fill(30);
-    scene.rect(w/2-100, 450+(30*i), 200,30);
-    scene.fill(255);
-    scene.text(returnedKeywords[i], w/2-80, 470+(30*i));
+    String keyword = returnedKeywords[i];
+    scene.text(keyword.toUpperCase(), w/2, 644+(24*i));
   }
 
   scene.endDraw();
@@ -32,17 +35,12 @@ void updateKeywordToggles(String[] computerSelected){
 
 
 void defineGUIThree(){
-  //b3 = sceneGUI.addButton("sceneThreeButton")
-  //             .setLabel("Next")
-  //             .setPosition(width/2-50,height-200)
-  //             .setSize(100,40)
-  //             .setColorLabel(color(0, 0, 0))
-  //             .setColorBackground(color(255, 255, 255));
-  //b3.hide();
-  
-  b3 = new GButton(this, w/2-50,h-300, 100, 40);
-  b3.setText("Next");
+  b3 = new GButton(this, w/2-160, h-90, 320, 60);
+  b3.setText("CHOOSE YOUR KEYWORDS");
   b3.addEventHandler(this, "sceneThreeButton");
+  b3.setIcon("data/icons/emoji-edit.png", 1);
+  b3.setIconPos(GAlign.WEST);
+  b3.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);  
   b3.setVisible(false);
 }
 
@@ -58,9 +56,9 @@ public void sceneThreeButton(GButton source, GEvent event) {
     wordToggles.get(i).setVisible(true);
     //set the ones that are "true" to the green colour scheme otherwise purple
     if(allKeywordsHashMap.get(allKeywords[i]) == true){
-      wordToggles.get(i).setLocalColorScheme(1);
-    } else {
       wordToggles.get(i).setLocalColorScheme(6);
+    } else {
+      wordToggles.get(i).setLocalColorScheme(1);
     }
   }
 

@@ -18,9 +18,9 @@ File[] playlistFiles = new File[playlistSize];
 Movie[] playlist = new Movie[playlistSize];
 int currentNumberofFiles = 0;
 
-// fullscreen 2 and 3 on Gallery Computer
+// fullscreen 0 and 3 on Gallery Computer
 void setup() {
-  fullScreen(2);
+  fullScreen(3);
   windowResize(finalWindowWidth,finalWindowHeight);
   //surface.setLocation(100, 0);  
   background(0);  
@@ -64,7 +64,7 @@ void draw() {
     pushMatrix();
     scale(1);
     translate(finalWindowWidth/2,finalWindowHeight/2);
-    rotate(radians(90));
+    rotate(radians(-90));
     image(movie, -finalWindowHeight/2, -finalWindowWidth/2, finalWindowHeight, finalWindowWidth);
     popMatrix();
   }

@@ -7,8 +7,8 @@ import processing.video.*;
 Capture cam;
 
 void setup() { 
-  size(640, 508, P3D);
-  canvas = createGraphics(640, 508, P3D);
+  size(640, 480, P3D);
+  canvas = createGraphics(640, 480, P3D);
   
   // Create syphon server to send frames out.
   server = new SyphonServer(this, "Processing Syphon");
@@ -23,9 +23,14 @@ void draw() {
   }
 
   canvas.beginDraw();
-  canvas.image(cam, 0, 0,640, 508);
+  canvas.pushMatrix();
+  canvas.translate(width,0);
+  canvas.scale(-1,1);  
+  canvas.image(cam, 0, 0,640,480);
+  canvas.popMatrix();
   canvas.endDraw();
-  
+
   image(canvas, 0, 0);
+  
   server.sendImage(canvas);
 }
