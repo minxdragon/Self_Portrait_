@@ -134,7 +134,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					def stable_diffusion(prompt, init_image, prompt_strength, negative_prompt):
 						prompt = promptString
 						model = replicate.models.get("stability-ai/stable-diffusion")
-						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
+						version = model.versions.get("c24bbf13332c755f9e1c8b3f10c7f438889145def57d554a74ea751dc5e3b509")
 						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
 						init_image = init
 						prompt_strength = 0.7
