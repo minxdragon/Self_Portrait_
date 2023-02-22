@@ -64,15 +64,19 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
     # indices to vertices. -1 if pixel is not in any triangle
     roi_tri_indices = delaunay.find_simplex(roi_coords)
 
-    for simplex_index in range(len(delaunay.simplices)):
-        coords = roi_coords[roi_tri_indices == simplex_index]
-        num_coords = len(coords)
-        out_coords = np.dot(tri_affines[simplex_index],
-                            np.vstack((coords.T, np.ones(num_coords))))
-        x, y = coords.T
-        result_img[y, x] = bilinear_interpolate(src_img, out_coords)
+    try:
+        for simplex_index in range(len(delaunay.simplices)):
+            coords = roi_coords[roi_tri_indices == simplex_index]
+            num_coords = len(coords)
+            out_coords = np.dot(tri_affines[simplex_index],
+                                np.vstack((coords.T, np.ones(num_coords))))
+            x, y = coords.T
+            result_img[y, x] = bilinear_interpolate(src_img, out_coords)
+    except Exception as e:
+        print("Error occurred during process_warp: ", e)
 
     return None
+
 
 
 def triangular_affine_matrices(vertices, src_points, dst_points):

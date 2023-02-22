@@ -127,21 +127,21 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 					#generate a string for the prompt using the prediction results
 					promptString = "a " + random_style + " head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
-					negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
+					#negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
-					def stable_diffusion(prompt, init_image, prompt_strength, negative_prompt):
+					def stable_diffusion(prompt, init_image, prompt_strength,):
 						prompt = promptString
 						model = replicate.models.get("stability-ai/stable-diffusion")
-						version = model.versions.get("c24bbf13332c755f9e1c8b3f10c7f438889145def57d554a74ea751dc5e3b509")
+						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
 						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
 						init_image = init
 						prompt_strength = 0.7
-						negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
+						#negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
 						
 						try:
-							output_url = version.predict(prompt=(promptString), init_image=init, negative_prompt=(negative), prompt_strength=0.7)[0] #this is the one that parses the information
+							output_url = version.predict(prompt=(promptString), init_image=init, prompt_strength=0.7)[0] #this is the one that parses the information
 							print(output_url)
 							# download the image, convert it to a NumPy array, and then read
 							# it into OpenCV format
@@ -156,7 +156,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						except replicate.exceptions.ModelError as e:
 							print(e)
 							print("Model error")
-							default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg', 'dream4.jpg','dream5.jpg', 'dream6.jpg', 'dream7.jpg', 'dream8.jpg',]
+							default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg', 'dream4.jpg','dream5.jpg', 'dream6.jpg', 'dream7.jpg', 'dream8.jpg', 'dream9.jpg', 'dream10.jpg', 'dream11.jpg', 'dream12.jpg', 'dream13.jpg', 'dream14.jpg', 'dream15.jpg', 'dream16.jpg', 'dream17.jpg', 'dream18.jpg', 'dream19.jpg', 'dream20.jpg', 'dream21.jpg', 'dream22.jpg']
 							random_index = random.randint(0, len(default_images) - 1)
 							default_image = default_images[random_index]
 
@@ -169,7 +169,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						return dream			
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
-					stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7, negative_prompt=negative)
+					stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7)
 					conn.sendall(analysisComplete)
 					
 				
@@ -180,11 +180,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				#listen for the userSelected message
 				userSelected = splitMessage[1]
 				promptString = "a " + random_style + " full head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + userSelected + " painted by a portrait artist, full face, full head and shoulders, entire head"
-				negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo"
+				#negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, cartoon, landscape, food, text, logo"
 				print(promptString)
 
 				#StableDiffusion code for replicate. requires a replicate account and a export code
-				stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7, negative_prompt=negative)
+				stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7)
 				print(f'Fetching mask...')
 				time.sleep(4)
 				print(f'Sending...')                
@@ -218,7 +218,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						VideoHandler(video_path=0, img_path='interactive/data/dream.jpg', args=args).start()
 					except TypeError as e:
 						print(e)
-						default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg', 'dream4.jpg','dream5.jpg', 'dream6.jpg', 'dream7.jpg', 'dream8.jpg',]
+						default_images = ['dream1.jpg', 'dream2.jpg', 'dream3.jpg', 'dream4.jpg','dream5.jpg', 'dream6.jpg', 'dream7.jpg', 'dream8.jpg', 'dream9.jpg', 'dream10.jpg', 'dream11.jpg', 'dream12.jpg', 'dream13.jpg', 'dream14.jpg', 'dream15.jpg', 'dream16.jpg', 'dream17.jpg', 'dream18.jpg', 'dream19.jpg', 'dream20.jpg', 'dream21.jpg', 'dream22.jpg']						
 						random_index = random.randint(0, len(default_images) - 1)
 						default_image = default_images[random_index]
 
