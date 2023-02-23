@@ -163,8 +163,9 @@ def selfPortrait():
 	style_list = ['watercolor', 'oils', 'impasto', 'pastel', 'acrylic', 'charcoal', 'ink', 'pencil', 'marker']
 	random_index = random.randint(0, len(style_list) - 1)
 	random_style = style_list[random_index]
-	
-	promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+	chosenTerms = "intuitive, creative, conceptual, surreal"
+	promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + chosenTerms + " painted by a portrait artist"
+	#promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 	print (promptString)
 	# face swap video from webcam class
 	class VideoHandler(object):
