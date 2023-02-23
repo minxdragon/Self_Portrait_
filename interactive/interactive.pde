@@ -15,7 +15,7 @@ PGraphics canvasSyphoner;
 SyphonClient client1;
 SyphonClient client2;
 
-Boolean testMode = true;
+Boolean testMode = false;
 
 String syphonClient2Name = "";
 String syphonClientHome = "Syphoner";
