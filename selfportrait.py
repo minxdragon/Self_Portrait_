@@ -223,13 +223,13 @@ def selfPortrait():
 			os.makedirs(dir_path)
 
 		#StableDiffusion code for replicate. requires a replicate account and a export code
-		def stable_diffusion(prompt, input_image, scale, n_prompt,):
-			model = replicate.models.get("jagilley/controlnet-hed")
-			version = model.versions.get("cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653")
+		def stable_diffusion(prompt, image, scale, n_prompt,):
+			model = replicate.models.get("jagilley/controlnet-depth2img")
+			version = model.versions.get("922c7bb67b87ec32cbc2fd11b1d5f94f0ba4f5519c4dbd02856376444127cc60")
 			# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#input
 			inputs = {
 				# Input image
-				'input_image': open("face.jpg", "rb"),
+				'image': open("face.jpg", "rb"),
 
 				# Prompt for the model
 				'prompt': promptString,
@@ -245,7 +245,7 @@ def selfPortrait():
 
 				# Guidance Scale
 				# Range: 0.1 to 30
-				'scale': 30,
+				'scale': 9,
 
 				# Seed
 				# 'seed': ...,
@@ -259,9 +259,9 @@ def selfPortrait():
 				# Negative Prompt
 				'n_prompt': "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
 
-				# Resolution for detection (only applicable when model type is 'HED')
+				# Resolution for detection)
 				# Range: 128 to 1024
-				'detect_resolution': 300,
+				'detect_resolution': 512,
 			}
 
 			# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#output-schema
@@ -278,7 +278,7 @@ def selfPortrait():
 			return dream
 		negative = "NSFW, profile, cropped, animal, cartoon, landscape, food, text, logo, side view,"
 		try:
-			stable_diffusion(prompt = (promptString), input_image=filename, scale=9, n_prompt=negative)
+			stable_diffusion(prompt = (promptString), image=filename, scale=9, n_prompt=negative)
 		except replicate.exceptions.ModelError as e:
 			print(e)
 			print("Model error")
