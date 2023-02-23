@@ -163,7 +163,7 @@ def selfPortrait():
 	style_list = ['watercolor', 'oils', 'impasto', 'pastel', 'acrylic', 'charcoal', 'ink', 'pencil', 'marker']
 	random_index = random.randint(0, len(style_list) - 1)
 	random_style = style_list[random_index]
-
+	
 	promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 	print (promptString)
 	# face swap video from webcam class
@@ -222,29 +222,62 @@ def selfPortrait():
 			os.makedirs(dir_path)
 
 		#StableDiffusion code for replicate. requires a replicate account and a export code
-		def stable_diffusion(prompt, init_image, prompt_strength, negative_prompt,):
-			prompt = promptString
-			model = replicate.models.get("stability-ai/stable-diffusion")
-			version = model.versions.get("c24bbf13332c755f9e1c8b3f10c7f438889145def57d554a74ea751dc5e3b509")
-			#version.predict(prompt="a 19th century portrait of a wombat gentleman")
-			init_image = filename
-			prompt_strength = 0.5
-			negative_prompt = ''
-			output_url = version.predict(prompt=(promptString), init_image=filename, negative_prompt=negative, prompt_strength=0.7)[0] #this is the one that parses the information
-			print(output_url)
-			# download the image, convert it to a NumPy array, and then read
-			# it into OpenCV format
-			request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+		def stable_diffusion(prompt, input_image, scale, n_prompt,):
+			model = replicate.models.get("jagilley/controlnet-hed")
+			version = model.versions.get("cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653")
+			# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#input
+			inputs = {
+				# Input image
+				'input_image': open("face.jpg", "rb"),
+
+				# Prompt for the model
+				'prompt': promptString,
+
+				# Number of samples (higher values may OOM)
+				'num_samples': "1",
+
+				# Image resolution to be generated
+				'image_resolution': "512",
+
+				# Steps
+				'ddim_steps': 20,
+
+				# Guidance Scale
+				# Range: 0.1 to 30
+				'scale': 30,
+
+				# Seed
+				# 'seed': ...,
+
+				# eta (DDIM)
+				'eta': 0,
+
+				# Added Prompt
+				'a_prompt': "best quality, extremely detailed",
+
+				# Negative Prompt
+				'n_prompt': "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+
+				# Resolution for detection (only applicable when model type is 'HED')
+				# Range: 128 to 1024
+				'detect_resolution': 300,
+			}
+
+			# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#output-schema
+			output = version.predict(**inputs)
+			print(output)
+			second_url = output[1] # select the second URL from the output list
+			request_site = Request(second_url, headers={"User-Agent": "Mozilla/5.0"})
 			req = urlopen(request_site)
 			arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-			img = cv2.imdecode(arr, -1) # 'Load it as it is'
+			img = cv2.imdecode(arr, -1)
 			img = np.array(img)
 			dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
 			return dream
 		negative = "NSFW, profile, cropped, animal, cartoon, landscape, food, text, logo, side view,"
 		try:
-			stable_diffusion(prompt = (promptString), init_image=filename, prompt_strength=0.5, negative_prompt=negative)
+			stable_diffusion(prompt = (promptString), input_image=filename, scale=9, n_prompt=negative)
 		except replicate.exceptions.ModelError as e:
 			print(e)
 			print("Model error")
