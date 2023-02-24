@@ -45,13 +45,12 @@ def TakeSnapshotAndSave():
 	num = 0 
 	while num<1:
 		# Capture frame-by-frame
-
 		frameWidth = 640
 		frameHeight = 480
 		cap = cv2.VideoCapture(0)
 		cap.set(3, frameWidth)
 		cap.set(4, frameHeight)
-		cap.set(10,150)
+		cap.set(10,100)
 
 		while cap.isOpened():
 			success, img = cap.read()
@@ -59,23 +58,36 @@ def TakeSnapshotAndSave():
 				cv2.imshow("Result", img)
 				if cv2.waitKey(1) & 0xFF == ord('q'):
 					break
-		# to detect faces in video
-		# Convert into grayscale
-		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-		
-		# Load the cascade
-		face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-		
-		# Detect faces
-		faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-		
-		# Draw rectangle around the faces and crop the faces
-		for (x, y, w, h) in faces:
-			cv2.rectangle(img, (x, y), (x + 100 + w + 100, y + 100 + h + 100), (0, 0, 255), 2)
-			faces = img[y:y + 100 + h, x:x + 100 + w]
+					
+				# to detect faces in video
+				# Convert into grayscale
+				gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-			cv2.imshow("face",faces)
-			cv2.imwrite('opencv'+str(num)+'.jpg',faces)
+				# Load the cascade
+				face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+				# Detect faces
+				faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+
+				# Draw rectangle around the faces and crop the faces
+				for (x, y, w, h) in faces:
+					center_x = x + w/2
+					center_y = y + h/2
+					# adjust the crop size and position to center the face
+					crop_size = min(w, h) * 1.5
+					crop_x = int(center_x - crop_size/2)
+					crop_y = int(center_y - crop_size/2)
+					faces = img[crop_y:crop_y + int(crop_size), crop_x:crop_x + int(crop_size)]
+
+					cv2.imshow("face", faces)
+					cv2.imwrite('opencv'+str(num)+'.jpg', faces)
+					
+			else:
+				break
+
+		# Release the capture and destroy all windows
+		cap.release()
+		cv2.destroyAllWindows()
 			
 		# Display the output
 		#cv2.imwrite('face.jpg', faces)
@@ -164,8 +176,8 @@ def selfPortrait():
 	random_index = random.randint(0, len(style_list) - 1)
 	random_style = style_list[random_index]
 	chosenTerms = "intuitive, creative, conceptual, surreal"
-	promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + chosenTerms + " painted by a portrait artist"
-	#promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
+	#promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + chosenTerms + " painted by a portrait artist"
+	promptString = "a " + random_style + " full head and shoulders portrait of a person, full face, with a neutral expression of a person who is " + analysisComplete + " painted by a portrait artist"
 	print (promptString)
 	# face swap video from webcam class
 	class VideoHandler(object):
@@ -257,7 +269,7 @@ def selfPortrait():
 				'a_prompt': "best quality, extremely detailed",
 
 				# Negative Prompt
-				'n_prompt': "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+				'n_prompt': "photograph, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
 
 				# Resolution for detection)
 				# Range: 128 to 1024
