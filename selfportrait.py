@@ -236,8 +236,8 @@ def selfPortrait():
 
 		#StableDiffusion code for replicate. requires a replicate account and a export code
 		def stable_diffusion(prompt, image, scale, n_prompt,):
-			model = replicate.models.get("jagilley/controlnet-depth2img")
-			version = model.versions.get("922c7bb67b87ec32cbc2fd11b1d5f94f0ba4f5519c4dbd02856376444127cc60")
+			model = replicate.models.get("jagilley/controlnet-pose")
+			version = model.versions.get("0304f7f774ba7341ef754231f794b1ba3d129e3c46af3022241325ae0c50fb99")
 			# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#input
 			inputs = {
 				# Input image
@@ -261,15 +261,23 @@ def selfPortrait():
 
 				# Seed
 				# 'seed': ...,
+				
+				# Canny line detection low threshold
+				# Range: 1 to 255
+				'low_threshold': 100,
+
+				# Canny line detection high threshold
+				# Range: 1 to 255
+				'high_threshold': 200,
 
 				# eta (DDIM)
 				'eta': 0,
 
 				# Added Prompt
-				'a_prompt': "best quality, extremely detailed",
+				'a_prompt': "painting, best quality, extremely detailed",
 
 				# Negative Prompt
-				'n_prompt': "photograph, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+				'n_prompt': "photograph, photographic, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
 
 				# Resolution for detection)
 				# Range: 128 to 1024
