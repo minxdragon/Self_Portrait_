@@ -127,25 +127,77 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 					#generate a string for the prompt using the prediction results
 					promptString = "a " + random_style + " head and shoulders painted portrait of a person, full face, with a neutral expression of a person who is " + terms + " painted by a portrait artist, full face, full head and shoulders, entire head"
-					#negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces, partial people, partial body, partial head, partial shoulders, partial neck, partial chest, partial arms, partial hands, partial legs, partial feet, partial hair, partial eyes, partial nose, partial mouth, partial ears, partial eyebrows, partial eyelashes, partial beard, partial mustache,"
+					negative = "photograph, photographic, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality"
 					print (promptString)
 
 					#StableDiffusion code for replicate. requires a replicate account and a export code
-					def stable_diffusion(prompt, init_image, prompt_strength,):
-						prompt = promptString
-						model = replicate.models.get("stability-ai/stable-diffusion")
-						version = model.versions.get("27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478")
-						#version.predict(prompt="a 19th century portrait of a wombat gentleman")
-						init_image = init
-						prompt_strength = 0.7
-						#negative = "NSFW, nude, sexual, sexy, profile, abstract, cropped, animal, landscape, food, text, logo, side view, outline, silhouette, contour, shape, form, figure, multiple faces, multiple people, partial faces,"
+					def stable_diffusion(prompt, image, scale, n_prompt,):
+						model = replicate.models.get("jagilley/controlnet-pose")
+						version = model.versions.get("0304f7f774ba7341ef754231f794b1ba3d129e3c46af3022241325ae0c50fb99")
+						# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#input
+						inputs = {
+							# Input image
+							'image': open("face.jpg", "rb"),
+
+							# Prompt for the model
+							'prompt': promptString,
+
+							# Number of samples (higher values may OOM)
+							'num_samples': "1",
+
+							# Image resolution to be generated
+							'image_resolution': "512",
+
+							# Steps
+							'ddim_steps': 20,
+
+							# Guidance Scale
+							# Range: 0.1 to 30
+							'scale': 9,
+
+							# Seed
+							# 'seed': ...,
+							
+							# Canny line detection low threshold
+							# Range: 1 to 255
+							'low_threshold': 100,
+
+							# Canny line detection high threshold
+							# Range: 1 to 255
+							'high_threshold': 200,
+
+							# eta (DDIM)
+							'eta': 0,
+
+							# Added Prompt
+							'a_prompt': "painting, best quality, extremely detailed",
+
+							# Negative Prompt
+							'n_prompt': "photograph, photographic, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+
+							# Resolution for detection)
+							# Range: 128 to 1024
+							'detect_resolution': 512,
+						}
+
+						# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#output-schema
+						output = version.predict(**inputs)
+						print(output)
+						second_url = output[1] # select the second URL from the output list
+						request_site = Request(second_url, headers={"User-Agent": "Mozilla/5.0"})
+						req = urlopen(request_site)
+						arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+						img = cv2.imdecode(arr, -1)
+						img = np.array(img)
+						dream = cv2.imwrite('interactive/data/dream.jpg', img)
+
 						
 						try:
-							output_url = version.predict(prompt=(promptString), init_image=init, prompt_strength=0.7)[0] #this is the one that parses the information
-							print(output_url)
+							output = version.predict(**inputs)
+							print(output)
 							# download the image, convert it to a NumPy array, and then read
 							# it into OpenCV format
-							request_site = Request(output_url, headers={"User-Agent": "Mozilla/5.0"})
+							request_site = Request(output, headers={"User-Agent": "Mozilla/5.0"})
 							req = urlopen(request_site)
 							arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
 							img = cv2.imdecode(arr, -1) # 'Load it as it is'
@@ -165,11 +217,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 							print('Using random default image')
 							# unableToGetMask = b"unableToGetMask"
 							# conn.sendall(unableToGetMask)
-							
-						return dream			
+								
+							return dream			
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
-					stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7)
+					stable_diffusion(prompt = (promptString), image=filelist, scale=9, n_prompt=negative)
 					conn.sendall(analysisComplete)
 					
 				
