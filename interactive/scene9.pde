@@ -7,6 +7,7 @@ void sceneNine(PGraphics scene){
   }
   
   scene.beginDraw();
+  scene.background(0);
   scene.textAlign(CENTER);
   scene.textSize(24);
   scene.image(userVideo, 0,0,w,h); 
@@ -22,7 +23,7 @@ void sceneNine(PGraphics scene){
   scene.endDraw();
   
   //5 minute timeout
-  if (millis() > sceneTimer+300000){
+  if (millis() > sceneTimer+timeoutMillis){
     timeout("9");
   }
 }
@@ -61,6 +62,7 @@ public void sceneNineAButton(GButton source, GEvent event) {
   b10.setVisible(true);
   sceneTimer = millis();
   currentScene = 10;
+  exitButton.setVisible(false);
 }
 
 public void sceneNineBButton(GButton source, GEvent event) {
@@ -79,4 +81,5 @@ public void sceneNineBButton(GButton source, GEvent event) {
   b10.setVisible(true);
   sceneTimer = millis();
   currentScene = 10;
+  exitButton.setVisible(false);
 }

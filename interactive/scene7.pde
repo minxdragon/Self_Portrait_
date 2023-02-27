@@ -11,6 +11,10 @@ void sceneSeven(PGraphics scene){
     scene.text("YOUR 5 SECOND PORTRAIT", w/2, h/2);
     scene.text("...", w/2, h/2+20);
     scene.endDraw();
+    
+    if (millis() > sceneTimer+timeoutMillis){
+      timeout("7");
+    }
   } else {
     syphonServerReady();
     println("Delay timer complete. Connected.");

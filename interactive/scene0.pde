@@ -2,7 +2,6 @@
 boolean togState1 = false;
 boolean togState2 = false;
 
-
 void sceneZero(PGraphics scene){  
   scene.beginDraw();
   scene.background(0,0,0);
@@ -26,6 +25,7 @@ void defineGUIZero(){
 
 public void sceneZeroButton(GButton source, GEvent event) {
   println("a button event from sceneZeroButton: "+event);
+  
   userID = month()+"-"+day()+"-"+hour()+"-"+minute()+"-"+second();  
   countdownStartTime = 0;
   countdownCurrentTime = 0;
@@ -40,8 +40,10 @@ public void sceneZeroButton(GButton source, GEvent event) {
   returnedKeywords = new String[0];
   
   client1 = new SyphonClient(this, "syphoncam");
-  
+   
+  sceneTimer = millis();
   b1.setVisible(true);
+  exitButton.setVisible(true);
   currentScene = 1;
 }
 

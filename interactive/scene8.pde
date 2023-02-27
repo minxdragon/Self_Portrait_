@@ -12,10 +12,11 @@ void sceneEight(PGraphics scene){
   
   if (client2.newFrame()) {
     canvasSyphoner = client2.getGraphics(canvasSyphoner);
-    image(canvasSyphoner, -400, 0, 1372, 1030);
+    scene.image(canvasSyphoner, -400, 0, 1372, 1030);
   }
 
   videoLayer.beginDraw();
+    videoLayer.background(0);
     videoLayer.image(canvasSyphoner, -400, 0, 1372, 1030); 
     videoLayer.rectMode(CENTER);
     videoLayer.textAlign(CENTER);
@@ -31,6 +32,7 @@ void sceneEight(PGraphics scene){
   
   if(recordingOn){
     veCanvas.beginDraw();
+    veCanvas.background(0);
     veCanvas.image(videoLayer, 0,0);
     veCanvas.endDraw();     
     
@@ -50,6 +52,7 @@ void sceneEight(PGraphics scene){
       restartProgressBar(progressBarCanvas);
     } 
   } else {
+    scene.background(0);
     scene.image(videoLayer,0,0);
   }
   scene.endDraw();
@@ -101,6 +104,23 @@ void endRecording(){
   b9b.setVisible(true);
   sceneTimer = millis();
   currentScene = 9;
+  exitButton.setVisible(true);
+
+  //videoLayer.beginDraw();
+  //  videoLayer.background(0);
+  //videoLayer.endDraw();
+
+  //veCanvas.beginDraw();
+  //  videoLayer.background(0);
+  //veCanvas.endDraw();
+
+  scenes[6].beginDraw();
+    scenes[6].background(0);
+  scenes[6].endDraw();
+  
+  scenes[8].beginDraw();
+    scenes[8].background(0);
+  scenes[8].endDraw();
 }
 
 class Keyword {

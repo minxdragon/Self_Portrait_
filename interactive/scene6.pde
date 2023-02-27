@@ -23,6 +23,10 @@ void sceneSix(PGraphics scene){
   }
   
   scene.endDraw();
+  
+  if (millis() > sceneTimer+timeoutMillis){
+    timeout("6");
+  }
 }
 
 void defineGUISix(){
@@ -45,8 +49,9 @@ void syphonServerReady(){
     keywords.add(new Keyword(keyword, i));
   }
   
+  exitButton.setVisible(false);
   currentScene = 8;
-
+  
   recordingOn = true;
   ve.setMovieFileName("data/galleryPlayer/"+ userID + ".mp4");
   ve.startMovie();
@@ -62,5 +67,6 @@ public void sceneSixButton(GButton source, GEvent event) {
   delayTimer = millis();
   createNewVideoExport();
   b6.setVisible(false);
+  startTime = millis();
   currentScene = 7;
 }

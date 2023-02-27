@@ -24,17 +24,21 @@ void sceneFour(PGraphics scene){
   scene.textAlign(CENTER);
   scene.textSize(20);
   scene.textFont(mono);
-  scene.text("SELECT 1-7 KEYWORDS YOU IDENTIFY WITH", w/2, h-200);
+  scene.text("SELECT 1-7 KEYWORDS YOU IDENTIFY WITH", w/2, h-180);
   scene.endDraw();
+  
+  if (millis() > sceneTimer+timeoutMillis){
+    timeout("4");
+  }
 }
 
 void defineGUIFour(){
   int increment = 0;
 
   for(int i = 0; i < allKeywords.length-1; i+=3){   
-    wordToggles.add(new GButton(this, 30+25, 50+(30*increment), 170, 50, allKeywords[i].toUpperCase())); 
-    wordToggles.add(new GButton(this, 210+25, 50+(30*increment), 170, 50, allKeywords[i+1].toUpperCase()));
-    wordToggles.add(new GButton(this, 390+25, 50+(30*increment), 170, 50, allKeywords[i+2].toUpperCase()));
+    wordToggles.add(new GButton(this, 30+25, 110+(30*increment), 170, 50, allKeywords[i].toUpperCase())); 
+    wordToggles.add(new GButton(this, 210+25, 110+(30*increment), 170, 50, allKeywords[i+1].toUpperCase()));
+    wordToggles.add(new GButton(this, 390+25, 110+(30*increment), 170, 50, allKeywords[i+2].toUpperCase()));
     wordToggles.get(i).setVisible(false);
     wordToggles.get(i).addEventHandler(this,"wordToggleEvent");
     
@@ -79,7 +83,6 @@ public void sceneFourAButton(GButton source, GEvent event) {
   
   String clientMessageString = "userSelected," + userSelectedKeywords;
 
-  //connectAllClients();
   myClient.write(clientMessageString);
   println("Message sent to server: " + clientMessageString);
   
@@ -89,6 +92,7 @@ public void sceneFourAButton(GButton source, GEvent event) {
   
   b4a.setVisible(false);
   b4b.setVisible(false);
+  sceneTimer = millis();
   currentScene = 5;
 }
 
@@ -103,7 +107,9 @@ public void sceneFourBButton(GButton source, GEvent event) {
 
 
 public void wordToggleEvent(GButton source, GEvent event) {
-  println("a button event from wordToggleEvent: " + event);  
+  println("a button event from wordToggleEvent: " + event);
+  sceneTimer = millis();
+  
   if ((event == GEvent.CLICKED) && (source.getLocalColorScheme() == 1)){
     source.setLocalColorScheme(6);
     println(event, source.getText());

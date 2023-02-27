@@ -10,6 +10,10 @@ void sceneTwo(PGraphics scene){
   scene.text("ANALYSING YOUR FACE", w/2, h/2);
   scene.text("...", w/2, h/2+20);
   scene.endDraw();
+
+  if (millis() > sceneTimer+timeoutMillis){
+    timeout("2");
+  }
 }
 
 void defineGUITwo(){

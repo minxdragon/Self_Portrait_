@@ -65,3 +65,15 @@ Traceback (most recent call last):
   File "/Users/j.rosenbaum/Documents/GitHub/FaceSwap/server.py", line 60, in <module>
     s.bind((HOST, PORT))
 OSError: [Errno 48] Address already in use
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory
+nohup: processing-java: No such file or directory

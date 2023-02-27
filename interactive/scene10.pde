@@ -18,7 +18,7 @@ void sceneTen(PGraphics scene){
   scene.endDraw();
 
   //5 minute timeout
-  if (millis() > sceneTimer+300000){
+  if (millis() > sceneTimer+timeoutMillis){
     timeout("10");
   }
 }
@@ -35,35 +35,4 @@ public void sceneTenButton(GButton source, GEvent event) {
   b10.setVisible(false);
   b0.setVisible(true);
   currentScene = 0;
-}
-
-void timeout(String sNum){
-    switch(sNum) {
-      case "9": 
-        println("Scene 9 timeout");
-        userSavedVideo = false;
-        //Delete movie
-        File getFile = dataFile(dataPath("galleryPlayer/"+ userID + ".mp4"));
-        if(getFile.isFile()){
-          getFile.delete();
-          println("File deleted.");
-        }
-        
-        userVideo.stop();
-        b9a.setVisible(false);
-        b9b.setVisible(false);  
-        sceneTimer = 0;
-        b0.setVisible(true);
-        currentScene = 0;
-        break;
-      case "10": 
-        println("Scene 10 timeout");
-        b10.setVisible(false);
-        b0.setVisible(true);
-        currentScene = 0;
-        break;
-      default:             
-        println("Not a valid scene");
-        break;
-    }
 }

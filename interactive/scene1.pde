@@ -7,16 +7,17 @@ int countdownCurrentTime = 0;
 
 void sceneOne(PGraphics scene){  
   scene.beginDraw(); 
+  
   if (client1.newFrame()) {
     canvasWebcam = client1.getGraphics(canvasWebcam);
     scene.image(canvasWebcam, -400, 0, 1372, 1030);
-  }   
-  userPhoto = scene.get(0,0,width, height);  
+  } else {
+    scene.background(0);
+  }  
   
-  //scene.fill(0);
-  //scene.rect(0, 580,w,h-580);
+  userPhoto = scene.get(0,0,width, height);  
+
   if (countdownOn){
-    //3,2,1
     countdownCurrentTime = floor((millis() - countdownStartTime)/1000);
     renderCounter(scene, countdownCurrentTime);
   }
@@ -26,6 +27,12 @@ void sceneOne(PGraphics scene){
     countdownOn = false;
     takeUserPhoto();
     currentScene = 2;
+    sceneTimer = millis();
+    exitButton.setVisible(true);
+  }
+  
+  if (millis() > sceneTimer+timeoutMillis){
+    timeout("1");
   }
 }
 
@@ -36,7 +43,7 @@ void defineGUIOne(){
   b1.setIcon("data/icons/emoji-cam.png", 1);
   b1.setIconPos(GAlign.WEST);
   b1.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
-  b1.setVisible(false);
+  b1.setVisible(false);  
 }
 
 
@@ -97,6 +104,7 @@ public void sceneOneButton(GButton source, GEvent event) {
   b1.setVisible(false);
   countdownStartTime = millis();
   countdownOn = true; 
+  exitButton.setVisible(false);
 }
 
 void takeUserPhoto(){

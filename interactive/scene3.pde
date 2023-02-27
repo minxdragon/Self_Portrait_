@@ -20,6 +20,10 @@ void sceneThree(PGraphics scene){
   }
 
   scene.endDraw();
+  
+  if (millis() > sceneTimer+timeoutMillis){
+    timeout("3");
+  }
 }
 
 void updateKeywordToggles(String[] computerSelected){
@@ -61,6 +65,6 @@ public void sceneThreeButton(GButton source, GEvent event) {
       wordToggles.get(i).setLocalColorScheme(1);
     }
   }
-
+  sceneTimer = millis();
   currentScene = 4;
 }
