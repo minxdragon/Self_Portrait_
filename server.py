@@ -80,13 +80,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				conn.sendall(b"cameraNoMaskReady")
 			elif splitMessage[0] == 'faceCaptured':
 				# Receives face image and uploads file to imgbb
-				client = imgbbpy.SyncClient('f3bab68417be3af86d5abb25a77fec64')
+				#client = imgbbpy.SyncClient('f3bab68417be3af86d5abb25a77fec64')
 				if testMode == False:
-					face = client.upload(file='/Users/sgm_tech/Documents/sp-interactive/interactive/data/face.jpg', expiration=600)
+					face = ('/Users/sgm_tech/Documents/sp-interactive/interactive/data/face.jpg')
 				else: 
-					face = client.upload(file='/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/face.jpg', expiration=600)
-				print(face.url)
-				init = face.url
+					face = ('/Users/j.rosenbaum/Documents/GitHub/FaceSwap/interactive/data/face.jpg')
+				print(face)
+				init = face
 
 				# When prompt is ready, send back to Processing
 				print(f'Sending...')
@@ -137,10 +137,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 						# https://replicate.com/jagilley/controlnet-hed/versions/cde353130c86f37d0af4060cd757ab3009cac68eb58df216768f907f0d0a0653#input
 						inputs = {
 							# Input image
-							'image': open("face.jpg", "rb"),
+							'image': open(image, "rb"),
 
 							# Prompt for the model
-							'prompt': promptString,
+							'prompt': prompt,
 
 							# Number of samples (higher values may OOM)
 							'num_samples': "1",
@@ -153,11 +153,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 							# Guidance Scale
 							# Range: 0.1 to 30
-							'scale': 9,
+							'scale': scale,
 
 							# Seed
 							# 'seed': ...,
-							
+
 							# Canny line detection low threshold
 							# Range: 1 to 255
 							'low_threshold': 100,
@@ -173,7 +173,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 							'a_prompt': "painting, best quality, extremely detailed",
 
 							# Negative Prompt
-							'n_prompt': "photograph, photographic, naked, nude, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+							'n_prompt': n_prompt,
 
 							# Resolution for detection)
 							# Range: 128 to 1024
@@ -193,14 +193,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 						
 						try:
-							output = version.predict(**inputs)
-							print(output)
 							# download the image, convert it to a NumPy array, and then read
 							# it into OpenCV format
-							request_site = Request(output, headers={"User-Agent": "Mozilla/5.0"})
+							second_url = output[1] # select the second URL from the output list
+							request_site = Request(second_url, headers={"User-Agent": "Mozilla/5.0"})
 							req = urlopen(request_site)
 							arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-							img = cv2.imdecode(arr, -1) # 'Load it as it is'
+							img = cv2.imdecode(arr, -1)
 							img = np.array(img)
 							dream = cv2.imwrite('interactive/data/dream.jpg', img)
 
@@ -221,7 +220,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 							return dream			
 					
 					#print ("analysis complete," + analysisComplete) #send as server command
-					stable_diffusion(prompt = (promptString), image=filelist, scale=9, n_prompt=negative)
+					stable_diffusion(prompt = (promptString), image=face, scale=9, n_prompt=negative)
 					conn.sendall(analysisComplete)
 					
 				
@@ -236,7 +235,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				print(promptString)
 
 				#StableDiffusion code for replicate. requires a replicate account and a export code
-				stable_diffusion(prompt = promptString, init_image=init, prompt_strength=0.7)
+				stable_diffusion(prompt = (promptString), image=face, scale=9, n_prompt=negative)
 				print(f'Fetching mask...')
 				time.sleep(4)
 				print(f'Sending...')                
