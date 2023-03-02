@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 from urllib.request import Request, urlopen
 
+print("Starting script...")
+
 def job():
     print("I'm running on", datetime.datetime.now())
     promptString = "an adorable painting of a cat"
@@ -72,7 +74,9 @@ def job():
     return dream
 
 while True:
+    print("starting loop")
     now = datetime.datetime.now().time()
-    if now >= datetime.time(9, 0) and now <= datetime.time(17, 0):
+    if now >= datetime.time(23, 0) and now <= datetime.time(7, 0):
         job()
+    print("sleeping")
     time.sleep(3600) # Sleep for 1 hour
