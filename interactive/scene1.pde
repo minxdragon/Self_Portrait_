@@ -129,15 +129,22 @@ void processImage(){
     userImage.beginDraw();
     userImage.loadPixels();
     userImage.image(opencv.getInput(),0,0);
-    userImage.endDraw(); 
-    
-    PImage faceCrop = get(faces[0].x-40, faces[0].y-40, faces[0].width+80, faces[0].height+80);
-    PGraphics faceImageCanvas = createGraphics(400,400);  
+   
+    PImage faceCrop = userImage.get(floor(faces[0].x-(faces[0].width*0.1)), floor(faces[0].y-(faces[0].height*0.15)), floor(faces[0].width+(faces[0].width*0.2)), floor(faces[0].height+(faces[0].height*0.2)));
+    PGraphics faceImageCanvas = createGraphics(400,400);
     faceImageCanvas.beginDraw();
     faceImageCanvas.image(faceCrop,0,0,400,400);
     faceImageCanvas.save("data/face.jpg");
-    println("Face crop successful.");
     faceImageCanvas.endDraw(); 
+    println("Face.jpg saved.");
+    
+    //Testing face crop
+    //userImage.noFill();
+    //userImage.stroke(255,0,0);
+    //userImage.rect(faces[0].x-(faces[0].width*0.1), faces[0].y-(faces[0].height*0.15), faces[0].width+(faces[0].width*0.2), faces[0].height+(faces[0].height*0.2));
+    //userImage.save("data/face-full.jpg");
+    //userImage.endDraw(); 
+    //println("Face-full.jpg saved.");
   } else {
     PGraphics defaultImageCanvas = createGraphics(400,400);
     defaultImageCanvas.beginDraw();
@@ -146,4 +153,20 @@ void processImage(){
     println("Face not found. Saved default.");
     defaultImageCanvas.endDraw(); 
   }  
+}
+
+void showFaceOutline(PGraphics scene){
+  opencv = new OpenCV(this, "user.jpg");
+  opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);    
+  faces = opencv.detect();
+  println("Faces displaying: " + faces.length);
+  
+  scene.beginDraw();
+  PImage faceCrop = get(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
+  scene.loadPixels();
+  scene.image(opencv.getInput(), 0, 0);
+  scene.noFill();
+  scene.stroke(255,0,0);
+  scene.rect(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
+  scene.endDraw();
 }
